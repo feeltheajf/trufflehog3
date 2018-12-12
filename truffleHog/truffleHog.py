@@ -105,6 +105,7 @@ def search(path, regexes, no_regex=False, no_entropy=False):
                     "branch": "current state",
                     "commit": None,
                     "diff": None,
+                    "printDiff": None,
                     "commitHash": None,
                 }
                 issue.update(data)
