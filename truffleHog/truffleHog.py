@@ -18,6 +18,7 @@ import sys
 
 from datetime import datetime
 from distutils import dir_util
+from glob import glob
 from signal import signal, SIGINT
 from tempfile import TemporaryDirectory
 from urllib.parse import urlparse
@@ -63,10 +64,10 @@ def main():
                 no_regex=args.no_regex, no_entropy=args.no_entropy
             )
 
-        # issues += search(
-        #     tmp, args.regexes,
-        #     no_regex=args.no_regex, no_entropy=args.no_entropy
-        # )
+        issues += search(
+            tmp, args.rules,
+            no_regex=args.no_regex, no_entropy=args.no_entropy
+        )
 
     for issue in issues:
         log_issue(issue, output=args.output, json_output=args.json_output)
@@ -74,8 +75,42 @@ def main():
     return 1 if issues else 0
 
 
-def search(path):
-    return []
+def search(path, regexes, no_regex=False, no_entropy=False):
+    issues = []
+
+    for file in glob(os.path.join(path, "**"), recursive=True):
+        if not os.path.isfile(file):
+            continue
+
+        to_log = file.replace(path, "")
+        commit_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        found = []
+
+        with open(file) as f:
+            try:
+                data = f.read()
+            except Exception:
+                continue
+
+            if not no_regex:
+                found += regex_check(data, regexes)
+
+            if not no_entropy:
+                found += find_entropy(data)
+
+            for issue in found:
+                data = {
+                    "date": commit_time,
+                    "path": to_log,
+                    "branch": "current state",
+                    "commit": None,
+                    "diff": None,
+                    "commitHash": None,
+                }
+                issue.update(data)
+
+            issues += found
+    return issues
 
 
 def search_history(path, regexes, no_regex=False, no_entropy=False,
@@ -139,7 +174,7 @@ def search_history(path, regexes, no_regex=False, no_entropy=False,
 
 
 def diff_worker(diff, regexes, commit, branch,
-                no_regex=False, no_entropy=False,):
+                no_regex=False, no_entropy=False):
     issues = []
     for blob in diff:
         printableDiff = blob.diff.decode("utf-8", errors="replace")
@@ -150,11 +185,11 @@ def diff_worker(diff, regexes, commit, branch,
         commit_time = date.strftime("%Y-%m-%d %H:%M:%S")
         found = []
 
-        if not no_entropy:
-            found += find_entropy(printableDiff)
-
         if not no_regex:
             found += regex_check(printableDiff, regexes)
+
+        if not no_entropy:
+            found += find_entropy(printableDiff)
 
         for issue in found:
             data = {
@@ -171,7 +206,7 @@ def diff_worker(diff, regexes, commit, branch,
     return issues
 
 
-def find_entropy_match(word, chars, threshold=0):
+def find_entropy_match(word, chars, threshold):
     found = []
     strings = get_strings_of_set(word, chars)
 
@@ -188,8 +223,8 @@ def find_entropy(diff):
 
     for line in diff.split("\n"):
         for word in line.split():
-            matched += find_entropy_match(word, BASE64_CHARS, threshold=4.5)
-            matched += find_entropy_match(word, HEX_CHARS, threshold=3.0)
+            matched += find_entropy_match(word, BASE64_CHARS, 4.5)
+            matched += find_entropy_match(word, HEX_CHARS, 3.0)
 
     for match in matched:
         diff = diff.replace(match, colorize(match, color=bcolors.WARNING))
