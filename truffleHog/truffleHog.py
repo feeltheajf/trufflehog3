@@ -93,10 +93,10 @@ def search(path, regexes, no_regex=False, no_entropy=False):
                 continue
 
             if not no_regex:
-                found += regex_check(data, regexes)
+                found += regex_check(data, regexes, line_numbers=True)
 
             if not no_entropy:
-                found += find_entropy(data)
+                found += find_entropy(data, line_numbers=True)
 
             for issue in found:
                 data = {
@@ -222,16 +222,18 @@ def find_entropy_match(word, chars, threshold):
     return found
 
 
-def find_entropy(diff):
+def find_entropy(diff, line_numbers=False):
     matched, issues = [], []
 
-    for line in diff.split("\n"):
+    for i, line in enumerate(diff.split("\n")):
         line_matched = []
         for word in line.split():
             line_matched += find_entropy_match(word, BASE64_CHARS, 4.5)
             line_matched += find_entropy_match(word, HEX_CHARS, 3.0)
 
         if line_matched:
+            if line_numbers:
+                line = f"{i}\t{line}"
             matched.append(line.strip())
 
     for match in matched:
@@ -246,15 +248,17 @@ def find_entropy(diff):
     return issues
 
 
-def regex_check(diff, regexes):
+def regex_check(diff, regexes, line_numbers=False):
     issues = []
 
     for key in regexes:
         matched = []
-        for line in diff.split("\n"):
+        for i, line in enumerate(diff.split("\n")):
             line_matched = regexes[key].findall(line)
 
             if line_matched:
+                if line_numbers:
+                    line = f"{i}\t{line}"
                 matched.append(line.strip())
 
                 for match in line_matched:
