@@ -233,7 +233,7 @@ def find_entropy(diff, line_numbers=False):
 
         if line_matched:
             if line_numbers:
-                line = f"{i + 1}\t{line}"
+                line = f"{i + 1} {line}"
             matched.append(line.strip())
 
     for match in matched:
@@ -258,7 +258,7 @@ def regex_check(diff, regexes, line_numbers=False):
 
             if line_matched:
                 if line_numbers:
-                    line = f"{i + 1}\t{line}"
+                    line = f"{i + 1} {line}"
                 matched.append(line.strip())
 
                 for match in line_matched:
