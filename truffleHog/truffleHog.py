@@ -232,7 +232,7 @@ def find_entropy(diff):
             line_matched += find_entropy_match(word, HEX_CHARS, 3.0)
 
         if line_matched:
-            matched.append(line)
+            matched.append(line.strip())
 
     for match in matched:
         diff = diff.replace(match, colorize(match, color=bcolors.WARNING))
@@ -255,7 +255,7 @@ def regex_check(diff, regexes):
             line_matched = regexes[key].findall(line)
 
             if line_matched:
-                matched.append(line)
+                matched.append(line.strip())
 
                 for match in line_matched:
                     colored = colorize(match, color=bcolors.WARNING)
