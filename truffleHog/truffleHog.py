@@ -226,9 +226,13 @@ def find_entropy(diff):
     matched, issues = [], []
 
     for line in diff.split("\n"):
+        line_matched = []
         for word in line.split():
-            matched += find_entropy_match(word, BASE64_CHARS, 4.5)
-            matched += find_entropy_match(word, HEX_CHARS, 3.0)
+            line_matched += find_entropy_match(word, BASE64_CHARS, 4.5)
+            line_matched += find_entropy_match(word, HEX_CHARS, 3.0)
+
+        if line_matched:
+            matched.append(line)
 
     for match in matched:
         diff = diff.replace(match, colorize(match, color=bcolors.WARNING))
@@ -246,11 +250,16 @@ def regex_check(diff, regexes):
     issues = []
 
     for key in regexes:
-        matched = regexes[key].findall(diff)
+        matched = []
+        for line in diff.split("\n"):
+            line_matched = regexes[key].findall(line)
 
-        for match in matched:
-            colored = colorize(match, color=bcolors.WARNING)
-            diff = diff.replace(diff, colored)
+            if line_matched:
+                matched.append(line)
+
+                for match in line_matched:
+                    colored = colorize(match, color=bcolors.WARNING)
+                    diff = diff.replace(match, colored)
 
         if matched:
             issues.append({
