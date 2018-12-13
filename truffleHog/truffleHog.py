@@ -184,8 +184,11 @@ def diff_worker(diff, regexes, commit, branch,
 
         date = datetime.fromtimestamp(commit.committed_date)
         commit_time = date.strftime("%Y-%m-%d %H:%M:%S")
-        found = []
+        path = blob.b_path if blob.b_path else blob.a_path
+        if not path.startswith("/"):
+            path = "/" + path
 
+        found = []
         if not no_regex:
             found += regex_check(printableDiff, regexes)
 
@@ -195,7 +198,7 @@ def diff_worker(diff, regexes, commit, branch,
         for issue in found:
             data = {
                 "date": commit_time,
-                "path": blob.b_path if blob.b_path else blob.a_path,
+                "path": path,
                 "branch": branch,
                 "commit": commit.message,
                 "diff": blob.diff.decode("utf-8", errors="replace"),
