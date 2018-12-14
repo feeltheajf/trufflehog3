@@ -13,8 +13,10 @@ import json
 import math
 import os
 import re
+import shutil
 import string
 import sys
+import warnings
 
 from datetime import datetime
 from distutils import dir_util
@@ -25,6 +27,9 @@ from urllib.parse import urlparse
 
 from truffleHogRegexes.regexChecks import regexes as default_regexes
 
+
+MAX_LINE_LENGTH = 160
+MAX_MATCH_LENGTH = 1000
 
 BASE64_CHARS = string.ascii_letters + string.digits + "+/="
 HEX_CHARS = string.hexdigits
@@ -49,7 +54,10 @@ def main():
     with TemporaryDirectory() as tmp:
         if args.no_history:
             source = args.source.split(":")[-1]
-            dir_util.copy_tree(source, tmp)
+            if os.path.isdir(source):
+                dir_util.copy_tree(source, tmp)
+            else:
+                shutil.copy2(source, tmp)
         else:
             try:
                 git.Repo.clone_from(args.source, tmp)
@@ -103,10 +111,8 @@ def search(path, regexes, no_regex=False, no_entropy=False):
                     "date": commit_time,
                     "path": to_log,
                     "branch": "current state",
-                    "commit": "",
-                    "diff": "",
-                    "printDiff": "",
-                    "commitHash": "",
+                    "commit": None,
+                    "commitHash": None,
                 }
                 issue.update(data)
 
@@ -201,7 +207,6 @@ def diff_worker(diff, regexes, commit, branch,
                 "path": path,
                 "branch": branch,
                 "commit": commit.message,
-                "diff": blob.diff.decode("utf-8", errors="replace"),
                 "commitHash": commit.hexsha,
             }
             issue.update(data)
@@ -226,25 +231,14 @@ def find_entropy(diff, line_numbers=False):
     matched, issues = [], []
 
     for i, line in enumerate(diff.split("\n")):
-        line_matched = []
         for word in line.split():
-            line_matched += find_entropy_match(word, BASE64_CHARS, 4.5)
-            line_matched += find_entropy_match(word, HEX_CHARS, 3.0)
-
-        if line_matched:
-            if line_numbers:
-                line = f"{i + 1} {line}"
-            matched.append(line.strip())
-
-    for match in matched:
-        diff = diff.replace(match, colorize(match, color=bcolors.WARNING))
+            line_number = i + 1 if line_numbers else None
+            entropy_match = find_entropy_match(word, BASE64_CHARS, 4.5)
+            entropy_match += find_entropy_match(word, HEX_CHARS, 3.0)
+            matched += process_matched(line, entropy_match, line_number)
 
     if matched:
-        issues.append({
-            "printDiff": diff,
-            "stringsFound": matched,
-            "reason": "High Entropy"
-        })
+        issues = [{"stringsFound": matched, "reason": "High Entropy"}]
     return issues
 
 
@@ -254,24 +248,30 @@ def regex_check(diff, regexes, line_numbers=False):
     for key in regexes:
         matched = []
         for i, line in enumerate(diff.split("\n")):
-            line_matched = regexes[key].findall(line)
-
-            if line_matched:
-                if line_numbers:
-                    line = f"{i + 1} {line}"
-                matched.append(line.strip())
-
-                for match in line_matched:
-                    colored = colorize(match, color=bcolors.WARNING)
-                    diff = diff.replace(match, colored)
+            line_number = i + 1 if line_numbers else None
+            matched_words = regexes[key].findall(line)
+            matched += process_matched(line, matched_words, line_number)
 
         if matched:
-            issues.append({
-                "printDiff": diff,
-                "stringsFound": matched,
-                "reason": key
-            })
+            issues.append({"stringsFound": matched, "reason": key})
     return issues
+
+
+def process_matched(line, matched_words, line_number=None):
+    matched = []
+    if matched_words:
+        if len(line) <= MAX_LINE_LENGTH:
+            matched_words = [line]
+
+        for match in matched_words:
+            if len(match) > MAX_MATCH_LENGTH:
+                err = f"Match length exceeds {MAX_MATCH_LENGTH}: {len(match)}"
+                warnings.warn(err)
+                continue
+            if line_number:
+                match = f"{line_number} {match}"
+            matched.append(match.strip())
+    return matched
 
 
 def shannon_entropy(data, iterator):
@@ -321,12 +321,11 @@ def log_issue(issue, output=None, json_output=False):
         data = "\n".join(str(x) for x in (
             "~~~~~~~~~~~~~~~~~~~~~",
             colorize(f"Reason: {issue.get('reason')}"),
-            colorize(f"Date: {issue.get('date')}"),
-            colorize(f"Hash: {issue.get('commitHash')}"),
             colorize(f"Filepath: {issue.get('path')}"),
             colorize(f"Branch: {issue.get('branch')}"),
             colorize(f"Commit: {issue.get('commit')}"),
-            issue.get("printDiff"),
+            colorize(f"Hash: {issue.get('commitHash')}"),
+            "\n".join(issue.get("stringsFound")),
             "~~~~~~~~~~~~~~~~~~~~~"
         ))
     if output:
@@ -365,7 +364,6 @@ def check_source(source):
 
 def get_cmdline_args():
     parser = argparse.ArgumentParser(
-        prog=sys.argv[0],
         description="Find secrets hidden in the depths of git.",
     )
     parser.add_argument(
