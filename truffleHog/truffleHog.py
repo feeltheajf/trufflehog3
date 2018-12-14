@@ -16,7 +16,6 @@ import re
 import shutil
 import string
 import sys
-import warnings
 
 from datetime import datetime
 from distutils import dir_util
@@ -265,8 +264,6 @@ def process_matched(line, matched_words, line_number=None):
 
         for match in matched_words:
             if len(match) > MAX_MATCH_LENGTH:
-                err = f"Match length exceeds {MAX_MATCH_LENGTH}: {len(match)}"
-                warnings.warn(err)
                 continue
             if line_number:
                 match = f"{line_number} {match}"
