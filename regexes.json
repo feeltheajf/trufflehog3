@@ -17,5 +17,6 @@
     "Google (GCP) Service-account": "\"type\": \"service_account\"",
     "Twilio API Key": "SK[a-z0-9]{32}",
     "Password in URL": "[a-zA-Z]{3,10}://[^/\\s:@]{3,20}:[^/\\s:@]{3,20}@.{1,100}[\"'\\s]",
-    "Encryption Key": "[e|E]ncryption[k|K]ey.*"
+    "Generic Encryption Key": "[e|E]ncryption[k|K]ey.*[=|:]",
+    "Const Hash Salt": "((sha(1|256|512))|(md5)).*\".*\""
 }
