@@ -24,7 +24,10 @@ from signal import signal, SIGINT
 from tempfile import TemporaryDirectory
 from urllib.parse import urlparse
 
-from truffleHogRegexes.regexChecks import regexes as default_regexes
+try:
+    from truffleHogRegexes.regexChecks import regexes as default_regexes
+except ImportError:
+    default_regexes = []
 
 
 MAX_LINE_LENGTH = 160
