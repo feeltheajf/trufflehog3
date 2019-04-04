@@ -1,5 +1,5 @@
-[![Build Status](https://travis-ci.com/feeltheajf/truffleHog.svg?branch=master)](https://travis-ci.com/feeltheajf/truffleHog)
-[![codecov](https://codecov.io/gh/feeltheajf/truffleHog/branch/master/graph/badge.svg)](https://codecov.io/gh/feeltheajf/truffleHog)
+[![Build Status](https://travis-ci.com/feeltheajf/truffleHog3.svg?branch=master)](https://travis-ci.com/feeltheajf/truffleHog3)
+[![codecov](https://codecov.io/gh/feeltheajf/truffleHog3/branch/master/graph/badge.svg)](https://codecov.io/gh/feeltheajf/truffleHog3))
 
 
 # truffleHog
