@@ -1,18 +1,12 @@
-.PHONY: test push
+.PHONY: test push clean
 .ONESHELL:
 
-test: unittest build disttest
-
-unittest:
+test:
 	pytest --cov=./truffleHog3 && codecov
 
-build: clean
+push: clean
 	python3 setup.py sdist bdist_wheel
-
-disttest:
 	twine check dist/*
-
-push:
 	twine upload dist/* -u feeltheajf
 
 clean:
