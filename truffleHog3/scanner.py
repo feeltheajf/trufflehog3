@@ -246,7 +246,8 @@ def log(issues, output=None, json_output=False):
 
 def render(issue):
     strings = "\n".join(issue["stringsFound"])
-    return TEMPLATE.format(**issue, strings=strings)
+    colored = TEMPLATE % (colors.OKGREEN, colors.ENDC)
+    return colored.format(**issue, strings=strings)
 
 
 def load(file):
@@ -267,7 +268,7 @@ def is_excluded(path):
     return False
 
 
-class colors:
+class _Colors:
     HEADER = "\033[95m"
     OKBLUE = "\033[94m"
     OKGREEN = "\033[92m"
@@ -312,7 +313,8 @@ Branch: {branch}
 Commit: {commit}
 Hash:   {commitHash}
 %s{strings}
-~~~~~~~~~~~~~~~~~~~~~""" % (colors.OKGREEN, colors.ENDC)
+~~~~~~~~~~~~~~~~~~~~~"""
 CWD = os.path.dirname(__file__)
 
+colors = _Colors()
 config = _Config()
