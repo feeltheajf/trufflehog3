@@ -9,7 +9,8 @@ import unittest
 from tempfile import TemporaryDirectory
 from unittest.mock import patch, MagicMock
 
-from truffleHog3 import truffleHog3 as tf
+from truffleHog3 import scanner
+from truffleHog3 import __main__ as cli
 
 REPO = "https://github.com/feeltheajf/truffleHog3"
 
@@ -17,10 +18,28 @@ REPO = "https://github.com/feeltheajf/truffleHog3"
 def scan_history(url, log=False, **kwargs):
     with TemporaryDirectory() as tmp:
         git.Repo.clone_from(url, tmp)
-        issues = tf.search_history(tmp, tf.DEFAULT, **kwargs)
+        issues = scanner.search_history(tmp, scanner.DEFAULT, **kwargs)
     if log:
         for issue in issues:
-            tf.log_issue(issue, json_output=True)
+            scanner.log(issue, json_output=True)
+
+
+class Args:
+
+    source = REPO
+    rules = scanner.DEFAULT
+    output = None
+    json_output = False
+    no_regex = False
+    no_entropy = False
+    no_history = False
+    since_commit = None
+    max_depth = 1000000
+    branch = None
+
+    def __init__(self, **kwargs):
+        for k, v in kwargs.items():
+            setattr(self, k, v)
 
 
 class TestStringMethods(unittest.TestCase):
@@ -30,15 +49,15 @@ class TestStringMethods(unittest.TestCase):
                             "B=/p9UyeX7xu6KkAGqfm3FJ+oObLDNEva")
         random_stringHex = "b3A0a1FDfe86dcCE945B72"
         self.assertGreater(
-            tf.shannon_entropy(
+            scanner.shannon_entropy(
                 random_stringB64,
-                tf.BASE64_CHARS),
+                scanner.BASE64_CHARS),
             4.5
         )
         self.assertGreater(
-            tf.shannon_entropy(
+            scanner.shannon_entropy(
                 random_stringHex,
-                tf.HEX_CHARS),
+                scanner.HEX_CHARS),
             3
         )
 
@@ -86,9 +105,13 @@ class TestStringMethods(unittest.TestCase):
         scan_history("test_repo", branch="testbranch")
         repo.remotes.origin.fetch.assert_called_once_with("testbranch")
 
-    def test_search(self):
-        issues = tf.search("./scripts", tf.DEFAULT)
-        self.assertEqual(5, len(issues))
+    def test_main_remote_with_history(self):
+        args = Args()
+        self.assertEqual(1, cli.main(args))
+
+    def test_main_local_no_history(self):
+        args = Args(source="./scripts", no_history=True)
+        self.assertEqual(1, cli.main(args))
 
 
 if __name__ == "__main__":
