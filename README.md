@@ -38,7 +38,7 @@ List of regexes was moved into repository, see [regexes.json](https://github.com
 ## Help
 
 ```
-usage: truffleHog.py [-h] [-r RULES] [-o OUTPUT] [--json] [--no-regex]
+usage: truffleHog3.py [-h] [-r RULES] [-o OUTPUT] [--json] [--no-regex]
                      [--no-entropy] [--no-history]
                      [--since-commit SINCE_COMMIT] [--max-depth MAX_DEPTH]
                      [--branch BRANCH]
