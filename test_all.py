@@ -9,19 +9,18 @@ import unittest
 from tempfile import TemporaryDirectory
 from unittest.mock import patch, MagicMock
 
-import truffleHog
-import regexes
+from truffleHog3 import truffleHog3 as tf
 
-REPO = "https://github.com/feeltheajf/truffleHog"
+REPO = "https://github.com/feeltheajf/truffleHog3"
 
 
 def scan_history(url, log=False, **kwargs):
     with TemporaryDirectory() as tmp:
         git.Repo.clone_from(url, tmp)
-        issues = truffleHog.search_history(tmp, regexes.DEFAULT, **kwargs)
+        issues = tf.search_history(tmp, tf.DEFAULT, **kwargs)
     if log:
         for issue in issues:
-            truffleHog.log_issue(issue, json_output=True)
+            tf.log_issue(issue, json_output=True)
 
 
 class TestStringMethods(unittest.TestCase):
@@ -31,22 +30,22 @@ class TestStringMethods(unittest.TestCase):
                             "B=/p9UyeX7xu6KkAGqfm3FJ+oObLDNEva")
         random_stringHex = "b3A0a1FDfe86dcCE945B72"
         self.assertGreater(
-            truffleHog.shannon_entropy(
+            tf.shannon_entropy(
                 random_stringB64,
-                truffleHog.BASE64_CHARS),
+                tf.BASE64_CHARS),
             4.5
         )
         self.assertGreater(
-            truffleHog.shannon_entropy(
+            tf.shannon_entropy(
                 random_stringHex,
-                truffleHog.HEX_CHARS),
+                tf.HEX_CHARS),
             3
         )
 
     def test_return_correct_commit_hash(self):
         # Start at commit d15627104d07846ac2914a976e8e347a663bbd9b, which
         # is immediately followed by a secret inserting commit:
-        # https://github.com/dxa4481/truffleHog/commit/9ed54617547cfca783e0f81f8dc5c927e3d1e345
+        # https://github.com/feeltheajf/truffleHog3/commit/9ed54617547cfca783e0f81f8dc5c927e3d1e345
         since_commit = "d15627104d07846ac2914a976e8e347a663bbd9b"
         commit_w_secret = "9ed54617547cfca783e0f81f8dc5c927e3d1e345"
         cross_valdiating_commit_w_secret_comment = "OH no a secret"
@@ -88,7 +87,7 @@ class TestStringMethods(unittest.TestCase):
         repo.remotes.origin.fetch.assert_called_once_with("testbranch")
 
     def test_search(self):
-        issues = truffleHog.search("./scripts", regexes.DEFAULT)
+        issues = tf.search("./scripts", tf.DEFAULT)
         self.assertEqual(5, len(issues))
 
 

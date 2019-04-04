@@ -7,6 +7,7 @@ import hashlib
 import json
 import math
 import os
+import re
 import shutil
 import string
 import sys
@@ -17,15 +18,6 @@ from glob import glob
 from signal import signal, SIGINT
 from tempfile import TemporaryDirectory
 from urllib.parse import urlparse
-
-import regexes
-
-
-MAX_LINE_LENGTH = 160
-MAX_MATCH_LENGTH = 1000
-
-BASE64_CHARS = string.ascii_letters + string.digits + "+/="
-HEX_CHARS = string.hexdigits
 
 
 class bcolors:
@@ -339,13 +331,24 @@ def check_source(source):
     return source
 
 
+def load(file):
+    if not os.path.exists(file):
+        raise IOError(f"File does not exist: {file}")
+
+    with open(file, "r") as f:
+        rules = json.load(f)
+
+    rules = {name: re.compile(rule) for name, rule in rules.items()}
+    return rules
+
+
 def get_cmdline_args():
     parser = argparse.ArgumentParser(
         description="Find secrets hidden in the depths of git.",
     )
     parser.add_argument(
         "-r", "--rules", help="ignore default regexes and source from json",
-        dest="rules", type=regexes.load, default=regexes.DEFAULT
+        dest="rules", type=load, default=DEFAULT
     )
     parser.add_argument(
         "-o", "--output", help="write report to file",
@@ -383,6 +386,14 @@ def get_cmdline_args():
         type=check_source
     )
     return parser.parse_args()
+
+
+DEFAULT = load(os.path.join(os.path.dirname(__file__), "rules.json"))
+MAX_LINE_LENGTH = 160
+MAX_MATCH_LENGTH = 1000
+
+BASE64_CHARS = string.ascii_letters + string.digits + "+/="
+HEX_CHARS = string.hexdigits
 
 
 if __name__ == "__main__":

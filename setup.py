@@ -6,7 +6,7 @@ setup(
     name="truffleHog3",
     version="0.1.0",
     description="Find secrets in your codebase.",
-    url="https://github.com/feeltheajf/truffleHog",
+    url="https://github.com/feeltheajf/truffleHog3",
     author="Ilya Radostev",
     author_email="feeltheajf@gmail.com",
     license="GNU",
@@ -15,6 +15,6 @@ setup(
         "GitPython == 2.1.1",
     ],
     entry_points={
-      "console_scripts": ["trufflehog = truffleHog:main"],
+      "console_scripts": ["trufflehog3 = truffleHog3.truffleHog3:main"],
     },
 )
