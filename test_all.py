@@ -1,31 +1,47 @@
-import unittest
-import os
-import sys
-import json
+"""truffleHog unittests."""
+
+import git
 import io
-from truffleHog import truffleHog
-from mock import patch
-from mock import MagicMock
+import json
+import sys
+import unittest
+
+from tempfile import TemporaryDirectory
+from unittest.mock import patch, MagicMock
+
+import truffleHog
+import regexes
+
+REPO = "https://github.com/feeltheajf/truffleHog"
+
+
+def scan_history(url, log=False, **kwargs):
+    with TemporaryDirectory() as tmp:
+        git.Repo.clone_from(url, tmp)
+        issues = truffleHog.search_history(tmp, regexes.DEFAULT, **kwargs)
+    if log:
+        for issue in issues:
+            truffleHog.log_issue(issue, json_output=True)
 
 
 class TestStringMethods(unittest.TestCase):
 
     def test_shannon(self):
-        random_stringB64 = "ZWVTjPQSdhwRgl204Hc51YCsritMIzn8B=/p9UyeX7xu6KkAGqfm3FJ+oObLDNEva"
+        random_stringB64 = ("ZWVTjPQSdhwRgl204Hc51YCsritMIzn8"
+                            "B=/p9UyeX7xu6KkAGqfm3FJ+oObLDNEva")
         random_stringHex = "b3A0a1FDfe86dcCE945B72"
-        self.assertGreater(truffleHog.shannon_entropy(random_stringB64, truffleHog.BASE64_CHARS), 4.5)
-        self.assertGreater(truffleHog.shannon_entropy(random_stringHex, truffleHog.HEX_CHARS), 3)
-
-    def test_cloning(self):
-        project_path = truffleHog.clone_git_repo("https://github.com/dxa4481/truffleHog.git")
-        license_file = os.path.join(project_path, "LICENSE")
-        self.assertTrue(os.path.isfile(license_file))
-
-    def test_unicode_expection(self):
-        try:
-            truffleHog.find_strings("https://github.com/dxa4481/tst.git")
-        except UnicodeEncodeError:
-            self.fail("Unicode print error")
+        self.assertGreater(
+            truffleHog.shannon_entropy(
+                random_stringB64,
+                truffleHog.BASE64_CHARS),
+            4.5
+        )
+        self.assertGreater(
+            truffleHog.shannon_entropy(
+                random_stringHex,
+                truffleHog.HEX_CHARS),
+            3
+        )
 
     def test_return_correct_commit_hash(self):
         # Start at commit d15627104d07846ac2914a976e8e347a663bbd9b, which
@@ -35,7 +51,6 @@ class TestStringMethods(unittest.TestCase):
         commit_w_secret = "9ed54617547cfca783e0f81f8dc5c927e3d1e345"
         cross_valdiating_commit_w_secret_comment = "OH no a secret"
 
-        json_result = ""
         if sys.version_info >= (3,):
             tmp_stdout = io.StringIO()
         else:
@@ -45,26 +60,36 @@ class TestStringMethods(unittest.TestCase):
         # Redirect STDOUT, run scan and re-establish STDOUT
         sys.stdout = tmp_stdout
         try:
-            truffleHog.find_strings("https://github.com/dxa4481/truffleHog.git",
-                since_commit=since_commit, printJson=True, surpress_output=False)
+            scan_history(REPO, log=True, since_commit=since_commit)
         finally:
             sys.stdout = bak_stdout
 
         json_result_list = tmp_stdout.getvalue().split("\n")
         results = [json.loads(r) for r in json_result_list if bool(r.strip())]
-        filtered_results = list(filter(lambda r: r["commitHash"] == commit_w_secret, results))
+        filtered_results = list(filter(
+            lambda r: r["commitHash"] == commit_w_secret,
+            results
+        ))
         self.assertEqual(1, len(filtered_results))
         self.assertEqual(commit_w_secret, filtered_results[0]["commitHash"])
-        # Additionally, we cross-validate the commit comment matches the expected comment
-        self.assertEqual(cross_valdiating_commit_w_secret_comment, filtered_results[0]["commit"].strip())
+        # Additionally, we cross-validate the commit
+        # comment matches the expected comment
+        self.assertEqual(
+            cross_valdiating_commit_w_secret_comment,
+            filtered_results[0]["commit"].strip()
+        )
 
-    @patch("truffleHog.truffleHog.clone_git_repo")
-    @patch("truffleHog.truffleHog.Repo")
+    @patch("git.Repo.clone_from")
+    @patch("git.Repo")
     def test_branch(self, repo_const_mock, clone_git_repo):
         repo = MagicMock()
         repo_const_mock.return_value = repo
-        truffleHog.find_strings("test_repo", branch="testbranch")
+        scan_history("test_repo", branch="testbranch")
         repo.remotes.origin.fetch.assert_called_once_with("testbranch")
+
+    def test_search(self):
+        issues = truffleHog.search("./scripts", regexes.DEFAULT)
+        self.assertEqual(5, len(issues))
 
 
 if __name__ == "__main__":
