@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/feeltheajf/truffleHog.svg?branch=master)](https://travis-ci.com/feeltheajf/truffleHog)
+
 # truffleHog
 This is an enhanced version of [truffleHog](https://github.com/dxa4481/truffleHog) scanner
 

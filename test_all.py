@@ -35,7 +35,7 @@ class TestStringMethods(unittest.TestCase):
         commit_w_secret = "9ed54617547cfca783e0f81f8dc5c927e3d1e345"
         cross_valdiating_commit_w_secret_comment = "OH no a secret"
 
-        json_result = "
+        json_result = ""
         if sys.version_info >= (3,):
             tmp_stdout = io.StringIO()
         else:
