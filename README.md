@@ -14,8 +14,8 @@ This is an enhanced version of [truffleHog](https://github.com/dxa4481/truffleHo
 
 ## ROADMAP
 
-- update tests
-- setup travis integration
+- ~~update tests~~
+- ~~setup travis integration~~
 - add package to PYPI
 
 ## Customizing
