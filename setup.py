@@ -1,19 +1,18 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='truffleHog',
-    version='2.0.97',
-    description='Searches through git repositories for high entropy strings, digging deep into commit history.',
-    url='https://github.com/dxa4481/truffleHog',
-    author='Dylan Ayrey',
-    author_email='dxa4481@rit.edu',
-    license='GNU',
-    packages = ['truffleHog'],
+    name="truffleHog3",
+    version="0.1.0",
+    description="Find secrets in your codebase.",
+    url="https://github.com/feeltheajf/truffleHog",
+    author="Ilya Radostev",
+    author_email="feeltheajf@gmail.com",
+    license="GNU",
+    packages=["truffleHog3"],
     install_requires=[
-        'GitPython == 2.1.1',
-        'truffleHogRegexes == 0.0.4'
+        "GitPython == 2.1.1",
     ],
-    entry_points = {
-      'console_scripts': ['trufflehog = truffleHog.truffleHog:main'],
+    entry_points={
+      "console_scripts": ["trufflehog = truffleHog:main"],
     },
 )

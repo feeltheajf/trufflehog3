@@ -1,10 +1,5 @@
 #!/usr/bin/env python3
-"""
-Updated version of truffleHog scanner - Python3.
-
-The list of used regexes remained untouched, see
-https://github.com/dxa4481/truffleHogRegexes.git
-"""
+"""Enhanced version of truffleHog scanner."""
 
 import argparse
 import git
@@ -12,7 +7,6 @@ import hashlib
 import json
 import math
 import os
-import re
 import shutil
 import string
 import sys
@@ -24,10 +18,7 @@ from signal import signal, SIGINT
 from tempfile import TemporaryDirectory
 from urllib.parse import urlparse
 
-try:
-    from truffleHogRegexes.regexChecks import regexes as default_regexes
-except ImportError:
-    default_regexes = []
+import regexes
 
 
 MAX_LINE_LENGTH = 160
@@ -270,7 +261,7 @@ def process_matched(line, matched_words, line_number=None):
                 continue
             if line_number:
                 match = f"{line_number} {match}"
-            matched.append(match.strip())
+            matched.append(str(match).strip())
     return matched
 
 
@@ -342,20 +333,6 @@ def graceful_keyboard_interrupt():
     signal(SIGINT, lambda signal, frame: exit_on_keyboard_interrupt())
 
 
-def load_rules(file):
-    if not os.path.exists(file):
-        raise argparse.ArgumentTypeError(f"File does not exist: {file}")
-
-    with open(file, "r") as f:
-        try:
-            rules = json.load(f)
-        except ValueError as e:
-            raise argparse.ArgumentTypeError(f"Failed to load rules: {e}")
-
-    rules = {name: re.compile(rule) for name, rule in rules.items()}
-    return rules
-
-
 def check_source(source):
     if not urlparse(source).scheme:
         source = f"file://{os.path.abspath(source)}"
@@ -368,10 +345,10 @@ def get_cmdline_args():
     )
     parser.add_argument(
         "-r", "--rules", help="ignore default regexes and source from json",
-        dest="rules", type=load_rules, default=default_regexes
+        dest="rules", type=regexes.load, default=regexes.DEFAULT
     )
     parser.add_argument(
-        "-o", "--output", help="write report to filename",
+        "-o", "--output", help="write report to file",
         dest="output", type=argparse.FileType("w")
     )
     parser.add_argument(
