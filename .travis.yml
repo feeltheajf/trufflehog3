@@ -1,4 +1,7 @@
 language: python
 python:
-  - "3.6"
+- '3.6'
 script: pytest --cov=./ && codecov
+notifications:
+  slack:
+    secure: ubH2vwboW/qiDP/o51e5RPm5/uXUM/4/RZ31Mf191AlLqa1O7agdel/WyFcraVAIjk8PXe0F1lb8ZcGqfColafYzQCeCwWAWBhIn5m7rE23erQdxWAyonAR/E+h4CEXmYc3MNE9J6Sz9dauH/Dgb8qckkhJnfijrQwywDMkLoeSWNPXPHn0R2KgEAEFrKvTaIYNZISyqZ+ghqEpYxNbUBz/FVKNr+xpOgh8c215aLP5mBfSo0gTsjlKz9eu7cjvu4gNs50pbMS1Rm+gRmvYP07e98wQUqDf4STaq9WyAOm3vHS40fpDbnxUihQNglBrkrq2oIhp+0JWVPJSGxkhqO2c2BmVx487EnIIOT+GAEoxy/6K39dzDPLhJYtkCBVlpwBowmetLofPjcwO0HKGbHsJZq6yAK6aJQ6Iu2RbBLgK7KxHu01T0L4QpJtHOLjutAHex4GHPSU6EjYiTggutPv5Ece7qOgQKs3EPI3Itvuk58hYNuJdEsGF+g/J6hhTRRVNFWlHN/q9YPOAJMBZu3NTPuIO7AM0BSOHlbwgBCCBqe7IjNaslXrwamFktoe0Fk+R/oYvP3RoaVgAw+rYDdLhZ8JOccd/rGM+ss70jY5OcyWgPFw/CUNxkRuRJapRugLas6Bz9nzkwggKiScq4hgbnRzlSj2ss6VXhgbR82X0=
