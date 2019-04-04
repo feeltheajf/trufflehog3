@@ -18,13 +18,13 @@ This is an enhanced version of [truffleHog](https://github.com/dxa4481/truffleHo
 
 - ~~update tests~~
 - ~~setup travis integration~~
-- ~~add package to PYPI~~
+- ~~add package to PyPI~~
 - valid JSON output?
 
 
 ## Installation
 
-Package is now available on [PYPI](https://pypi.org)
+Package is now available on [PyPI](https://pypi.org)
 ```
 pip install truffleHog3
 ```
@@ -32,7 +32,7 @@ pip install truffleHog3
 
 ## Customizing
 
-List of regexes was moved into repository, see [regexes.json](https://github.com/feeltheajf/truffleHog/blob/master/regexes/regexes.json)
+List of regexes was moved into repository, see [regexes.json](https://github.com/feeltheajf/truffleHog3/blob/master/truffleHog3/regexes.json)
 
 
 ## Help
