@@ -2,25 +2,38 @@
 [![codecov](https://codecov.io/gh/feeltheajf/truffleHog3/branch/master/graph/badge.svg)](https://codecov.io/gh/feeltheajf/truffleHog3)
 
 
-# truffleHog
+# truffleHog3
 This is an enhanced version of [truffleHog](https://github.com/dxa4481/truffleHog) scanner
 
-## NEW
+
+## New
 
 - Python3.6
 - refactored code
 - option for file output
 - option to disable Git history checks - scan simple files/folders
 
-## ROADMAP
+
+## Roadmap
 
 - ~~update tests~~
 - ~~setup travis integration~~
-- add package to PYPI
+- ~~add package to PYPI~~
+- valid JSON output?
+
+
+## Installation
+
+Package is now available on [PYPI](https://pypi.org)
+```
+pip install truffleHog3
+```
+
 
 ## Customizing
 
 List of regexes was moved into repository, see [regexes.json](https://github.com/feeltheajf/truffleHog/blob/master/regexes/regexes.json)
+
 
 ## Help
 
@@ -52,6 +65,7 @@ optional arguments:
                         max commit depth when searching for secrets
   --branch BRANCH       name of the branch to be scanned
 ```
+
 
 ## Thanks
 
