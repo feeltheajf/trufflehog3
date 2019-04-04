@@ -2,7 +2,3 @@ language: python
 python:
 - '3.6'
 script: pytest --cov=./ && codecov
-notifications:
-  slack:
-    on_success: always
-    secure: 0Adwv9jJr1GTv/yY7YxRNTRTts7OTQ8VYRxu590FT5dzgrUu1YfIvFSMAvnR6AQh1Twg4S5VaecvLBmd3BbtYpNYG87/Xkde8nP68Ds8tUBmdqJARXx1848+wFEVmgqIkZ9+C6kyJp7dHpV3kR4xiGTq/aBubfNzjmwpZ8vJ2c9ABCRkyDKmrMY7+w7mANMS9eAQ60FZyRMQSb5Z94eW28IhYccMXFN+DBFLV+mkf90uGQlG7n0tcYYR8iQlXj3d6d+50NZRCvaJ3xOeihrYsJu81LmwKZhB/zYMYl+jLYBnmHeFOjb5OlWvw/GW168+cn1KI/fkkbBOX5nhWbnl06mutN6Sy7vP+m1XpdcU4TM84NPwqANWgmx8kH5L6T7vArgHH7AQMw8qhOWDo8Z6ihX6zrqaBThnP0sN2D0Zh1y09R0h8k/tb0yxT/+4i5Cr2/Fdjv7Z4voT3KspWk9z2XWrswooN/hdrlsk+OSpY29A8au+FMP+0Civf8iA5vYBuYy0+GlcGYNzNS371vRjtr6LANJwh74xF21hmyLUT9+EHUZ8FZQ8SUH7Q+kfGgKYTBHmHk8pa3nXeFP8fafXZItKsTTzKwGehGfnyOrMqn73XZbda/MyHvQW86HjIu8NJfT+TDKePcCrnWHC8CXVBPwwZBGphVfjzJUz2Ni1MDM=

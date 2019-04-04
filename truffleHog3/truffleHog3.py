@@ -17,7 +17,7 @@ from distutils import dir_util
 from glob import glob
 from signal import signal, SIGINT
 from tempfile import TemporaryDirectory
-from urllib.parse import urlparse
+from urllib import parse
 
 
 class bcolors:
@@ -326,7 +326,7 @@ def graceful_keyboard_interrupt():
 
 
 def check_source(source):
-    if not urlparse(source).scheme:
+    if not parse.urlparse(source).scheme:
         source = f"file://{os.path.abspath(source)}"
     return source
 
