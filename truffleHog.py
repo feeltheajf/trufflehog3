@@ -73,7 +73,7 @@ def main():
     for issue in issues:
         log_issue(issue, output=args.output, json_output=args.json_output)
 
-    return 1 if issues else 0
+    return bool(issues)
 
 
 def search(path, regexes, no_regex=False, no_entropy=False):

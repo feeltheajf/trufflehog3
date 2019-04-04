@@ -1,4 +1,6 @@
-from setuptools import setup, find_packages
+"""Distribution settings."""
+
+from setuptools import setup
 
 setup(
     name="truffleHog3",
