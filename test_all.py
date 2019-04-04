@@ -1,45 +1,17 @@
 """truffleHog unittests."""
 
 import git
-import io
-import json
+import os
 import sys
 import unittest
 
 from tempfile import TemporaryDirectory
-from unittest.mock import patch, MagicMock
 
 from truffleHog3 import scanner
 from truffleHog3 import __main__ as cli
 
+PATH = os.path.join(scanner.CWD, "__main__.py")
 REPO = "https://github.com/feeltheajf/truffleHog3"
-
-
-def scan_history(url, log=False, **kwargs):
-    with TemporaryDirectory() as tmp:
-        git.Repo.clone_from(url, tmp)
-        issues = scanner.search_history(tmp, scanner.DEFAULT, **kwargs)
-    if log:
-        for issue in issues:
-            scanner.log(issue, json_output=True)
-
-
-class Args:
-
-    source = REPO
-    rules = scanner.DEFAULT
-    output = None
-    json_output = False
-    no_regex = False
-    no_entropy = False
-    no_history = False
-    since_commit = None
-    max_depth = 1000000
-    branch = None
-
-    def __init__(self, **kwargs):
-        for k, v in kwargs.items():
-            setattr(self, k, v)
 
 
 class TestStringMethods(unittest.TestCase):
@@ -69,21 +41,11 @@ class TestStringMethods(unittest.TestCase):
         commit_w_secret = "9ed54617547cfca783e0f81f8dc5c927e3d1e345"
         cross_valdiating_commit_w_secret_comment = "OH no a secret"
 
-        if sys.version_info >= (3,):
-            tmp_stdout = io.StringIO()
-        else:
-            tmp_stdout = io.BytesIO()
-        bak_stdout = sys.stdout
+        with TemporaryDirectory() as tmp:
+            git.Repo.clone_from(REPO, tmp)
+            scanner.config.since_commit = since_commit
+            results = scanner.search_history(tmp)
 
-        # Redirect STDOUT, run scan and re-establish STDOUT
-        sys.stdout = tmp_stdout
-        try:
-            scan_history(REPO, log=True, since_commit=since_commit)
-        finally:
-            sys.stdout = bak_stdout
-
-        json_result_list = tmp_stdout.getvalue().split("\n")
-        results = [json.loads(r) for r in json_result_list if bool(r.strip())]
         filtered_results = list(filter(
             lambda r: r["commitHash"] == commit_w_secret,
             results
@@ -97,21 +59,17 @@ class TestStringMethods(unittest.TestCase):
             filtered_results[0]["commit"].strip()
         )
 
-    @patch("git.Repo.clone_from")
-    @patch("git.Repo")
-    def test_branch(self, repo_const_mock, clone_git_repo):
-        repo = MagicMock()
-        repo_const_mock.return_value = repo
-        scan_history("test_repo", branch="testbranch")
-        repo.remotes.origin.fetch.assert_called_once_with("testbranch")
-
     def test_main_remote_with_history(self):
-        args = Args()
-        self.assertEqual(1, cli.main(args))
+        sys.argv = [PATH, REPO]
+        self.assertEqual(1, cli.main())
 
     def test_main_local_no_history(self):
-        args = Args(source="./scripts", no_history=True)
-        self.assertEqual(1, cli.main(args))
+        sys.argv = [PATH, "./scripts", "--no-history"]
+        self.assertEqual(1, cli.main())
+
+    def test_exclude(self):
+        scanner.config.exclude = ["truffleHog3/.*", "test.*.py"]
+        self.assertEqual(5, len(scanner.search(".")))
 
 
 if __name__ == "__main__":

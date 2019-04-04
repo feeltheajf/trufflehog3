@@ -8,23 +8,16 @@ This is an enhanced version of [truffleHog](https://github.com/dxa4481/truffleHo
 
 ## New
 
-- Python3.6
-- refactored code
-- option for file output
+- Python 3.6
+- flake8 compliant code
+- output to file option
 - option to disable Git history checks - scan simple files/folders
-
-
-## Roadmap
-
-- ~~update tests~~
-- ~~setup travis integration~~
-- ~~add package to PyPI~~
-- valid JSON output?
+- option to exclude files/directories
 
 
 ## Installation
 
-Package is now available on [PyPI](https://pypi.org)
+Package is available on [PyPI](https://pypi.org/project/truffleHog3)
 ```
 pip install truffleHog3
 ```
@@ -38,11 +31,11 @@ List of regexes was moved into repository, see [regexes.json](https://github.com
 ## Help
 
 ```
-usage: truffleHog3.py [-h] [-r RULES] [-o OUTPUT] [--json] [--no-regex]
-                     [--no-entropy] [--no-history]
-                     [--since-commit SINCE_COMMIT] [--max-depth MAX_DEPTH]
-                     [--branch BRANCH]
-                     source
+usage: trufflehog3 [-h] [-r RULES] [-o OUTPUT] [--json] [--no-regex]
+                   [--no-entropy] [--no-history] [--since-commit SINCE_COMMIT]
+                   [--max-depth MAX_DEPTH] [--branch BRANCH]
+                   [--exclude [[...]]]
+                   source
 
 Find secrets hidden in the depths of git.
 
@@ -62,8 +55,9 @@ optional arguments:
   --since-commit SINCE_COMMIT
                         only scan starting from a given commit hash
   --max-depth MAX_DEPTH
-                        max commit depth when searching for secrets
+                        max commit depth for searching
   --branch BRANCH       name of the branch to be scanned
+  --exclude [ [ ...]]   exclude paths from scanning
 ```
 
 

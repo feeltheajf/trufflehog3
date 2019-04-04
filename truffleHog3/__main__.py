@@ -1,9 +1,9 @@
-#!/usr/bin/env python3
-"""truffleHog scanner core."""
+"""truffleHog scanner cli."""
 
 import argparse
 import git
 import os
+import re
 import shutil
 import sys
 
@@ -15,14 +15,15 @@ from urllib import parse
 from truffleHog3 import scanner
 
 
-def main(args=None):
+def main():
     graceful_keyboard_interrupt()
-    args = args or get_cmdline_args()
+    args = get_cmdline_args()
+    scanner.config.update(**args.__dict__)
     issues = []
 
     with TemporaryDirectory() as tmp:
         if args.no_history:
-            source = args.source.split(":")[-1]
+            source = args.source.split("://")[-1]
             if os.path.isdir(source):
                 dir_util.copy_tree(source, tmp)
             else:
@@ -31,24 +32,14 @@ def main(args=None):
             try:
                 git.Repo.clone_from(args.source, tmp)
             except Exception:
-                error = f"Failed to clone repository: {args.source}"
+                error = "Failed to clone repository: {}".format(args.source)
                 raise RuntimeError(error)
 
-            issues = scanner.search_history(
-                tmp, args.rules,
-                since_commit=args.since_commit,
-                max_depth=args.max_depth, branch=args.branch,
-                no_regex=args.no_regex, no_entropy=args.no_entropy
-            )
+            issues = scanner.search_history(tmp)
 
-        issues += scanner.search(
-            tmp, args.rules,
-            no_regex=args.no_regex, no_entropy=args.no_entropy
-        )
+        issues += scanner.search(tmp)
 
-    for issue in issues:
-        scanner.log(issue, output=args.output, json_output=args.json_output)
-
+    scanner.log(issues, output=args.output, json_output=args.json_output)
     return bool(issues)
 
 
@@ -62,8 +53,12 @@ def graceful_keyboard_interrupt():
 
 def check_source(source):
     if not parse.urlparse(source).scheme:
-        source = f"file://{os.path.abspath(source)}"
+        source = "file://{}".format(os.path.abspath(source))
     return source
+
+
+def exclude_path_regex(regex):
+    return re.compile(regex)
 
 
 def get_cmdline_args():
@@ -71,8 +66,12 @@ def get_cmdline_args():
         description="Find secrets hidden in the depths of git.",
     )
     parser.add_argument(
+        "source", help="URL or local path for secret searching",
+        type=check_source
+    )
+    parser.add_argument(
         "-r", "--rules", help="ignore default regexes and source from json",
-        dest="rules", type=scanner.load, default=scanner.DEFAULT
+        dest="rules", type=scanner.load
     )
     parser.add_argument(
         "-o", "--output", help="write report to file",
@@ -99,16 +98,16 @@ def get_cmdline_args():
         dest="since_commit"
     )
     parser.add_argument(
-        "--max-depth", help="max commit depth when searching for secrets",
-        dest="max_depth", default=1000000
+        "--max-depth", help="max commit depth for searching", dest="max_depth"
     )
     parser.add_argument(
         "--branch", help="name of the branch to be scanned", dest="branch"
     )
     parser.add_argument(
-        "source", help="URL or local path for secret searching",
-        type=check_source
+        "--exclude", help="exclude paths from scanning", dest="exclude",
+        type=exclude_path_regex, nargs="*", metavar=""
     )
+    parser.set_defaults(**scanner.config.as_dict)
     return parser.parse_args()
 
 

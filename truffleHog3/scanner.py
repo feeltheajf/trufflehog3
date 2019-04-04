@@ -12,22 +12,11 @@ from datetime import datetime
 from glob import glob
 
 
-class bcolors:
-    HEADER = "\033[95m"
-    OKBLUE = "\033[94m"
-    OKGREEN = "\033[92m"
-    WARNING = "\033[93m"
-    FAIL = "\033[91m"
-    ENDC = "\033[0m"
-    BOLD = "\033[1m"
-    UNDERLINE = "\033[4m"
-
-
-def search(path, regexes, no_regex=False, no_entropy=False):
+def search(path):
     issues = []
 
     for file in glob(os.path.join(path, "**"), recursive=True):
-        if not os.path.isfile(file):
+        if not os.path.isfile(file) or is_excluded(file):
             continue
 
         to_log = file.replace(path, "")
@@ -40,10 +29,10 @@ def search(path, regexes, no_regex=False, no_entropy=False):
             except Exception:
                 continue
 
-            if not no_regex:
-                found += regex_check(data, regexes, line_numbers=True)
+            if not config.no_regex:
+                found += regex_check(data, config.rules, line_numbers=True)
 
-            if not no_entropy:
+            if not config.no_entropy:
                 found += find_entropy(data, line_numbers=True)
 
             for issue in found:
@@ -60,14 +49,13 @@ def search(path, regexes, no_regex=False, no_entropy=False):
     return issues
 
 
-def search_history(path, regexes, no_regex=False, no_entropy=False,
-                   since_commit=None, max_depth=1000000, branch=None):
+def search_history(path):
     issues = []
     already_searched = set()
     repo = git.Repo(path)
 
-    if branch:
-        branches = repo.remotes.origin.fetch(branch)
+    if config.branch:
+        branches = repo.remotes.origin.fetch(config.branch)
     else:
         branches = repo.remotes.origin.fetch()
 
@@ -75,12 +63,13 @@ def search_history(path, regexes, no_regex=False, no_entropy=False,
         since_commit_reached = False
         branch = remote_branch.name
         prev_commit = None
+        commits = repo.iter_commits(branch, max_count=config.max_depth)
 
-        for curr_commit in repo.iter_commits(branch, max_count=max_depth):
-            if curr_commit.hexsha == since_commit:
+        for curr_commit in commits:
+            if curr_commit.hexsha == config.since_commit:
                 since_commit_reached = True
 
-            if since_commit and since_commit_reached:
+            if config.since_commit and since_commit_reached:
                 prev_commit = curr_commit
                 continue
             # if not prev_commit, then curr_commit is the newest commit.
@@ -104,48 +93,43 @@ def search_history(path, regexes, no_regex=False, no_entropy=False,
 
             # avoid searching the same diffs
             already_searched.add(diff_hash)
-            issues += diff_worker(
-                diff, regexes, prev_commit, branch,
-                no_regex=no_regex, no_entropy=no_entropy
-            )
-            # output = handle_results(output, output_dir, foundIssues)
+            issues += diff_worker(diff, prev_commit)
             prev_commit = curr_commit
 
         # Handling the first commit
         diff = curr_commit.diff(git.NULL_TREE, create_patch=True)
-        issues += diff_worker(
-            diff, regexes, prev_commit, branch,
-            no_regex=no_regex, no_entropy=no_entropy
-        )
+        issues += diff_worker(diff, prev_commit)
+
     return issues
 
 
-def diff_worker(diff, regexes, commit, branch,
-                no_regex=False, no_entropy=False):
+def diff_worker(diff, commit):
     issues = []
     for blob in diff:
         printableDiff = blob.diff.decode("utf-8", errors="replace")
-        if printableDiff.startswith("Binary files"):
+        path = blob.b_path if blob.b_path else blob.a_path
+
+        if printableDiff.startswith("Binary files") or is_excluded(path):
             continue
 
         date = datetime.fromtimestamp(commit.committed_date)
         commit_time = date.strftime("%Y-%m-%d %H:%M:%S")
-        path = blob.b_path if blob.b_path else blob.a_path
+
         if not path.startswith("/"):
             path = "/" + path
 
         found = []
-        if not no_regex:
-            found += regex_check(printableDiff, regexes)
+        if not config.no_regex:
+            found += regex_check(printableDiff, config.rules)
 
-        if not no_entropy:
+        if not config.no_entropy:
             found += find_entropy(printableDiff)
 
         for issue in found:
             data = {
                 "date": commit_time,
                 "path": path,
-                "branch": branch,
+                "branch": config.branch,
                 "commit": commit.message,
                 "commitHash": commit.hexsha,
             }
@@ -182,14 +166,14 @@ def find_entropy(diff, line_numbers=False):
     return issues
 
 
-def regex_check(diff, regexes, line_numbers=False):
+def regex_check(diff, rules, line_numbers=False):
     issues = []
 
-    for key in regexes:
+    for key in rules:
         matched = []
         for i, line in enumerate(diff.split("\n")):
             line_number = i + 1 if line_numbers else None
-            matched_words = regexes[key].findall(line)
+            matched_words = rules[key].findall(line)
             matched += process_matched(line, matched_words, line_number)
 
         if matched:
@@ -207,7 +191,7 @@ def process_matched(line, matched_words, line_number=None):
             if len(match) > MAX_MATCH_LENGTH:
                 continue
             if line_number:
-                match = f"{line_number} {match}"
+                match = "{} {}".format(line_number, match)
             matched.append(str(match).strip())
     return matched
 
@@ -248,33 +232,26 @@ def get_strings_of_set(word, char_set, threshold=20):
     return strings
 
 
-def colorize(message, color=bcolors.OKGREEN):
-    return f"{color}{message}{bcolors.ENDC}"
-
-
-def log(issue, output=None, json_output=False):
+def log(issues, output=None, json_output=False):
     if json_output:
-        data = json.dumps(issue, sort_keys=True)
+        report = json.dumps(issues, indent=2)
     else:
-        data = "\n".join(str(x) for x in (
-            "~~~~~~~~~~~~~~~~~~~~~",
-            colorize(f"Reason: {issue.get('reason')}"),
-            colorize(f"Filepath: {issue.get('path')}"),
-            colorize(f"Branch: {issue.get('branch')}"),
-            colorize(f"Commit: {issue.get('commit')}"),
-            colorize(f"Hash: {issue.get('commitHash')}"),
-            "\n".join(issue.get("stringsFound")),
-            "~~~~~~~~~~~~~~~~~~~~~"
-        ))
+        report = "\n".join(render(issue) for issue in issues)
+
     if output:
-        output.write(data + "\n")
+        output.write(report)
     else:
-        print(data)
+        print(report)
+
+
+def render(issue):
+    strings = "\n".join(issue["stringsFound"])
+    return TEMPLATE.format(**issue, strings=strings)
 
 
 def load(file):
     if not os.path.exists(file):
-        raise IOError(f"File does not exist: {file}")
+        raise IOError("File does not exist: {}".format(file))
 
     with open(file, "r") as f:
         rules = json.load(f)
@@ -283,10 +260,59 @@ def load(file):
     return rules
 
 
+def is_excluded(path):
+    for rule in config.exclude:
+        if re.search(rule, path):
+            return True
+    return False
+
+
+class colors:
+    HEADER = "\033[95m"
+    OKBLUE = "\033[94m"
+    OKGREEN = "\033[92m"
+    WARNING = "\033[93m"
+    FAIL = "\033[91m"
+    ENDC = "\033[0m"
+    BOLD = "\033[1m"
+    UNDERLINE = "\033[4m"
+
+
+class _Config:
+
+    def __init__(self):
+        self.rules = load(os.path.join(CWD, "regexes.json"))
+        self.no_regex = False
+        self.no_entropy = False
+        self.since_commit = None
+        self.max_depth = 1000000
+        self.branch = None
+        self.exclude = []
+
+    def update(self, **kwargs):
+        for k, v in kwargs.items():
+            if hasattr(self, k):
+                setattr(self, k, v)
+
+    @property
+    def as_dict(self):
+        return self.__dict__
+
+
 MAX_LINE_LENGTH = 160
 MAX_MATCH_LENGTH = 1000
 
 BASE64_CHARS = string.ascii_letters + string.digits + "+/="
 HEX_CHARS = string.hexdigits
 
-DEFAULT = load(os.path.join(os.path.dirname(__file__), "regexes.json"))
+TEMPLATE = """~~~~~~~~~~~~~~~~~~~~~%s
+Reason: {reason}
+Path:   {path}
+Branch: {branch}
+Commit: {commit}
+Hash:   {commitHash}
+%s{strings}
+~~~~~~~~~~~~~~~~~~~~~""" % (colors.OKGREEN, colors.ENDC)
+CWD = os.path.dirname(__file__)
+
+config = _Config()
