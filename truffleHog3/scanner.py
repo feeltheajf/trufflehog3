@@ -46,6 +46,7 @@ def search(path):
                 issue.update(data)
 
             issues += found
+
     return issues
 
 
@@ -105,6 +106,7 @@ def search_history(path):
 
 def diff_worker(diff, commit):
     issues = []
+
     for blob in diff:
         printableDiff = blob.diff.decode("utf-8", errors="replace")
         path = blob.b_path if blob.b_path else blob.a_path
@@ -136,6 +138,7 @@ def diff_worker(diff, commit):
             issue.update(data)
 
         issues += found
+
     return issues
 
 
@@ -163,6 +166,7 @@ def find_entropy(diff, line_numbers=False):
 
     if matched:
         issues = [{"stringsFound": matched, "reason": "High Entropy"}]
+
     return issues
 
 
@@ -178,6 +182,7 @@ def regex_check(diff, rules, line_numbers=False):
 
         if matched:
             issues.append({"stringsFound": matched, "reason": key})
+
     return issues
 
 
@@ -190,9 +195,12 @@ def process_matched(line, matched_words, line_number=None):
         for match in matched_words:
             if len(match) > MAX_MATCH_LENGTH:
                 continue
+
             if line_number:
                 match = "{} {}".format(line_number, match)
+
             matched.append(str(match).strip())
+
     return matched
 
 
@@ -257,8 +265,7 @@ def load(file):
     with open(file, "r") as f:
         rules = json.load(f)
 
-    rules = {name: re.compile(rule) for name, rule in rules.items()}
-    return rules
+    return {name: re.compile(rule) for name, rule in rules.items()}
 
 
 def is_excluded(path):
