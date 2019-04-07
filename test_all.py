@@ -20,7 +20,7 @@ class TestCLI(unittest.TestCase):
         r = os.system("python3 -m truffleHog3 -h")
         self.assertEqual(0, r)
 
-    def test_should_fail_on_non_existentt_rules_file(self):
+    def test_should_fail_on_non_existent_rules_file(self):
         with self.assertRaises(IOError):
             sys.argv = [PATH, REPO, "--rules", "no_rules.json"]
             cli.run()
@@ -32,11 +32,6 @@ class TestCLI(unittest.TestCase):
     def test_local_directory_no_history(self):
         sys.argv = [PATH, "./tests", "--no-history"]
         self.assertEqual(1, cli.run())
-
-    def test_should_fail_on_remote_non_existent(self):
-        with self.assertRaises(RuntimeError):
-            sys.argv = [PATH, REPO + "21"]
-            cli.run()
 
     def test_remote_with_history(self):
         sys.argv = [PATH, REPO]
