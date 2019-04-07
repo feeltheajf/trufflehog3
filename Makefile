@@ -1,13 +1,15 @@
-.PHONY: test push clean
+.PHONY: test build push clean
 .ONESHELL:
 
-test:
-	pytest --cov=./truffleHog3 && codecov
+test: clean
+	pytest --cov=./truffleHog3 --cov-report=term-missing && codecov
 
-push: clean
+build: clean
 	python3 setup.py sdist bdist_wheel
 	twine check dist/*
+
+push: build
 	twine upload dist/* -u feeltheajf
 
 clean:
-	rm -rf build dist *.egg-info
+	rm -rf build dist *.egg-info .coverage* *coverage* .*cache

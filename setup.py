@@ -9,7 +9,7 @@ README = (HERE / "README.md").read_text()
 
 setup(
     name="truffleHog3",
-    version="1.0.3",
+    version="1.0.4",
     packages=["truffleHog3"],
     license="GNU",
 
@@ -27,6 +27,6 @@ setup(
         "GitPython == 2.1.1",
     ],
     entry_points={
-      "console_scripts": ["trufflehog3 = truffleHog3.__main__:main"],
+      "console_scripts": ["trufflehog3 = truffleHog3.cli:run"],
     },
 )
