@@ -5,3 +5,4 @@
 **/*.pyc
 /dev.py
 *coverage*
+.*cache
