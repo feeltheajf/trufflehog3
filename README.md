@@ -33,33 +33,25 @@ List of regexes was moved into repository, see [regexes.json](https://github.com
 ## Help
 
 ```
-usage: trufflehog3 [-h] [-r RULES] [-o OUTPUT] [--json] [--no-regex]
-                   [--no-entropy] [--no-history] [--since-commit SINCE_COMMIT]
-                   [--max-depth MAX_DEPTH] [--branch BRANCH]
-                   [--exclude [[...]]]
-                   source
+usage: trufflehog3 [options] source
 
-Find secrets hidden in the depths of git.
+Find secrets in your codebase.
 
 positional arguments:
-  source                URL or local path for secret searching
+  source              URL or local path for secret searching
 
 optional arguments:
-  -h, --help            show this help message and exit
-  -r RULES, --rules RULES
-                        ignore default regexes and source from json
-  -o OUTPUT, --output OUTPUT
-                        write report to file
-  --json                output in JSON
-  --no-regex            disable high signal regex checks
-  --no-entropy          disable entropy checks
-  --no-history          disable commit history check
-  --since-commit SINCE_COMMIT
-                        only scan starting from a given commit hash
-  --max-depth MAX_DEPTH
-                        max commit depth for searching
-  --branch BRANCH       name of the branch to be scanned
-  --exclude [ [ ...]]   exclude paths from scanning
+  -h, --help          show this help message and exit
+  -r, --rules         ignore default regexes and source from json
+  -o, --output        write report to file
+  -b, --branch        name of the branch to be scanned
+  -m, --max-depth     max commit depth for searching
+  -s, --since-commit  scan starting from a given commit hash
+  --json              output in JSON
+  --exclude           exclude paths from scan
+  --no-regex          disable high signal regex checks
+  --no-entropy        disable entropy checks
+  --no-history        disable commit history check
 ```
 
 
