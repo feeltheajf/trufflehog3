@@ -33,10 +33,6 @@ class TestCLI(unittest.TestCase):
         sys.argv = [PATH, "./tests", "--no-history"]
         self.assertEqual(1, cli.run())
 
-    def test_local_directory_with_history(self):
-        sys.argv = [PATH, "."]
-        self.assertEqual(1, cli.run())
-
     def test_should_fail_on_remote_non_existent(self):
         with self.assertRaises(RuntimeError):
             sys.argv = [PATH, REPO + "21"]
