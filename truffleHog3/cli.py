@@ -33,7 +33,7 @@ def run(**kwargs):
         else:
             try:
                 git.Repo.clone_from(args.source, tmp)
-            except Exception:
+            except Exception:  # pragma: no cover
                 error = "Failed to clone repository: {}".format(args.source)
                 raise RuntimeError(error)
 
@@ -46,7 +46,7 @@ def run(**kwargs):
 
 
 def graceful_keyboard_interrupt():
-    def exit_on_keyboard_interrupt():
+    def exit_on_keyboard_interrupt():  # pragma: no cover
         sys.stdout.write("\rKeyboard interrupt. Exiting\n")
         sys.exit(0)
 
@@ -123,4 +123,4 @@ def get_cmdline_args():
 
 
 if __name__ == "__main__":
-    sys.exit(run())
+    sys.exit(run())  # pragma: no cover
