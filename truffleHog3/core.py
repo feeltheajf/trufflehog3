@@ -26,7 +26,7 @@ def search_current(path):
         with open(file) as f:
             try:
                 data = f.read()
-            except Exception:
+            except Exception:  # pragma: no cover
                 continue
 
             if not config.no_regex:
@@ -84,7 +84,7 @@ def search_history(path):
             if not prev_commit:
                 prev_commit = curr_commit
                 continue
-            elif diff_hash in already_searched:
+            elif diff_hash in already_searched:  # pragma: no cover
                 prev_commit = curr_commit
                 continue
             else:
@@ -110,7 +110,7 @@ def log(issues, output=None, json_output=False):
         report = "\n".join(_render(issue) for issue in issues)
 
     if output:
-        output.write(report)
+        output.write(report)  # pragma: no cover
     else:
         print(report)
 
@@ -171,7 +171,7 @@ def _process_matched(line, matched_words, line_number=None):
 
         for match in matched_words:
             if len(match) > MAX_MATCH_LENGTH:
-                continue
+                continue  # pragma: no cover
 
             if line_number:
                 match = "{} {}".format(line_number, match)
@@ -249,7 +249,7 @@ def _get_strings_of_set(word, char_set, threshold=20):
 
 def _shannon_entropy(data, iterator):
     if not data:
-        return 0
+        return 0  # pragma: no cover
 
     entropy = 0
     for x in iterator:

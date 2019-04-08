@@ -30,16 +30,16 @@ class TestCLI(unittest.TestCase):
         self.assertEqual(1, cli.run())
 
     def test_local_directory_no_history(self):
-        sys.argv = [PATH, "./tests", "--no-history"]
+        sys.argv = [PATH, "./tests", "--no-history", "--json"]
         self.assertEqual(1, cli.run())
 
     def test_remote_with_history(self):
         sys.argv = [PATH, REPO]
-        self.assertEqual(1, cli.run())
+        self.assertEqual(1, cli.run(branch=None))
 
     def test_branch(self):
-        sys.argv = [PATH, REPO, "--branch", "master"]
-        self.assertEqual(1, cli.run())
+        sys.argv = [PATH, REPO]
+        self.assertEqual(1, cli.run(branch="master"))
 
 
 class TestCore(unittest.TestCase):
