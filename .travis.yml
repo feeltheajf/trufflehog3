@@ -4,7 +4,7 @@ python:
 script: make test
 notifications:
   slack:
-    on_success: never
+    on_success: always
     on_failure: always
     rooms:
       - feeltheajf:KtpBSt1d694nkztes1h4Nbn0#ci
