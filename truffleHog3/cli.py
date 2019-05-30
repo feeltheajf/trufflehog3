@@ -27,7 +27,7 @@ def run(**kwargs):
         if args.no_history:
             source = args.source.split("://")[-1]
             if os.path.isdir(source):
-                dir_util.copy_tree(source, tmp)
+                dir_util.copy_tree(source, tmp, preserve_symlinks=True)
             else:
                 shutil.copy2(source, tmp)
         else:
