@@ -10,7 +10,7 @@ from tempfile import TemporaryDirectory
 from truffleHog3 import cli
 from truffleHog3 import core
 
-PATH = os.path.join(core.CWD, "cli.py")
+PATH = "./truffleHog3/cli.py"
 REPO = "https://github.com/feeltheajf/truffleHog3"
 
 
@@ -20,22 +20,21 @@ class TestCLI(unittest.TestCase):
         r = os.system("python3 -m truffleHog3 -h")
         self.assertEqual(0, r)
 
-    def test_should_fail_on_non_existent_rules_file(self):
-        with self.assertRaises(IOError):
-            sys.argv = [PATH, REPO, "--rules", "no_rules.json"]
-            cli.run()
+    def test_config_load(self):
+        sys.argv = [PATH, "./tests", "-c", "./trufflehog.json.example"]
+        self.assertEqual(1, cli.run(no_history=True))
 
     def test_local_file(self):
-        sys.argv = [PATH, "./tests/test_slack_token.json", "--no-history"]
-        self.assertEqual(1, cli.run())
+        sys.argv = [PATH, "./tests/test_slack_token.json"]
+        self.assertEqual(1, cli.run(no_history=True, whitelist=[]))
 
     def test_local_directory_no_history(self):
-        sys.argv = [PATH, "./tests", "--no-history", "--json"]
-        self.assertEqual(1, cli.run())
+        sys.argv = [PATH, "./tests"]
+        self.assertEqual(1, cli.run(no_history=True, json=True))
 
     def test_remote_with_history(self):
         sys.argv = [PATH, REPO]
-        self.assertEqual(1, cli.run(branch=None))
+        self.assertEqual(1, cli.run(no_history=False, branch=None))
 
     def test_branch(self):
         sys.argv = [PATH, REPO]
@@ -88,10 +87,16 @@ class TestCore(unittest.TestCase):
         )
 
     def test_exclude(self):
-        core.config.exclude = ["truffleHog3/.*", "test.*.py"]
-        issues = core.search_current(".")
+        core.config.exclude = [".*key.json"]
+        issues = core.search_current("./tests")
         core.log(issues)
-        self.assertEqual(5, len(issues))
+        self.assertEqual(3, len(issues))
+
+    def test_whitelist(self):
+        core.config.whitelist = ["qweqwe"]
+        issues = core.search_current("./tests/test_slack_token.json")
+        core.log(issues)
+        self.assertEqual(0, len(issues))
 
 
 if __name__ == "__main__":
