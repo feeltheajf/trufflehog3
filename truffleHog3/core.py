@@ -10,13 +10,14 @@ import string
 
 from datetime import datetime
 from glob import glob
+from io import IOBase
 
 
 def search_current(path):
     issues = []
 
     for file in glob(os.path.join(path, "**"), recursive=True):
-        if not os.path.isfile(file) or _is_excluded(file):
+        if not os.path.isfile(file) or _match(file, config.exclude):
             continue
 
         to_log = file.replace(path, "")
@@ -105,7 +106,7 @@ def search_history(path):
 def log(issues, output=None, json_output=False):
     """Pretty-print/JSON output of results."""
     if json_output:
-        report = json.dumps(issues, indent=2)
+        report = json.dumps(issues, indent=2)  # pragma: no cover
     else:
         report = "\n".join(_render(issue) for issue in issues)
 
@@ -115,24 +116,14 @@ def log(issues, output=None, json_output=False):
         print(report)
 
 
-def load(file):
-    if not os.path.exists(file):
-        raise IOError("File does not exist: {}".format(file))
-
-    with open(file, "r") as f:
-        rules = json.load(f)
-
-    return {name: re.compile(rule) for name, rule in rules.items()}
-
-
 def _diff_worker(diff, commit):
     issues = []
 
     for blob in diff:
-        printableDiff = blob.diff.decode("utf-8", errors="replace")
+        pdiff = blob.diff.decode("utf-8", errors="replace")
         path = blob.b_path if blob.b_path else blob.a_path
 
-        if printableDiff.startswith("Binary files") or _is_excluded(path):
+        if pdiff.startswith("Binary files") or _match(path, config.exclude):
             continue
 
         date = datetime.fromtimestamp(commit.committed_date)
@@ -143,10 +134,10 @@ def _diff_worker(diff, commit):
 
         found = []
         if not config.no_regex:
-            found += _search_regex(printableDiff, config.rules)
+            found += _search_regex(pdiff, config.rules)
 
         if not config.no_entropy:
-            found += _search_entropy(printableDiff)
+            found += _search_entropy(pdiff)
 
         for issue in found:
             data = {
@@ -170,6 +161,9 @@ def _process_matched(line, matched_words, line_number=None):
             matched_words = [line]
 
         for match in matched_words:
+            if _match(match, config.whitelist):
+                continue
+
             if len(match) > MAX_MATCH_LENGTH:
                 continue  # pragma: no cover
 
@@ -188,7 +182,7 @@ def _search_regex(data, rules, line_numbers=False):
         matched = []
         for i, line in enumerate(data.split("\n")):
             line_number = i + 1 if line_numbers else None
-            matched_words = rules[key].findall(line)
+            matched_words = re.findall(rules[key], line)
             matched += _process_matched(line, matched_words, line_number)
 
         if matched:
@@ -267,9 +261,9 @@ def _render(issue):
     return colored.format(**issue, strings=strings)
 
 
-def _is_excluded(path):
-    for rule in config.exclude:
-        if re.search(rule, path):
+def _match(string, regexes):
+    for regex in regexes:
+        if re.search(regex, string):
             return True
     return False
 
@@ -288,23 +282,43 @@ class _Colors:
 class _Config:
 
     def __init__(self):
-        self.rules = load(os.path.join(CWD, "regexes.json"))
+        self.rules = DEFAULT_RULES
+        self.branch = None
+        self.max_depth = 1000000
+        self.since_commit = None
+        self.exclude = []
+        self.whitelist = []
         self.no_regex = False
         self.no_entropy = False
-        self.since_commit = None
-        self.max_depth = 1000000
-        self.branch = None
-        self.exclude = []
+        self.no_history = False
 
     def update(self, **kwargs):
         for k, v in kwargs.items():
             if hasattr(self, k):
                 setattr(self, k, v)
 
+    def dump(self, stream):  # pragma: no cover
+        json.dump(self.as_dict, stream, indent=2)
+
+    def load(self, stream):  # pragma: no cover
+        self.update(**json.load(stream))
+
+    @property
+    def rules(self):
+        return self._rules
+
+    @rules.setter
+    def rules(self, file):
+        if not isinstance(file, IOBase):
+            file = open(file)
+        self._rules = json.load(file)
+
     @property
     def as_dict(self):
-        return self.__dict__
+        items = self.__dict__.items()
+        return {k: v for k, v in items if not k.startswith("_")}
 
+DEFAULT_RULES = os.path.join(os.path.dirname(__file__), "regexes.json")
 
 MAX_LINE_LENGTH = 160  # intentionally not in config yet
 MAX_MATCH_LENGTH = 1000  # intentionally not in config yet
@@ -320,7 +334,6 @@ Commit: {commit}
 Hash:   {commitHash}
 %s{strings}
 ~~~~~~~~~~~~~~~~~~~~~"""
-CWD = os.path.dirname(__file__)
 
 colors = _Colors()
 config = _Config()

@@ -55,7 +55,7 @@ def graceful_keyboard_interrupt():
 
 class HelpFormatter(argparse.HelpFormatter):
     def _format_action_invocation(self, action):
-        if not action.option_strings:
+        if not action.option_strings:  # pragma: no cover
             metavar, = self._metavar_formatter(action, action.dest)(1)
             return metavar
         else:
@@ -79,8 +79,12 @@ def get_cmdline_args():
         type=check_source
     )
     parser.add_argument(
+        "-c", "--config", help="path to config file",
+        dest="config", type=argparse.FileType("r")
+    )
+    parser.add_argument(
         "-r", "--rules", help="ignore default regexes and source from json",
-        dest="rules", type=core.load
+        dest="rules", type=argparse.FileType("r"), default=core.DEFAULT_RULES
     )
     parser.add_argument(
         "-o", "--output", help="write report to file",
@@ -104,7 +108,11 @@ def get_cmdline_args():
     )
     parser.add_argument(
         "--exclude", help="exclude paths from scan",
-        dest="exclude", type=re.compile, nargs="*"
+        dest="exclude", nargs="*"
+    )
+    parser.add_argument(
+        "--whitelist", help="skip matching strings",
+        dest="whitelist", nargs="*"
     )
     parser.add_argument(
         "--no-regex", help="disable high signal regex checks",
@@ -118,6 +126,17 @@ def get_cmdline_args():
         "--no-history", help="disable commit history check",
         dest="no_history", action="store_true"
     )
+
+    args, _ = parser.parse_known_args()
+    default_config_path = os.path.join(
+        args.source.split("://")[-1],
+        "trufflehog.json"
+    )
+    if args.config:
+        core.config.load(args.config)
+    elif os.path.exists(default_config_path):  # pragma: no cover
+        core.config.load(open(default_config_path))
+
     parser.set_defaults(**core.config.as_dict)
     return parser.parse_args()
 

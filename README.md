@@ -15,11 +15,13 @@ This is an enhanced version of [truffleHog](https://github.com/dxa4481/truffleHo
 - output to file option
 - option to disable Git history checks - scan simple files/folders
 - option to exclude files/directories
+- config file support with automatic detection of [trufflehog.json](https://github.com/feeltheajf/truffleHog3/blob/master/trufflehog.json.example) config in source code directory
 
 
 ## Installation
 
 Package is available on [PyPI](https://pypi.org/project/truffleHog3)
+
 ```
 pip install truffleHog3
 ```
@@ -42,6 +44,7 @@ positional arguments:
 
 optional arguments:
   -h, --help          show this help message and exit
+  -c, --config        path to config file
   -r, --rules         ignore default regexes and source from json
   -o, --output        write report to file
   -b, --branch        name of the branch to be scanned
@@ -49,6 +52,7 @@ optional arguments:
   -s, --since-commit  scan starting from a given commit hash
   --json              output in JSON
   --exclude           exclude paths from scan
+  --whitelist         skip matching strings
   --no-regex          disable high signal regex checks
   --no-entropy        disable entropy checks
   --no-history        disable commit history check
