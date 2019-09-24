@@ -130,7 +130,7 @@ def get_cmdline_args():
     args, _ = parser.parse_known_args()
     default_config_path = os.path.join(
         args.source.split("://")[-1],
-        "trufflehog.json"
+        core.DEFAULT_CONFIG
     )
     if args.config:
         core.config.load(args.config)

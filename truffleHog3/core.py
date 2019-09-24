@@ -17,7 +17,7 @@ def search_current(path):
     issues = []
 
     for file in glob(os.path.join(path, "**"), recursive=True):
-        if not os.path.isfile(file) or _match(file, config.exclude):
+        if not os.path.isfile(file) or _match(file, config._exclude):
             continue
 
         to_log = file.replace(path, "")
@@ -104,7 +104,6 @@ def search_history(path):
 
 
 def log(issues, output=None, json_output=False):
-    """Pretty-print/JSON output of results."""
     if json_output:
         report = json.dumps(issues, indent=2)  # pragma: no cover
     else:
@@ -123,7 +122,7 @@ def _diff_worker(diff, commit):
         pdiff = blob.diff.decode("utf-8", errors="replace")
         path = blob.b_path if blob.b_path else blob.a_path
 
-        if pdiff.startswith("Binary files") or _match(path, config.exclude):
+        if pdiff.startswith("Binary files") or _match(path, config._exclude):
             continue
 
         date = datetime.fromtimestamp(commit.committed_date)
@@ -314,10 +313,16 @@ class _Config:
         self._rules = json.load(file)
 
     @property
+    def _exclude(self):
+        return self.exclude + [DEFAULT_CONFIG]
+
+    @property
     def as_dict(self):
         items = self.__dict__.items()
         return {k: v for k, v in items if not k.startswith("_")}
 
+
+DEFAULT_CONFIG = "trufflehog.json"
 DEFAULT_RULES = os.path.join(os.path.dirname(__file__), "regexes.json")
 
 MAX_LINE_LENGTH = 160  # intentionally not in config yet
