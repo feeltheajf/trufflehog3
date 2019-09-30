@@ -18,5 +18,5 @@
     "Twilio API Key": "SK[a-z0-9]{32}",
     "Password in URL": "[a-zA-Z]{3,10}://[^/\\s:@]{3,20}:[^/\\s:@]{3,20}@.{1,100}[\"'\\s]",
     "Generic Encryption Key": "[e|E]ncryption[k|K]ey.*[=|:]",
-    "Const Hash Salt": "((sha(1|256|512))|(md5)).*[\"|'].*[\"|']"
+    "Const Hash Salt": "((sha1|sha256|sha512|md5).*[\"|'].*[\"|'])"
 }
