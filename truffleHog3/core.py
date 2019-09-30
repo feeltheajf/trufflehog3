@@ -122,14 +122,14 @@ def _diff_worker(diff, commit):
         pdiff = blob.diff.decode("utf-8", errors="replace")
         path = blob.b_path if blob.b_path else blob.a_path
 
+        if not path.startswith("/"):
+            path = "/" + path
+
         if pdiff.startswith("Binary files") or _match(path, config._exclude):
             continue
 
         date = datetime.fromtimestamp(commit.committed_date)
         commit_time = date.strftime("%Y-%m-%d %H:%M:%S")
-
-        if not path.startswith("/"):
-            path = "/" + path
 
         found = []
         if not config.no_regex:
