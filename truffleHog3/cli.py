@@ -4,7 +4,6 @@
 import argparse
 import git
 import os
-import re
 import shutil
 import sys
 
@@ -84,7 +83,7 @@ def get_cmdline_args():
     )
     parser.add_argument(
         "-r", "--rules", help="ignore default regexes and source from json",
-        dest="rules", type=argparse.FileType("r"), default=core.DEFAULT_RULES
+        dest="rules", type=argparse.FileType("r"), default=argparse.SUPPRESS
     )
     parser.add_argument(
         "-o", "--output", help="write report to file",
