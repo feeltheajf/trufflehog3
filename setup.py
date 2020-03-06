@@ -9,7 +9,7 @@ README = (HERE / "README.md").read_text()
 
 setup(
     name="truffleHog3",
-    version="1.0.12",
+    version="1.1.0",
     packages=["truffleHog3"],
     license="GNU",
     description="Find secrets in your codebase.",
@@ -20,6 +20,6 @@ setup(
     author_email="feeltheajf@gmail.com",
     include_package_data=True,
     python_requires=">=3.6",
-    install_requires=["GitPython == 2.1.1"],
+    install_requires=["GitPython == 3.1.0"],
     entry_points={"console_scripts": ["trufflehog3 = truffleHog3.cli:run"]},
 )
