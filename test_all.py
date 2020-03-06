@@ -83,7 +83,7 @@ class TestCore(unittest.TestCase):
         core.config.exclude = [".*key.json"]
         issues = core.search_current("./tests")
         core.log(issues)
-        self.assertEqual(3, len(issues))
+        self.assertEqual(2, len(issues))
 
     def test_whitelist(self):
         core.config.whitelist = ["qweqwe"]

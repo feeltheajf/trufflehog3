@@ -1,4 +1,0 @@
-{
-    "✓": "hashlib.md5(password + 'DEADBEEF').hexdigest()",
-    "✗": "test sha/md5 const hash salt"
-}
