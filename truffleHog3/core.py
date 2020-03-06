@@ -181,7 +181,7 @@ def _search_regex(data, rules, line_numbers=False):
             line_number = i + 1 if line_numbers else None
             matched_words = re.findall(rules[key], line)
             for i, m in enumerate(matched_words):
-                if isinstance(m, tuple) and len(m):
+                if isinstance(m, tuple) and len(m):  # pragma: no cover
                     matched_words[i] = m[0]
             matched += _process_matched(line, matched_words, line_number)
 
