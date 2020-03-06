@@ -17,7 +17,7 @@ This is an enhanced version of [truffleHog](https://github.com/dxa4481/truffleHo
 - output to file option
 - option to disable Git history checks - scan simple files/folders
 - option to exclude files/directories
-- config file support with automatic detection of [trufflehog.json](https://github.com/feeltheajf/truffleHog3/blob/master/trufflehog.json.example) config in source code directory
+- config file support with automatic detection in source code directory, see [trufflehog.json](https://github.com/feeltheajf/truffleHog3/blob/master/trufflehog.json.example), [trufflehog.yaml](https://github.com/feeltheajf/truffleHog3/blob/master/trufflehog.yaml.example)
 
 
 ## Installation
