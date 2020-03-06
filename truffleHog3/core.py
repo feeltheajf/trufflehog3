@@ -327,7 +327,7 @@ class _Config:
 DEFAULT_CONFIGS = ["trufflehog.json", "trufflehog.yaml", "trufflehog.yml"]
 DEFAULT_RULES = os.path.join(os.path.dirname(__file__), "regexes.json")
 
-MAX_LINE_LENGTH = 160  # intentionally not in config yet
+MAX_LINE_LENGTH = 240  # intentionally not in config yet
 MAX_MATCH_LENGTH = 1000  # intentionally not in config yet
 
 BASE64_CHARS = string.ascii_letters + string.digits + "+/="
