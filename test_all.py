@@ -15,7 +15,6 @@ REPO = "https://github.com/feeltheajf/truffleHog3"
 
 
 class TestCLI(unittest.TestCase):
-
     def test_package_run(self):
         r = os.system("python3 -m truffleHog3 -h")
         self.assertEqual(0, r)
@@ -42,22 +41,17 @@ class TestCLI(unittest.TestCase):
 
 
 class TestCore(unittest.TestCase):
-
     def test_shannon(self):
-        random_stringB64 = ("ZWVTjPQSdhwRgl204Hc51YCsritMIzn8"
-                            "B=/p9UyeX7xu6KkAGqfm3FJ+oObLDNEva")
-        random_stringHex = "b3A0a1FDfe86dcCE945B72"
+        random_string_b64 = (
+            "ZWVTjPQSdhwRgl204Hc51YCsritMIzn8"
+            "B=/p9UyeX7xu6KkAGqfm3FJ+oObLDNEva"
+        )
+        random_string_hex = "b3A0a1FDfe86dcCE945B72"
         self.assertGreater(
-            core._shannon_entropy(
-                random_stringB64,
-                core.BASE64_CHARS),
-            4.5
+            core._shannon_entropy(random_string_b64, core.BASE64_CHARS), 4.5
         )
         self.assertGreater(
-            core._shannon_entropy(
-                random_stringHex,
-                core.HEX_CHARS),
-            3
+            core._shannon_entropy(random_string_hex, core.HEX_CHARS), 3
         )
 
     def test_return_correct_commit_hash(self):
@@ -73,17 +67,16 @@ class TestCore(unittest.TestCase):
             core.config.since_commit = since_commit
             results = core.search_history(tmp)
 
-        filtered_results = list(filter(
-            lambda r: r["commitHash"] == commit_w_secret,
-            results
-        ))
+        filtered_results = list(
+            filter(lambda r: r["commitHash"] == commit_w_secret, results)
+        )
         self.assertEqual(1, len(filtered_results))
         self.assertEqual(commit_w_secret, filtered_results[0]["commitHash"])
         # Additionally, we cross-validate the commit
         # comment matches the expected comment
         self.assertEqual(
             cross_valdiating_commit_w_secret_comment,
-            filtered_results[0]["commit"].strip()
+            filtered_results[0]["commit"].strip(),
         )
 
     def test_exclude(self):
