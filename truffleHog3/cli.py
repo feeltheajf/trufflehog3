@@ -71,70 +71,97 @@ def get_cmdline_args():
     parser = argparse.ArgumentParser(
         description="Find secrets in your codebase.",
         usage="trufflehog3 [options] source",
-        formatter_class=HelpFormatter
+        formatter_class=HelpFormatter,
     )
     parser.add_argument(
-        "source", help="URL or local path for secret searching",
-        type=check_source
+        "source",
+        help="URL or local path for secret searching",
+        type=check_source,
     )
     parser.add_argument(
-        "-c", "--config", help="path to config file",
-        dest="config", type=argparse.FileType("r")
+        "-c",
+        "--config",
+        help="path to config file",
+        dest="config",
+        type=argparse.FileType("r"),
     )
     parser.add_argument(
-        "-r", "--rules", help="ignore default regexes and source from json",
-        dest="rules", type=argparse.FileType("r"), default=argparse.SUPPRESS
+        "-r",
+        "--rules",
+        help="ignore default regexes and source from json",
+        dest="rules",
+        type=argparse.FileType("r"),
+        default=argparse.SUPPRESS,
     )
     parser.add_argument(
-        "-o", "--output", help="write report to file",
-        dest="output", type=argparse.FileType("w")
+        "-o",
+        "--output",
+        help="write report to file",
+        dest="output",
+        type=argparse.FileType("w"),
     )
     parser.add_argument(
-        "-b", "--branch", help="name of the branch to be scanned",
-        dest="branch"
+        "-b",
+        "--branch",
+        help="name of the branch to be scanned",
+        dest="branch",
     )
     parser.add_argument(
-        "-m", "--max-depth", help="max commit depth for searching",
-        dest="max_depth", type=int
+        "-m",
+        "--max-depth",
+        help="max commit depth for searching",
+        dest="max_depth",
+        type=int,
     )
     parser.add_argument(
-        "-s", "--since-commit", help="scan starting from a given commit hash",
-        dest="since_commit"
+        "-s",
+        "--since-commit",
+        help="scan starting from a given commit hash",
+        dest="since_commit",
     )
     parser.add_argument(
-        "--json", help="output in JSON",
-        dest="json_output", action="store_true"
+        "--json",
+        help="output in JSON",
+        dest="json_output",
+        action="store_true",
     )
     parser.add_argument(
-        "--exclude", help="exclude paths from scan",
-        dest="exclude", nargs="*"
+        "--exclude", help="exclude paths from scan", dest="exclude", nargs="*"
     )
     parser.add_argument(
-        "--whitelist", help="skip matching strings",
-        dest="whitelist", nargs="*"
+        "--whitelist",
+        help="skip matching strings",
+        dest="whitelist",
+        nargs="*",
     )
     parser.add_argument(
-        "--no-regex", help="disable high signal regex checks",
-        dest="no_regex", action="store_true"
+        "--no-regex",
+        help="disable high signal regex checks",
+        dest="no_regex",
+        action="store_true",
     )
     parser.add_argument(
-        "--no-entropy", help="disable entropy checks",
-        dest="no_entropy", action="store_true"
+        "--no-entropy",
+        help="disable entropy checks",
+        dest="no_entropy",
+        action="store_true",
     )
     parser.add_argument(
-        "--no-history", help="disable commit history check",
-        dest="no_history", action="store_true"
+        "--no-history",
+        help="disable commit history check",
+        dest="no_history",
+        action="store_true",
     )
 
     args, _ = parser.parse_known_args()
-    default_config_path = os.path.join(
-        args.source.split("://")[-1],
-        core.DEFAULT_CONFIG
-    )
     if args.config:
         core.config.load(args.config)
-    elif os.path.exists(default_config_path):  # pragma: no cover
-        core.config.load(open(default_config_path))
+    else:
+        path = args.source.split("://")[-1]
+        for filename in core.DEFAULT_CONFIGS:
+            config_path = os.path.join(path, filename)
+            if os.path.exists(config_path):  # pragma: no cover
+                core.config.load(open(config_path))
 
     parser.set_defaults(**core.config.as_dict)
     return parser.parse_args()

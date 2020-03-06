@@ -7,6 +7,7 @@ import math
 import os
 import re
 import string
+import yaml
 
 from datetime import datetime
 from glob import glob
@@ -82,10 +83,7 @@ def search_history(path):
             diff_enc = (str(prev_commit) + str(curr_commit)).encode("utf-8")
             diff_hash = hashlib.md5(diff_enc).digest()
 
-            if not prev_commit:
-                prev_commit = curr_commit
-                continue
-            elif diff_hash in already_searched:  # pragma: no cover
+            if not prev_commit or diff_hash in already_searched:
                 prev_commit = curr_commit
                 continue
             else:
@@ -249,7 +247,7 @@ def _shannon_entropy(data, iterator):
 
     entropy = 0
     for x in iterator:
-        p_x = float(data.count(x))/len(data)
+        p_x = float(data.count(x)) / len(data)
 
         if p_x > 0:
             entropy += -p_x * math.log(p_x, 2)
@@ -282,7 +280,6 @@ class _Colors:
 
 
 class _Config:
-
     def __init__(self):
         self.rules = DEFAULT_RULES
         self.branch = None
@@ -299,11 +296,13 @@ class _Config:
             if hasattr(self, k):
                 setattr(self, k, v)
 
-    def dump(self, stream):  # pragma: no cover
-        json.dump(self.as_dict, stream, indent=2)
-
     def load(self, stream):  # pragma: no cover
-        self.update(**json.load(stream))
+        ext = os.path.splitext(stream.name)
+        if ext == ".json":
+            data = json.load(stream)
+        else:
+            data = yaml.safe_load(stream)
+        self.update(**data)
 
     @property
     def rules(self):
@@ -317,7 +316,7 @@ class _Config:
 
     @property
     def _exclude(self):
-        return self.exclude + [DEFAULT_CONFIG]
+        return self.exclude + DEFAULT_CONFIGS
 
     @property
     def as_dict(self):
@@ -325,7 +324,7 @@ class _Config:
         return {k: v for k, v in items if not k.startswith("_")}
 
 
-DEFAULT_CONFIG = "trufflehog.json"
+DEFAULT_CONFIGS = ["trufflehog.json", "trufflehog.yaml", "trufflehog.yml"]
 DEFAULT_RULES = os.path.join(os.path.dirname(__file__), "regexes.json")
 
 MAX_LINE_LENGTH = 160  # intentionally not in config yet
