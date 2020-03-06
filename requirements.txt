@@ -2,7 +2,7 @@ GitPython==3.1.0
 unittest2==1.1.0
 pytest==4.6.4
 pytest-cov==2.5.1
-codecov==2.0.15
+codecov==2.0.16
 twine==1.13.0
 keyring==19.0.1
-PyYAML==5.2
+PyYAML==5.3
