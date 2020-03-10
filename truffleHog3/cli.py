@@ -22,23 +22,24 @@ def run(**kwargs):
     core.config.update(**args.__dict__)
     issues = []
 
-    with TemporaryDirectory() as tmp:
-        if args.no_history:
-            source = args.source.split("://")[-1]
-            if os.path.isdir(source):
-                dir_util.copy_tree(source, tmp, preserve_symlinks=True)
+    for src in args.source:
+        with TemporaryDirectory() as tmp:
+            if args.no_history:
+                source = src.split("://")[-1]
+                if os.path.isdir(source):
+                    dir_util.copy_tree(source, tmp, preserve_symlinks=True)
+                else:
+                    shutil.copy2(source, tmp)
             else:
-                shutil.copy2(source, tmp)
-        else:
-            try:
-                git.Repo.clone_from(args.source, tmp)
-            except Exception:  # pragma: no cover
-                error = "Failed to clone repository: {}".format(args.source)
-                raise RuntimeError(error)
+                try:
+                    git.Repo.clone_from(src, tmp)
+                except Exception:  # pragma: no cover
+                    error = "Failed to clone repository: {}".format(src)
+                    raise RuntimeError(error)
 
-            issues = core.search_history(tmp)
+                issues += core.search_history(tmp)
 
-        issues += core.search_current(tmp)
+            issues += core.search_current(tmp)
 
     core.log(issues, output=args.output, json_output=args.json_output)
     return bool(issues)
@@ -75,8 +76,9 @@ def get_cmdline_args():
     )
     parser.add_argument(
         "source",
-        help="URL or local path for secret searching",
+        help="URLs or local paths for secret searching",
         type=check_source,
+        nargs="+",
     )
     parser.add_argument(
         "-c",
@@ -157,7 +159,7 @@ def get_cmdline_args():
     if args.config:
         core.config.load(args.config)
     else:
-        path = args.source.split("://")[-1]
+        path = args.source[0].split("://")[-1]
         for filename in core.DEFAULT_CONFIGS:
             config_path = os.path.join(path, filename)
             if os.path.exists(config_path):  # pragma: no cover

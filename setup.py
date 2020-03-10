@@ -9,7 +9,7 @@ README = (HERE / "README.md").read_text()
 
 setup(
     name="truffleHog3",
-    version="1.1.2",
+    version="1.1.3",
     packages=["truffleHog3"],
     license="GNU",
     description="Find secrets in your codebase.",
