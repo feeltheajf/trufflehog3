@@ -5,4 +5,4 @@ pytest-cov==2.5.1
 codecov==2.0.16
 twine==1.13.0
 keyring==19.0.1
-PyYAML==5.3
+PyYAML==5.3.1
