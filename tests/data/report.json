@@ -1,0 +1,24 @@
+[
+  {
+    "date": "2020-04-03 11:50:58",
+    "path": "/high_entropy.py",
+    "branch": "master",
+    "commit": "Adds no secret values at all",
+    "commitHash": "d15627104d07846ac2914a976e8e347a663bbd9b",
+    "reason": "High entropy",
+    "stringsFound": [
+      "f18e9874c95a664e7175e8a7991ff9e5e1f91a473665f5"
+    ]
+  },
+  {
+    "date": "2020-04-03 11:50:59",
+    "path": "/password_in_url.go",
+    "branch": null,
+    "commit": null,
+    "commitHash": null,
+    "reason": "Password in URL",
+    "stringsFound": [
+      "server_url = 'https://username:password@localhost:1234'"
+    ]
+  }
+]

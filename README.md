@@ -14,10 +14,10 @@ This is an enhanced version of [truffleHog](https://github.com/dxa4481/truffleHo
 
 - Python 3.6
 - flake8 compliant code
-- output to file option
+- output to file in different formats: text, JSON, YAML, HTML
 - option to disable Git history checks - scan simple files/folders
 - option to exclude files/directories
-- config file support with automatic detection in source code directory, see [trufflehog.json](https://github.com/feeltheajf/truffleHog3/blob/master/trufflehog.json.example), [trufflehog.yaml](https://github.com/feeltheajf/truffleHog3/blob/master/trufflehog.yaml.example)
+- config file support with automatic detection in source code directory, see [examples](https://github.com/feeltheajf/truffleHog3/blob/master/config)
 
 
 ## Installation
@@ -31,7 +31,7 @@ pip install truffleHog3
 
 ## Customizing
 
-List of regexes was moved into repository, see [regexes.json](https://github.com/feeltheajf/truffleHog3/blob/master/truffleHog3/regexes.json)
+List of default regexes was moved into repository, see [rules.yaml](https://github.com/feeltheajf/truffleHog3/blob/master/truffleHog3/rules.yaml)
 
 
 ## Help
@@ -42,22 +42,25 @@ usage: trufflehog3 [options] source
 Find secrets in your codebase.
 
 positional arguments:
-  source              URL or local path for secret searching
+  source             URLs or paths to local folders for secret searching
 
 optional arguments:
-  -h, --help          show this help message and exit
-  -c, --config        path to config file
-  -r, --rules         ignore default regexes and source from json
-  -o, --output        write report to file
-  -b, --branch        name of the branch to be scanned
-  -m, --max-depth     max commit depth for searching
-  -s, --since-commit  scan starting from a given commit hash
-  --json              output in JSON
-  --exclude           exclude paths from scan
-  --whitelist         skip matching strings
-  --no-regex          disable high signal regex checks
-  --no-entropy        disable entropy checks
-  --no-history        disable commit history check
+  -h, --help         show this help message and exit
+  -v, --verbose      enable verbose logging {-v, -vv, -vvv}
+  -c, --config       path to config file
+  -o, --output       write report to file
+  -f, --format       output format {text, json, yaml, html}
+  -r, --rules        ignore default regexes and source from file
+  -R, --render-html  render HTML report from JSON or YAML
+  --branch           name of the repository branch to be scanned
+  --since-commit     scan starting from a given commit hash
+  --skip-strings     skip strings matching regex
+  --skip-paths       skip paths matching regex
+  --max-depth        max commit depth for searching
+  --no-regex         disable high signal regex checks
+  --no-entropy       disable entropy checks
+  --no-history       disable commit history check
+  --no-current       disable current status check
 ```
 
 

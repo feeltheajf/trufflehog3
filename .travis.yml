@@ -1,7 +1,12 @@
 language: python
 python:
-  - '3.6'
+  - "3.6"
+
+services:
+  - docker
+
 script: make test
+
 notifications:
   slack:
     on_success: always

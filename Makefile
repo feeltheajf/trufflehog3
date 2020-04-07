@@ -1,8 +1,22 @@
-.PHONY: test build push clean
+.PHONY: test unittest build-docker test-docker build push clean
 .ONESHELL:
 
-test: clean
-	pytest --cov=./truffleHog3 --cov-report=term-missing && codecov
+test: unittest clean build-docker test-docker
+
+unittest:
+	PYTHONPATH="." pytest -vv --cov=./truffleHog3 --cov-report=term-missing # && codecov
+
+build-docker:
+	docker build -t trufflehog3 .
+
+test-docker:
+	docker run \
+		-it \
+		--rm \
+		--volume ${CURDIR}:/source \
+		--volume ${CURDIR}/scripts/maketest:/maketest \
+		--entrypoint /maketest \
+		trufflehog3
 
 build: clean
 	python3 setup.py sdist bdist_wheel

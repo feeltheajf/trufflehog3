@@ -1,3 +1,3 @@
-from truffleHog3 import cli
+from truffleHog3 import cli  # pragma: no cover
 
-cli.run()
+cli.run()  # pragma: no cover

@@ -1,0 +1,16 @@
+- branch: master
+  commit: Adds no secret values at all
+  commitHash: d15627104d07846ac2914a976e8e347a663bbd9b
+  date: '2020-04-03 11:50:58'
+  path: /high_entropy.py
+  reason: High entropy
+  stringsFound:
+  - f18e9874c95a664e7175e8a7991ff9e5e1f91a473665f5
+- branch: null
+  commit: null
+  commitHash: null
+  date: '2020-04-03 11:50:59'
+  path: /password_in_url.go
+  reason: Password in URL
+  stringsFound:
+  - server_url = 'https://username:password@localhost:1234'

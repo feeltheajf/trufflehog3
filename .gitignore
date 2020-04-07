@@ -6,3 +6,4 @@
 /dev.py
 *coverage*
 .*cache
+.pytest_cache
