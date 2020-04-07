@@ -4,7 +4,7 @@
 test: unittest clean build-docker test-docker
 
 unittest:
-	PYTHONPATH="." pytest -vv --cov=./truffleHog3 --cov-report=term-missing # && codecov
+	PYTHONPATH="." pytest -vv --cov=./truffleHog3 --cov-report=term-missing && codecov
 
 build-docker:
 	docker build -t trufflehog3 .
