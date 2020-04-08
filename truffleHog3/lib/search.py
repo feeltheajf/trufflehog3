@@ -42,7 +42,7 @@ class Engine(ABC):
 
         for i, line in enumerate(lines):
             for reason, match in self.search(line):
-                if self.skip(match):
+                if self.skip(match, line, issue["path"]):
                     continue
                 found[reason].add(line)
 
@@ -50,10 +50,10 @@ class Engine(ABC):
             dict(issue, reason=k, stringsFound=list(found[k])) for k in found
         ]
 
-    def skip(self, match: str, line: str = "", path: str = "") -> bool:
-        regex = utils.match(match, self.regexes)
+    def skip(self, match: str, line: str, path: str = "") -> bool:
+        regex = utils.match(line, self.regexes)
         if regex:
-            log.info(f"skipping string '{match}' matched by '{regex}'")
+            log.info(f"skipping line '{line.strip()}' matched by '{regex}'")
             return True
 
         return False
