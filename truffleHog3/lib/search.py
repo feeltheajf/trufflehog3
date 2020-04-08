@@ -41,6 +41,7 @@ class Engine(ABC):
         found = defaultdict(set)
 
         for i, line in enumerate(lines):
+            line = line.strip()
             for reason, match in self.search(line):
                 if self.skip(match, line, issue["path"]):
                     continue
@@ -53,7 +54,7 @@ class Engine(ABC):
     def skip(self, match: str, line: str, path: str = "") -> bool:
         regex = utils.match(line, self.regexes)
         if regex:
-            log.info(f"skipping line '{line.strip()}' matched by '{regex}'")
+            log.info(f"skipping line '{line}' matched by '{regex}'")
             return True
 
         return False
