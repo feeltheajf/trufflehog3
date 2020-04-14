@@ -9,15 +9,17 @@
 # truffleHog3
 This is an enhanced version of [truffleHog](https://github.com/dxa4481/truffleHog) scanner
 
+[![Report Preview](https://github.com/feeltheajf/truffleHog3/blob/master/examples/report.png)](https://github.com/feeltheajf/truffleHog3/blob/master/examples/report.html)
+
 
 ## New
 
 - Python 3.6
 - flake8 compliant code
-- output to file in different formats: text, JSON, YAML, HTML
-- option to disable Git history checks - scan simple files/folders
-- option to exclude files/directories
-- config file support with automatic detection in source code directory, see [examples](https://github.com/feeltheajf/truffleHog3/blob/master/config)
+- output to file in different formats: text, JSON, YAML, [HTML](https://github.com/feeltheajf/truffleHog3/blob/master/examples/report.html)
+- option to disable Git history checks - scan simple files/directories
+- option to exclude files/directories, see [trufflehog.yaml](https://github.com/feeltheajf/truffleHog3/blob/master/examples/trufflehog.yaml)
+- config file support with automatic detection in source code directory
 
 
 ## Installation
@@ -54,7 +56,7 @@ optional arguments:
   -R, --render-html  render HTML report from JSON or YAML
   --branch           name of the repository branch to be scanned
   --since-commit     scan starting from a given commit hash
-  --skip-strings     skip strings matching regex
+  --skip-strings     skip matching strings
   --skip-paths       skip paths matching regex
   --max-depth        max commit depth for searching
   --no-regex         disable high signal regex checks

@@ -230,7 +230,7 @@ def _get_cmdline_args(**defaults) -> argparse.Namespace:
     )
     parser.add_argument(
         "--skip-strings",
-        help="skip strings matching regex",
+        help="skip matching strings",
         dest="skip_strings",
         nargs="*",
     )
