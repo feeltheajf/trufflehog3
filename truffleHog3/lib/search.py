@@ -75,11 +75,15 @@ class Regex(Engine):
 
     def search(self, line: str) -> MetaGen:
         for reason in self.rules:
-            match = self.rules[reason].search(line)
+            match = self.rules[reason].findall(line)
             if not match:
                 continue
 
-            yield reason, match[0]
+            for m in match:
+                if isinstance(m, tuple):
+                    yield reason, "".join(m)
+                else:
+                    yield reason, m
 
 
 class Entropy(Engine):
