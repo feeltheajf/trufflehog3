@@ -13,6 +13,7 @@ Regexes = List[re.Pattern]
 Repo = Tuple[str, Meta]
 RawRules = Mapping[str, str]
 Rules = Mapping[str, re.Pattern]
+SkipRules = Union[List[str], Mapping[str, List[str]]]
 StrGen = Generator[str, None, None]
 
 

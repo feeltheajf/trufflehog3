@@ -9,7 +9,7 @@ from functools import wraps
 from itertools import chain
 
 from truffleHog3.lib import log, utils
-from truffleHog3.types import List, Meta, MetaGen, Regexes, RawRules, Rules
+from truffleHog3.types import List, Meta, MetaGen, RawRules, Rules, SkipRules
 
 
 __all__ = ("Regex", "Entropy")
@@ -20,16 +20,19 @@ _HEX_CHARS = string.hexdigits
 
 
 class Engine(ABC):
-    def __init__(self, skip: List[str] = None):
-        self.regexes = skip
+    def __init__(self, skip: SkipRules = None):
+        self.skip = skip or {}
 
     @property
-    def regexes(self) -> Regexes:
-        return self._regexes
+    def skip(self) -> SkipRules:
+        return self._skip
 
-    @regexes.setter
-    def regexes(self, skip: List[str]):
-        self._regexes = utils.compile(skip or [])
+    @skip.setter
+    def skip(self, skip: SkipRules):
+        if isinstance(skip, dict):
+            self._skip = skip
+        else:
+            self._skip = {"/": skip}
 
     @abstractmethod
     def search(self, data: str) -> MetaGen:
@@ -43,7 +46,7 @@ class Engine(ABC):
         for i, line in enumerate(lines):
             line = line.strip()
             for reason, match in self.search(line):
-                if self.skip(match, line, issue["path"]):
+                if self.should_skip(match, line, issue["path"]):
                     continue
                 found[reason].add(line)
 
@@ -51,12 +54,17 @@ class Engine(ABC):
             dict(issue, reason=k, stringsFound=list(found[k])) for k in found
         ]
 
-    def skip(self, match: str, line: str, path: str = "") -> bool:
-        regex = utils.match(line, self.regexes)
-        if regex:
-            log.info(f"skipping line '{line}' matched by '{regex}'")
-            return True
+    def should_skip(self, match: str, line: str, path: str = "") -> bool:
+        exclude = self.skip.get("/", [])
+        if path in self.skip:
+            exclude.extend(self.skip[path])
 
+        for s in exclude:
+            if match.find(s) >= 0:
+                log.info(
+                    f"skipping line '{line}' matched by '{s}' from '{path}'"
+                )
+                return True
         return False
 
 
@@ -81,7 +89,7 @@ class Regex(Engine):
 
             for m in match:
                 if isinstance(m, tuple):
-                    yield reason, "".join(m)
+                    yield reason, "".join(m)  # pragma: no cover
                 else:
                     yield reason, m
 

@@ -12,7 +12,7 @@ def test_regex(
     assert len(issues) == 1
     assert issues[0] == issue_regex
 
-    re.regexes = ["https://.*@localhost"]
+    re.skip = ["@localhost"]
     assert len(re.process(meta_regex)) == 0
 
 
@@ -24,5 +24,5 @@ def test_entropy(meta_entropy: Meta, meta_regex: Meta, issue_entropy: Issue):
     assert len(issues) == 1
     assert issues[0] == issue_entropy
 
-    en.regexes = ["f18.*"]
+    en.skip = {"/high_entropy.py": "f18e9874c9"}
     assert len(en.process(meta_entropy)) == 0
