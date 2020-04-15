@@ -60,7 +60,7 @@ class Engine(ABC):
             exclude.extend(self.skip[path])
 
         for s in exclude:
-            if match.find(s) >= 0:
+            if line.find(s) >= 0:
                 log.info(
                     f"skipping line '{line}' matched by '{s}' from '{path}'"
                 )
