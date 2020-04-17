@@ -156,7 +156,7 @@
                 <li>
                     <div class="collapsible-header transparent">
                         {{file}}
-                        {%- if issue.reason == "High Entropy" -%}
+                        {%- if issue.reason == "High entropy" -%}
                             {% set color, status = "green", "LOW" %}
                         {%- else -%}
                             {% set color, status = "orange", "HIGH" %}
