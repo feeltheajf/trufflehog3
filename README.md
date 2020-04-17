@@ -12,6 +12,11 @@ This is an enhanced version of [truffleHog](https://github.com/dxa4481/truffleHo
 [![Report Preview](https://github.com/feeltheajf/truffleHog3/blob/master/examples/report.png)](https://github.com/feeltheajf/truffleHog3/blob/master/examples/report.html)
 
 
+## Important
+
+TruffleHog 2.x is not backwards compatible with 1.x branch, see new [trufflehog.yaml](https://github.com/feeltheajf/truffleHog3/blob/master/examples/trufflehog.yaml) and [Help](#Help)
+
+
 ## New
 
 - Python 3.6
