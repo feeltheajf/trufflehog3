@@ -34,7 +34,7 @@ Hash:   {commitHash}
 %s{strings}
 ~~~~~~~~~~~~~~~~~~~~~"""
 
-_HTML_STATIC_FOLDER = "truffleHog3"
+_HTML_STATIC_FOLDER = os.path.dirname(os.path.dirname(__file__))
 _HTML_TEMPLATE = "report.j2"
 
 
