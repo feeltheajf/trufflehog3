@@ -9,7 +9,7 @@
 # truffleHog3
 This is an enhanced version of [truffleHog](https://github.com/dxa4481/truffleHog) scanner
 
-[![Report Preview](https://github.com/feeltheajf/truffleHog3/blob/master/examples/report.png)](https://github.com/feeltheajf/truffleHog3/blob/master/examples/report.html)
+[![Report Preview](https://github.com/feeltheajf/truffleHog3/blob/master/examples/report.png)](https://feeltheajf.github.io/other/trufflehog)
 
 
 ## Important
@@ -21,7 +21,7 @@ TruffleHog 2.x is not backwards compatible with 1.x branch, see new [trufflehog.
 
 - Python 3.6
 - flake8 compliant code
-- output to file in different formats: text, JSON, YAML, [HTML](https://github.com/feeltheajf/truffleHog3/blob/master/examples/report.html)
+- output to file in different formats: text, JSON, YAML, [HTML](https://feeltheajf.github.io/other/trufflehog)
 - option to disable Git history checks - scan simple files/directories
 - option to exclude files/directories, see [trufflehog.yaml](https://github.com/feeltheajf/truffleHog3/blob/master/examples/trufflehog.yaml)
 - config file support with automatic detection in source code directory
