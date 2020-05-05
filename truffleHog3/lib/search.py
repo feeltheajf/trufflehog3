@@ -1,14 +1,12 @@
 import math
-import os
 import re
 import string
 
 from abc import ABC, abstractmethod
 from collections import defaultdict
-from functools import wraps
 from itertools import chain
 
-from truffleHog3.lib import log, utils
+from truffleHog3.lib import log
 from truffleHog3.types import List, Meta, MetaGen, RawRules, Rules, SkipRules
 
 
@@ -35,7 +33,7 @@ class Engine(ABC):
             self._skip = {"/": skip}
 
     @abstractmethod
-    def search(self, data: str) -> MetaGen:
+    def search(self, line: str) -> MetaGen:
         ...  # pragma: no cover
 
     def process(self, meta: Meta) -> MetaGen:
@@ -43,7 +41,7 @@ class Engine(ABC):
         lines = issue.pop("data").splitlines()
         found = defaultdict(set)
 
-        for i, line in enumerate(lines):
+        for line in lines:
             line = line.strip()
             for reason, match in self.search(line):
                 if self.should_skip(match, line, issue["path"]):

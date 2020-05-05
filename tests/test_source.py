@@ -1,6 +1,5 @@
 import pytest
 
-from truffleHog3.lib import utils
 from truffleHog3.lib.source import Simple, Git
 from truffleHog3.types import Repo
 

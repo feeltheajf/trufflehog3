@@ -1,6 +1,5 @@
 import git
 import os
-import re
 
 from abc import ABC, abstractmethod
 from datetime import datetime
@@ -108,9 +107,8 @@ class Git(Engine):
                 if not prev_commit or diff_hash in already_searched:
                     prev_commit = curr_commit
                     continue
-                else:
-                    diff = prev_commit.diff(curr_commit, create_patch=True)
 
+                diff = prev_commit.diff(curr_commit, create_patch=True)
                 already_searched.add(diff_hash)
                 yield from self._diff_worker(diff, prev_commit, branch)
                 prev_commit = curr_commit
@@ -119,7 +117,7 @@ class Git(Engine):
             yield from self._diff_worker(diff, prev_commit, branch)
 
     def _diff_worker(
-        self, diff: git.DiffIndex, commit: git.Commit, branch: git.Head = None,
+        self, diff: git.DiffIndex, commit: git.Commit, branch: git.Head = None
     ) -> MetaGen:
         for blob in diff:
             pdiff = blob.diff.decode("utf-8", errors="replace")
@@ -148,7 +146,7 @@ class Git(Engine):
             except git.GitCommandError as error:
                 log.warning(f"error fetching remote branches: {error}")
         else:
-            log.warning(f"missing remote")
+            log.warning("missing remote")
 
         if not self.branch:
             branches = [self.repo.active_branch]

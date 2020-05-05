@@ -1,13 +1,11 @@
 import jinja2
 import json
 import os
-import sys
 import yaml
 
 from abc import ABC, abstractmethod
 from collections import defaultdict
 
-from truffleHog3.lib import utils
 from truffleHog3.types import Issue, Issues, Meta
 
 
@@ -48,13 +46,19 @@ class Engine(ABC):
 
 
 class TEXT(Engine):
+    def __init__(self, issues: Issues):
+        self.load_template()
+        super().__init__(issues)
+
     def __str__(self):
         return "\n".join(self._render(i) for i in self.issues)
 
     def _render(self, issue: Issue) -> str:
         strings = "\n".join(issue["stringsFound"])
-        colored = _TEXT_TEMPLATE % (_colors.OKGREEN, _colors.ENDC)
-        return colored.format(**issue, strings=strings)
+        return self.template.format(**issue, strings=strings)
+
+    def load_template(self):
+        self.template = _TEXT_TEMPLATE % (_colors.OKGREEN, _colors.ENDC)
 
 
 class JSON(Engine):

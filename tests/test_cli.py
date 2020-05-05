@@ -7,7 +7,7 @@ from unittest.mock import patch
 
 from truffleHog3 import cli
 from truffleHog3.lib import utils
-from truffleHog3.types import Config, Issues, List, Meta, Repo, Rules, Tuple
+from truffleHog3.types import Config, Issues, Repo, Rules
 
 
 config_json = "trufflehog.json"
@@ -155,7 +155,7 @@ def test_load_config(config: Config, datadir: str, tempdir: str):
         assert cli._load_config(tmp) == Config()
 
 
-def test_load_config_with_args(config: Config, datadir: str, tempdir: str):
+def test_load_config_with_args(config: Config, datadir: str):
     branch = "2.0"
     since_commit = "123"
     skip_strings = [".*test_secret.*", "test_password = .*"]
@@ -196,7 +196,7 @@ def test_search_config(config: Config, datadir: str, tempdir: str):
         assert cli._search_config(tempdir) == Config()
 
 
-def test_search_config_with_args(config: Config, datadir: str, tempdir: str):
+def test_search_config_with_args(config: Config, datadir: str):
     max_depth = 1000
     args = ["", ".", "--max-depth", str(max_depth)]
     config.update(max_depth=max_depth)

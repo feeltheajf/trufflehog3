@@ -5,7 +5,7 @@ import yaml
 
 from io import IOBase
 
-from truffleHog3.types import Any, File, List, Regex, Regexes
+from truffleHog3.types import Any, File, List, Regexes
 
 
 __all__ = ("logger", "load", "dump", "compile", "match")

@@ -2,7 +2,7 @@ import logging
 import os
 
 from truffleHog3.lib import utils
-from truffleHog3.types import Config, Meta
+from truffleHog3.types import Config
 
 
 def test_logger():
