@@ -17,14 +17,7 @@ config_yaml = "trufflehog.yaml"
 def test_run_scan(repo: Repo, tmpdir: str):
     expected = os.path.join(tmpdir, "repo.json")
     path, _ = repo
-    args = [
-        "",
-        path,
-        "-f",
-        "json",
-        "--output",
-        expected,
-    ]
+    args = ["", path, "-f", "json", "--output", expected]
     with patch.object(sys, "argv", args):
         cli.run()
 
@@ -54,13 +47,7 @@ def test_run_render(datadir: str, tmpdir: str):
     report_json = os.path.join(datadir, "report.json")
     original = os.path.join(datadir, "report.html")
     expected = os.path.join(tmpdir, "report.html")
-    args = [
-        "",
-        "--render-html",
-        report_json,
-        "--output",
-        expected,
-    ]
+    args = ["", "--render-html", report_json, "--output", expected]
     with patch.object(sys, "argv", args):
         cli.run()
 
@@ -211,12 +198,7 @@ def test_search_config(config: Config, datadir: str, tempdir: str):
 
 def test_search_config_with_args(config: Config, datadir: str, tempdir: str):
     max_depth = 1000
-    args = [
-        "",
-        ".",
-        "--max-depth",
-        str(max_depth),
-    ]
+    args = ["", ".", "--max-depth", str(max_depth)]
     config.update(max_depth=max_depth)
     with patch.object(sys, "argv", args):
         assert cli._search_config(datadir) == config

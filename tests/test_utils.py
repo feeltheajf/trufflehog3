@@ -37,4 +37,4 @@ def test_match():
     regexes = utils.compile(["/long/.*", ".*.py"])
     assert utils.match(string1, regexes) == regexes[0].pattern
     assert utils.match(string2, regexes) == regexes[1].pattern
-    assert utils.match(string3, regexes) == None
+    assert utils.match(string3, regexes) is None

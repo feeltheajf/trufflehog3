@@ -157,8 +157,7 @@ class _HelpFormatter(argparse.HelpFormatter):  # pragma: no cover
         if not action.option_strings:
             (metavar,) = self._metavar_formatter(action, action.dest)(1)
             return metavar
-        else:
-            return ", ".join(action.option_strings)
+        return ", ".join(action.option_strings)
 
 
 def _get_cmdline_args(**defaults) -> argparse.Namespace:

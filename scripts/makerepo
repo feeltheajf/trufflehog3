@@ -9,11 +9,11 @@ HIGH_ENTROPY_STRING="4b2810c1a65d47af13dc8d6eae8d36"
 PRIVATE_KEY_STRING="-----BEGIN RSA PRIVATE KEY-----"
 
 function log {
-    echo "[I] $@"
+    echo "[I] $*"
 }
 
 function err {
-    echo "[E] $@"
+    echo "[E] $*"
 }
 
 function cleanup {

@@ -1,6 +1,6 @@
 FROM python:3.6-slim
 
-RUN apt update && apt install -y git
+RUN apt-get update && apt-get install -y git
 
 WORKDIR /trufflehog3
 ADD . /trufflehog3
