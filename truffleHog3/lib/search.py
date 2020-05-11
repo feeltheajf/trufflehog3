@@ -40,6 +40,7 @@ class Engine(ABC):
         issue = meta.copy()
         lines = issue.pop("data").splitlines()
         found = defaultdict(set)
+        matches = defaultdict(set)
 
         for line in lines:
             line = line.strip()
@@ -49,7 +50,7 @@ class Engine(ABC):
                 found[reason].add(line)
 
         return [
-            dict(issue, reason=k, stringsFound=list(found[k])) for k in found
+            dict(issue, reason=k, stringsFound=list(found[k]), matchesFound=list(matches[k])) for k in found
         ]
 
     def should_skip(self, match: str, line: str, path: str = "") -> bool:
