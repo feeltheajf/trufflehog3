@@ -84,11 +84,14 @@ def scan(path: str, config: Config, rules: Rules = None) -> Issues:
     if not config.no_current:
         g.append(Simple(path, skip=config.skip_paths))
 
+    engine_config = dict(
+        skip=config.skip_strings, line_numbers=config.line_numbers
+    )
     engines = []
     if not config.no_entropy:
-        engines.append(Entropy(skip=config.skip_strings))
+        engines.append(Entropy(**engine_config))
     if not config.no_regex:
-        engines.append(Regex(rules, skip=config.skip_strings))
+        engines.append(Regex(rules, **engine_config))
 
     issues = []
     for meta in chain(*g):
@@ -238,6 +241,12 @@ def _get_cmdline_args(**defaults) -> argparse.Namespace:
         help="skip paths matching regex",
         dest="skip_paths",
         nargs="*",
+    )
+    parser.add_argument(
+        "--line-numbers",
+        help="include line numbers in match",
+        dest="line_numbers",
+        action="store_true",
     )
     parser.add_argument(
         "--max-depth",

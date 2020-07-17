@@ -4,6 +4,7 @@ skip_strings:
   - "qweqwe"
 skip_paths:
   - .*key.json
+line_numbers: false
 max_depth: 10000
 no_regex: false
 no_entropy: false

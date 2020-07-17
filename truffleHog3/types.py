@@ -23,6 +23,7 @@ class Config:
         self.since_commit = None
         self.skip_strings = []
         self.skip_paths = []
+        self.line_numbers = False
         self.max_depth = 1000000
         self.no_regex = False
         self.no_entropy = False

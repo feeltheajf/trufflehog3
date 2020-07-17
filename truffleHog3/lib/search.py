@@ -18,8 +18,9 @@ _HEX_CHARS = string.hexdigits
 
 
 class Engine(ABC):
-    def __init__(self, skip: SkipRules = None):
+    def __init__(self, skip: SkipRules = None, line_numbers: bool = False):
         self.skip = skip or {}
+        self.line_numbers = line_numbers
 
     @property
     def skip(self) -> SkipRules:
@@ -41,8 +42,11 @@ class Engine(ABC):
         lines = issue.pop("data").splitlines()
         found = defaultdict(set)
 
-        for line in lines:
+        for i, line in enumerate(lines):
             line = line.strip()
+            if self.line_numbers:  # pragma: no cover
+                line = f"{i + 1} " + line
+
             for reason, match in self.search(line):
                 if self.should_skip(match, line, issue["path"]):
                     continue

@@ -71,6 +71,11 @@ optional arguments:
 ```
 
 
+## License
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Ffeeltheajf%2FtruffleHog3.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Ffeeltheajf%2FtruffleHog3?ref=badge_large)
+
+
 ## Thanks
 
 Special thanks to Dylan Ayrey ([@dxa4481](https://github.com/dxa4481)), developer of the original [truffleHog](https://github.com/dxa4481/truffleHog) scanner
