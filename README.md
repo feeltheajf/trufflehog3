@@ -4,6 +4,7 @@
 [![Code Coverage](https://codecov.io/gh/feeltheajf/truffleHog3/branch/master/graph/badge.svg)](https://codecov.io/gh/feeltheajf/truffleHog3)
 [![Downloads](https://pepy.tech/badge/trufflehog3)](https://pepy.tech/project/trufflehog3)
 [![Known Vulnerabilities](https://snyk.io/test/github/feeltheajf/truffleHog3/badge.svg?targetFile=requirements.txt)](https://snyk.io/test/github/feeltheajf/truffleHog3?targetFile=requirements.txt)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Ffeeltheajf%2FtruffleHog3.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Ffeeltheajf%2FtruffleHog3?ref=badge_shield)
 
 
 # truffleHog3
@@ -74,3 +75,7 @@ optional arguments:
 ## Thanks
 
 Special thanks to Dylan Ayrey ([@dxa4481](https://github.com/dxa4481)), developer of the original [truffleHog](https://github.com/dxa4481/truffleHog) scanner
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Ffeeltheajf%2FtruffleHog3.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Ffeeltheajf%2FtruffleHog3?ref=badge_large)
