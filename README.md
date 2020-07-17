@@ -63,6 +63,7 @@ optional arguments:
   --since-commit     scan starting from a given commit hash
   --skip-strings     skip matching strings
   --skip-paths       skip paths matching regex
+  --line-numbers     include line numbers in match
   --max-depth        max commit depth for searching
   --no-regex         disable high signal regex checks
   --no-entropy       disable entropy checks
