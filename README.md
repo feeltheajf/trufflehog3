@@ -1,9 +1,9 @@
 [![Package Version](https://img.shields.io/pypi/v/truffleHog3.svg)](https://pypi.org/project/truffleHog3)
 ![Python Version](https://img.shields.io/badge/python-3.6%2B-informational.svg)
-[![Build Status](https://travis-ci.com/feeltheajf/truffleHog3.svg?branch=master)](https://travis-ci.com/feeltheajf/truffleHog3)
-[![Code Coverage](https://codecov.io/gh/feeltheajf/truffleHog3/branch/master/graph/badge.svg)](https://codecov.io/gh/feeltheajf/truffleHog3)
 [![Downloads](https://pepy.tech/badge/trufflehog3)](https://pepy.tech/project/trufflehog3)
-[![Known Vulnerabilities](https://snyk.io/test/github/feeltheajf/truffleHog3/badge.svg?targetFile=requirements.txt)](https://snyk.io/test/github/feeltheajf/truffleHog3?targetFile=requirements.txt)
+[![Build Status](https://travis-ci.com/feeltheajf/truffleHog3.svg?branch=master)](https://travis-ci.com/feeltheajf/truffleHog3)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Ffeeltheajf%2Ftrufflehog3.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Ffeeltheajf%2Ftrufflehog3?ref=badge_shield)
+[![Code Coverage](https://codecov.io/gh/feeltheajf/truffleHog3/branch/master/graph/badge.svg)](https://codecov.io/gh/feeltheajf/truffleHog3)
 
 
 # truffleHog3
@@ -70,11 +70,6 @@ optional arguments:
   --no-history       disable commit history check
   --no-current       disable current status check
 ```
-
-
-## License
-
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Ffeeltheajf%2FtruffleHog3.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Ffeeltheajf%2FtruffleHog3?ref=badge_large)
 
 
 ## Thanks
