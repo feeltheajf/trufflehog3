@@ -16,7 +16,7 @@ Google Cloud Platform API Key: "AIza[0-9A-Za-z\\-_]{35}"
 Google Cloud Platform OAuth: "[0-9]+-[0-9A-Za-z_]{32}\\.apps\\.googleusercontent\\.com"
 Google Drive API Key: "AIza[0-9A-Za-z\\-_]{35}"
 Google Drive OAuth: "[0-9]+-[0-9A-Za-z_]{32}\\.apps\\.googleusercontent\\.com"
-Google (GCP) Service-account: '"type: "service_account"'
+Google (GCP) Service-account: '"type": "service_account"'
 Google Gmail API Key: "AIza[0-9A-Za-z\\-_]{35}"
 Google Gmail OAuth: "[0-9]+-[0-9A-Za-z_]{32}\\.apps\\.googleusercontent\\.com"
 Google OAuth Access Token: "ya29\\.[0-9A-Za-z\\-_]+"
