@@ -47,15 +47,14 @@ class Simple(Engine):
                 if d.startswith(".") or self.skip(d):
                     dirs.remove(d)
 
-            relative_path = root.replace(self.path, "")
             for file in files:
-                filepath = os.path.join(relative_path, file)
-                realpath = os.path.realpath(os.path.join(root, file))
-                if self.skip(filepath):
+                filepath = os.path.join(root, file)
+                relative_path = os.path.relpath(filepath, self.path)
+                if self.skip(relative_path):
                     continue
 
                 try:
-                    with open(realpath) as f:
+                    with open(filepath) as f:
                         data = f.read()
                 except Exception as error:  # pragma: no cover
                     log.warning(f"error reading '{filepath}': {error}")
@@ -63,7 +62,7 @@ class Simple(Engine):
 
                 yield {
                     "date": _NOW,
-                    "path": filepath,
+                    "path": relative_path,
                     "branch": None,
                     "commit": None,
                     "commitHash": None,
