@@ -126,9 +126,6 @@ class Git(Engine):
             if pdiff.startswith("Binary files") or self.skip(path):
                 continue
 
-            if not path.startswith("/"):
-                path = "/" + path
-
             date = datetime.fromtimestamp(commit.committed_date)
             yield {
                 "date": date.strftime(_FMT),
