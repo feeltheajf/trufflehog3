@@ -24,11 +24,12 @@ class _colors:
 
 
 _TEXT_TEMPLATE = """~~~~~~~~~~~~~~~~~~~~~%s
-Reason: {reason}
-Path:   {path}
-Branch: {branch}
-Commit: {commit}
-Hash:   {commitHash}
+Reason:    {reason}
+Path:      {path}
+Repo_URL:  {repo_url}
+Branch:    {branch}
+Commit:    {commit}
+Hash:      {commitHash}
 %s{strings}
 ~~~~~~~~~~~~~~~~~~~~~"""
 
