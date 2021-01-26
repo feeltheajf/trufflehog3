@@ -41,6 +41,14 @@ class Engine(ABC):
 
 
 class Simple(Engine):
+    def __init__(
+        self,
+        path: str,
+        **kwargs,
+    ):
+        self.repo = git.Repo(path)
+        super().__init__(path, **kwargs)
+
     def __iter__(self) -> MetaGen:
         for root, dirs, files in os.walk(self.path):
             for d in dirs:
@@ -63,6 +71,7 @@ class Simple(Engine):
                 yield {
                     "date": _NOW,
                     "path": relative_path,
+                    "repo_url": self.repo.remotes.origin.url,
                     "branch": None,
                     "commit": None,
                     "commitHash": None,
@@ -130,6 +139,7 @@ class Git(Engine):
                 "date": date.strftime(_FMT),
                 "path": path,
                 "branch": branch.name,
+                "repo_url": self.repo.remotes.origin.url,
                 "commit": commit.message,
                 "commitHash": commit.hexsha,
                 "data": pdiff,
