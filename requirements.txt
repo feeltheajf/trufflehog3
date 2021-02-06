@@ -1,9 +1,9 @@
 codecov==2.0.17
 GitPython==3.1.0
-jinja2==2.11.1
+jinja2==2.11.3
 keyring==19.0.1
 pytest-cov==2.5.1
 pytest==4.6.4
-PyYAML==5.3.1
+PyYAML==5.4
 twine==1.13.0
 unittest2==1.1.0
