@@ -1,6 +1,6 @@
-codecov==2.0.17
-keyring==19.0.1
-pytest-cov==2.5.1
-pytest==4.6.4
-twine==1.13.0
+codecov==2.1.8
+keyring==21.2.1
+pytest==5.4.3
+pytest-cov==2.10.0
+twine==3.2.0
 unittest2==1.1.0
