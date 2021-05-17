@@ -1,14 +1,13 @@
 [![Package Version](https://img.shields.io/pypi/v/truffleHog3.svg)](https://pypi.org/project/truffleHog3)
 ![Python Version](https://img.shields.io/badge/python-3.6%2B-informational.svg)
-[![Build Status](https://travis-ci.com/feeltheajf/truffleHog3.svg?branch=master)](https://travis-ci.com/feeltheajf/truffleHog3)
+[![Build Status](https://travis-ci.com/feeltheajf/truffleHog3.svg?branch=1.x)](https://travis-ci.com/feeltheajf/truffleHog3)
 [![Code Coverage](https://codecov.io/gh/feeltheajf/truffleHog3/branch/master/graph/badge.svg)](https://codecov.io/gh/feeltheajf/truffleHog3)
 [![Downloads](https://pepy.tech/badge/trufflehog3)](https://pepy.tech/project/trufflehog3)
 [![Known Vulnerabilities](https://snyk.io/test/github/feeltheajf/truffleHog3/badge.svg?targetFile=requirements.txt)](https://snyk.io/test/github/feeltheajf/truffleHog3?targetFile=requirements.txt)
 
-
 # truffleHog3
-This is an enhanced version of [truffleHog](https://github.com/dxa4481/truffleHog) scanner
 
+This is an enhanced version of [truffleHog](https://github.com/dxa4481/truffleHog) scanner
 
 ## New
 
@@ -19,7 +18,6 @@ This is an enhanced version of [truffleHog](https://github.com/dxa4481/truffleHo
 - option to exclude files/directories
 - config file support with automatic detection in source code directory, see [trufflehog.json](https://github.com/feeltheajf/truffleHog3/blob/master/trufflehog.json.example), [trufflehog.yaml](https://github.com/feeltheajf/truffleHog3/blob/master/trufflehog.yaml.example)
 
-
 ## Installation
 
 Package is available on [PyPI](https://pypi.org/project/truffleHog3)
@@ -28,11 +26,9 @@ Package is available on [PyPI](https://pypi.org/project/truffleHog3)
 pip install truffleHog3
 ```
 
-
 ## Customizing
 
 List of regexes was moved into repository, see [regexes.json](https://github.com/feeltheajf/truffleHog3/blob/master/truffleHog3/regexes.json)
-
 
 ## Help
 
@@ -59,7 +55,6 @@ optional arguments:
   --no-entropy        disable entropy checks
   --no-history        disable commit history check
 ```
-
 
 ## Thanks
 
