@@ -2,7 +2,6 @@
 ![Python Version](https://img.shields.io/badge/python-3.6%2B-informational.svg)
 [![Downloads](https://pepy.tech/badge/trufflehog3)](https://pepy.tech/project/trufflehog3)
 [![Build Status](https://travis-ci.com/feeltheajf/truffleHog3.svg?branch=2.x)](https://travis-ci.com/feeltheajf/truffleHog3)
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Ffeeltheajf%2Ftrufflehog3.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Ffeeltheajf%2Ftrufflehog3?ref=badge_shield)
 [![Code Coverage](https://codecov.io/gh/feeltheajf/truffleHog3/branch/master/graph/badge.svg)](https://codecov.io/gh/feeltheajf/truffleHog3)
 
 # truffleHog3
