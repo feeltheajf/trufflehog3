@@ -1,0 +1,83 @@
+[
+  {
+    "rule": {
+      "id": "amazon.aws-api-key",
+      "message": "AWS API Key",
+      "pattern": "AKIA[0-9A-Z]{16}",
+      "severity": "HIGH"
+    },
+    "path": "/lib/aws/client.py",
+    "line": "12",
+    "secret": "AKIABACE43789891CE72",
+    "context": {
+      "11": "def make_request(**kwargs):",
+      "12": "    token = \"AKIABACE43789891CE72\"  # don't forget to remove",
+      "13": "    return _api_call(token, **kwargs)"
+    },
+    "id": "1367237d-b56f-38f8-b557-a4634d8e9fb2",
+    "branch": "master",
+    "message": "Adds AWS API client implementation",
+    "author": "Ilya Radostev <feeltheajf@gmail.com>",
+    "commit": "3c663477ad5befa55f6e83f52af33f8d",
+    "date": "2020-01-01T10:10:10.000000"
+  },
+  {
+    "rule": {
+      "id": "high-entropy",
+      "message": "High Entropy",
+      "severity": "MEDIUM"
+    },
+    "path": "/lib/notifier/email.py",
+    "line": "17",
+    "secret": "A5f8760a16039c1aD66dc3EBbce533c3",
+    "context": {
+      "17": "_bot = EmailClient(\"service_user\", \"A5f8760a16039c1aD66dc3EBbce533c3\")"
+    },
+    "id": "ce643b0c-098e-38d2-bf01-97e04e03d35a",
+    "branch": null,
+    "message": null,
+    "author": null,
+    "commit": null,
+    "date": null
+  },
+  {
+    "rule": {
+      "id": "slack.bot-token",
+      "message": "Slack Bot Token",
+      "pattern": "xox[p|b|o|a]-[0-9]{12}-[0-9]{12}-[a-z0-9]{24}",
+      "severity": "MEDIUM"
+    },
+    "path": "/lib/notifier/slack.py",
+    "line": "18",
+    "secret": "xoxb-05047172927-298483969606-9a05046c9394fd596c2cc2aa",
+    "context": {
+      "18": "_bot = SlackClient(\"xoxb-05047172927-298483969606-9a05046c9394fd596c2cc2aa\")"
+    },
+    "id": "0b58588a-d6af-33ce-a2e4-df8e79e900eb",
+    "branch": null,
+    "message": null,
+    "author": null,
+    "commit": null,
+    "date": null
+  },
+  {
+    "rule": {
+      "id": "generic.password-in-url",
+      "message": "Password in URL",
+      "pattern": "[a-zA-Z]{3,10}://[^/\\s:@]{3,20}:[^/\\s:@]{3,20}@.{1,100}[\"'\\s]",
+      "severity": "LOW"
+    },
+    "path": "/config/prod.yaml",
+    "line": "4",
+    "secret": "postgresql://postgres:Postgres1!@postgres/accounts",
+    "context": {
+      "4": "db: postgresql://postgres:Postgres1!@postgres/accounts"
+    },
+    "id": "593fad55-bfa9-35ee-bdf8-6a23c9b96b8d",
+    "branch": null,
+    "message": null,
+    "author": null,
+    "commit": null,
+    "date": null
+  }
+]
