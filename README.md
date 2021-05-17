@@ -1,21 +1,19 @@
 [![Package Version](https://img.shields.io/pypi/v/truffleHog3.svg)](https://pypi.org/project/truffleHog3)
 ![Python Version](https://img.shields.io/badge/python-3.6%2B-informational.svg)
 [![Downloads](https://pepy.tech/badge/trufflehog3)](https://pepy.tech/project/trufflehog3)
-[![Build Status](https://travis-ci.com/feeltheajf/truffleHog3.svg?branch=master)](https://travis-ci.com/feeltheajf/truffleHog3)
+[![Build Status](https://travis-ci.com/feeltheajf/truffleHog3.svg?branch=2.x)](https://travis-ci.com/feeltheajf/truffleHog3)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Ffeeltheajf%2Ftrufflehog3.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Ffeeltheajf%2Ftrufflehog3?ref=badge_shield)
 [![Code Coverage](https://codecov.io/gh/feeltheajf/truffleHog3/branch/master/graph/badge.svg)](https://codecov.io/gh/feeltheajf/truffleHog3)
 
-
 # truffleHog3
+
 This is an enhanced version of [truffleHog](https://github.com/dxa4481/truffleHog) scanner
 
 [![Report Preview](https://github.com/feeltheajf/truffleHog3/blob/master/examples/report.png)](https://feeltheajf.github.io/other/trufflehog)
 
-
 ## Important
 
 TruffleHog 2.x is not backwards compatible with 1.x branch, see new [trufflehog.yaml](https://github.com/feeltheajf/truffleHog3/blob/master/examples/trufflehog.yaml) and [Help](#Help)
-
 
 ## New
 
@@ -26,7 +24,6 @@ TruffleHog 2.x is not backwards compatible with 1.x branch, see new [trufflehog.
 - option to exclude files/directories, see [trufflehog.yaml](https://github.com/feeltheajf/truffleHog3/blob/master/examples/trufflehog.yaml)
 - config file support with automatic detection in source code directory
 
-
 ## Installation
 
 Package is available on [PyPI](https://pypi.org/project/truffleHog3)
@@ -35,11 +32,9 @@ Package is available on [PyPI](https://pypi.org/project/truffleHog3)
 pip install truffleHog3
 ```
 
-
 ## Customizing
 
 List of default regexes was moved into repository, see [rules.yaml](https://github.com/feeltheajf/truffleHog3/blob/master/truffleHog3/rules.yaml)
-
 
 ## Help
 
@@ -70,7 +65,6 @@ optional arguments:
   --no-history       disable commit history check
   --no-current       disable current status check
 ```
-
 
 ## Thanks
 
