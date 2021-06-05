@@ -11,7 +11,7 @@ REQUIREMENTS = (HERE / "requirements.txt").read_text().splitlines()
 
 setup(
     name="truffleHog3",
-    version="2.0.5",
+    version="2.0.6",
     packages=["truffleHog3", "truffleHog3.lib"],
     license="GNU",
     description="Find secrets in your codebase.",
