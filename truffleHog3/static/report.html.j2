@@ -339,38 +339,20 @@
               <label>
                 <input id="search-filter-all" type="checkbox" checked="checked"/>
                 <span class="helper-text" onclick="checkAll();">All</span>
-                <span class="badge helper-text" onclick="return false;">4</span>
+                <span class="badge helper-text" onclick="return false;">{{ totals.values() | sum }}</span>
               </label>
             </p>
+            {% for rule, counter in totals.items() -%}
+            {% set severity_color = "red" if rule.severity.name == "HIGH" else "orange" if rule.severity.name == "MEDIUM" else "green" -%}
             <p>
               <label>
-                <input id="rule-995292fc-77ca-3c09-8dc8-6f51c2d2cf9c" type="checkbox" checked="checked" class="search-filter" />
-                <span class="helper-text" onclick="checkOne('rule-995292fc-77ca-3c09-8dc8-6f51c2d2cf9c');">AWS API Key</span>
-                <span class="badge red-text" onclick="return false;">1</span>
+                <input id="rule-{{ rule._uuid }}" type="checkbox" checked="checked" class="search-filter" />
+                <span class="helper-text" onclick="checkOne('rule-{{ rule._uuid }}');">{{ rule.message }}</span>
+                <span class="badge {{ severity_color }}-text" onclick="return false;">{{ counter }}</span>
               </label>
             </p>
-            <p>
-              <label>
-                <input id="rule-a113adaf-8714-3e2b-a660-26d3f04a7f06" type="checkbox" checked="checked" class="search-filter" />
-                <span class="helper-text" onclick="checkOne('rule-a113adaf-8714-3e2b-a660-26d3f04a7f06');">High Entropy</span>
-                <span class="badge orange-text" onclick="return false;">1</span>
-              </label>
-            </p>
-            <p>
-              <label>
-                <input id="rule-761810b8-d126-37ce-b37f-5314a201c0f4" type="checkbox" checked="checked" class="search-filter" />
-                <span class="helper-text" onclick="checkOne('rule-761810b8-d126-37ce-b37f-5314a201c0f4');">Slack Bot Token</span>
-                <span class="badge orange-text" onclick="return false;">1</span>
-              </label>
-            </p>
-            <p>
-              <label>
-                <input id="rule-e37d43fc-e467-357c-beec-442ccf35e68c" type="checkbox" checked="checked" class="search-filter" />
-                <span class="helper-text" onclick="checkOne('rule-e37d43fc-e467-357c-beec-442ccf35e68c');">Password in URL</span>
-                <span class="badge green-text" onclick="return false;">1</span>
-              </label>
-            </p>
-            </form>
+            {% endfor -%}
+          </form>
         </li>
         <li>
           <form>
@@ -391,18 +373,26 @@
           <h4>Issues</h4>
         </li>
       </ul>
-      <div class="card issue rule-995292fc-77ca-3c09-8dc8-6f51c2d2cf9c">
+      {% for rule, paths in report.items() -%}
+      {% set severity_color = "red" if rule.severity.name == "HIGH" else "orange" if rule.severity.name == "MEDIUM" else "green" -%}
+      {% for path, revs in paths.items() | sort(attribute=0) -%}
+      {% for rev, issues in revs.items() -%}
+      {% set issue = issues[0] -%}
+      <div class="card issue rule-{{ rule._uuid }}">
         <div class="card-content">
           <span class="card-title">
-            <span class="tooltipped" data-position="top" data-tooltip="AKIA[0-9A-Z]{16}">AWS API Key</span>
-            <span class="new badge red darken-2" data-badge-caption="HIGH"></span>
+            <span class="{{ 'tooltipped' if rule.pattern else '' }}" data-position="top" data-tooltip="{{ rule.pattern }}">{{ rule.message }}</span>
+            <span class="new badge {{ severity_color }} darken-2" data-badge-caption="{{ rule.severity }}"></span>
           </span>
           <span>
-            <span class="search-path copyable monospace highlight break-all" onclick="copyToClipboard(event)">lib/aws/client.py</span>
+            <span class="search-path copyable monospace highlight break-all" onclick="copyToClipboard(event)">{{ path }}</span>
+            {% if issue.commit -%}
             <span class="history-badge badge">
               <i class="material-icons">history</i>
             </span>
-            </span>
+            {% endif -%}
+          </span>
+          {% if issue.commit -%}
           <ul class="collapsible expandable z-depth-0 collapsible-details">
             <li>
               <div class="collapsible-body transparent">
@@ -410,205 +400,75 @@
                   <span class="left">
                     <i class="material-icons">call_split</i>
                   </span>
-                  <pre class="select">master</pre>
+                  <pre class="select">{{ issue.branch }}</pre>
                 </div>
                 <div class="issue-metadata">
                   <span class="left">
                     <i class="material-icons">message</i>
                   </span>
-                  <pre class="select">Adds AWS API client implementation</pre>
+                  <pre class="select">{{ issue.message.splitlines()[0] }}</pre>
                 </div>
                 <div class="issue-metadata">
                   <span class="left">
                     <i class="material-icons">person</i>
                   </span>
-                  <pre class="select">Ilya Radostev &lt;feeltheajf@gmail.com&gt;</pre>
+                  <pre class="select">{{ issue.author }}</pre>
                 </div>
                 <div class="issue-metadata">
                   <span class="left">
                     <i class="material-icons">fingerprint</i>
                   </span>
-                  <pre class="select">3c663477ad5befa55f6e83f52af33f8d</pre>
+                  <pre class="select">{{ issue.commit }}</pre>
                 </div>
               </div>
             </li>
           </ul>
-          </div>
+          {% endif -%}
+        </div>
         <div class="card-action">
           <ul class="collapsible expandable z-depth-0 monospace">
-            
+            {% for issue in issues -%}
+            {% set prefix, secret, suffix = issue.context[issue.line].partition(issue.secret) %}
             <li>
-              <div class="collapsible-header">
+              <div class="{{ 'collapsible-header' if issue.multiline else 'non-collapsible-header' }}">
                 <table>
                   <tr class="no-border">
                     <td class="code-line-number">
-                      12
+                      {{ issue.line }}
                     </td>
                     <td class="select code-line">
-                      <pre>token = &#34;<span class="copyable red-text" onclick="copyToClipboard(event); event.stopPropagation();">AKIABACE43789891CE72</span>&#34;  # don&#39;t forget to remove</pre>
+                      <pre>{{ prefix.lstrip() }}<span class="copyable {{ severity_color }}-text" onclick="copyToClipboard(event); event.stopPropagation();">{{ secret }}</span>{{ suffix.rstrip() }}</pre>
                     </td>
                   </tr>
                 </table>
               </div>
               <div class="collapsible-body">
                 <table>
+                  {% for number, line in issue.context.items() -%}
                   <tr class="no-border">
                     <td class="code-line-number">
-                      11
+                      {{ number }}
                     </td>
                     <td class="select code-line">
-                      <pre>def make_request(**kwargs):</pre>
-                      </td>
-                  </tr>
-                  <tr class="no-border">
-                    <td class="code-line-number">
-                      12
-                    </td>
-                    <td class="select code-line">
-                      <pre>    token = &#34;<span class="red-text">AKIABACE43789891CE72</span>&#34;  # don&#39;t forget to remove</pre>
-                      </td>
-                  </tr>
-                  <tr class="no-border">
-                    <td class="code-line-number">
-                      13
-                    </td>
-                    <td class="select code-line">
-                      <pre>    return _api_call(token, **kwargs)</pre>
-                      </td>
-                  </tr>
-                  </table>
-              </div>
-            </li>
-            </ul>
-        </div>
-      </div>
-      <div class="card issue rule-a113adaf-8714-3e2b-a660-26d3f04a7f06">
-        <div class="card-content">
-          <span class="card-title">
-            <span class="" data-position="top" data-tooltip="">High Entropy</span>
-            <span class="new badge orange darken-2" data-badge-caption="MEDIUM"></span>
-          </span>
-          <span>
-            <span class="search-path copyable monospace highlight break-all" onclick="copyToClipboard(event)">lib/notifier/email.py</span>
-            </span>
-          </div>
-        <div class="card-action">
-          <ul class="collapsible expandable z-depth-0 monospace">
-            
-            <li>
-              <div class="non-collapsible-header">
-                <table>
-                  <tr class="no-border">
-                    <td class="code-line-number">
-                      17
-                    </td>
-                    <td class="select code-line">
-                      <pre>_bot = EmailClient(&#34;service_user&#34;, &#34;<span class="copyable orange-text" onclick="copyToClipboard(event); event.stopPropagation();">A5f8760a16039c1aD66dc3EBbce533c3</span>&#34;)</pre>
+                      {% if number == issue.line -%}
+                      <pre>{{ prefix }}<span class="{{ severity_color }}-text">{{ secret }}</span>{{ suffix }}</pre>
+                      {% else -%}
+                      <pre>{{ line }}</pre>
+                      {% endif -%}
                     </td>
                   </tr>
+                  {% endfor -%}
                 </table>
               </div>
-              <div class="collapsible-body">
-                <table>
-                  <tr class="no-border">
-                    <td class="code-line-number">
-                      17
-                    </td>
-                    <td class="select code-line">
-                      <pre>_bot = EmailClient(&#34;service_user&#34;, &#34;<span class="orange-text">A5f8760a16039c1aD66dc3EBbce533c3</span>&#34;)</pre>
-                      </td>
-                  </tr>
-                  </table>
-              </div>
             </li>
-            </ul>
+            {% endfor -%}
+          </ul>
         </div>
       </div>
-      <div class="card issue rule-761810b8-d126-37ce-b37f-5314a201c0f4">
-        <div class="card-content">
-          <span class="card-title">
-            <span class="tooltipped" data-position="top" data-tooltip="xox[p|b|o|a]-[0-9]{12}-[0-9]{12}-[a-z0-9]{24}">Slack Bot Token</span>
-            <span class="new badge orange darken-2" data-badge-caption="MEDIUM"></span>
-          </span>
-          <span>
-            <span class="search-path copyable monospace highlight break-all" onclick="copyToClipboard(event)">lib/notifier/slack.py</span>
-            </span>
-          </div>
-        <div class="card-action">
-          <ul class="collapsible expandable z-depth-0 monospace">
-            
-            <li>
-              <div class="non-collapsible-header">
-                <table>
-                  <tr class="no-border">
-                    <td class="code-line-number">
-                      18
-                    </td>
-                    <td class="select code-line">
-                      <pre>_bot = SlackClient(&#34;<span class="copyable orange-text" onclick="copyToClipboard(event); event.stopPropagation();">xoxb-05047172927-298483969606-9a05046c9394fd596c2cc2aa</span>&#34;)</pre>
-                    </td>
-                  </tr>
-                </table>
-              </div>
-              <div class="collapsible-body">
-                <table>
-                  <tr class="no-border">
-                    <td class="code-line-number">
-                      18
-                    </td>
-                    <td class="select code-line">
-                      <pre>_bot = SlackClient(&#34;<span class="orange-text">xoxb-05047172927-298483969606-9a05046c9394fd596c2cc2aa</span>&#34;)</pre>
-                      </td>
-                  </tr>
-                  </table>
-              </div>
-            </li>
-            </ul>
-        </div>
-      </div>
-      <div class="card issue rule-e37d43fc-e467-357c-beec-442ccf35e68c">
-        <div class="card-content">
-          <span class="card-title">
-            <span class="tooltipped" data-position="top" data-tooltip="[a-zA-Z]{3,10}://[^/\s:@]{3,20}:[^/\s:@]{3,20}@.{1,100}[&#34;&#39;\s]">Password in URL</span>
-            <span class="new badge green darken-2" data-badge-caption="LOW"></span>
-          </span>
-          <span>
-            <span class="search-path copyable monospace highlight break-all" onclick="copyToClipboard(event)">config/prod.yaml</span>
-            </span>
-          </div>
-        <div class="card-action">
-          <ul class="collapsible expandable z-depth-0 monospace">
-            
-            <li>
-              <div class="non-collapsible-header">
-                <table>
-                  <tr class="no-border">
-                    <td class="code-line-number">
-                      4
-                    </td>
-                    <td class="select code-line">
-                      <pre>db: <span class="copyable green-text" onclick="copyToClipboard(event); event.stopPropagation();">postgresql://postgres:Postgres1!@postgres/accounts</span></pre>
-                    </td>
-                  </tr>
-                </table>
-              </div>
-              <div class="collapsible-body">
-                <table>
-                  <tr class="no-border">
-                    <td class="code-line-number">
-                      4
-                    </td>
-                    <td class="select code-line">
-                      <pre>db: <span class="green-text">postgresql://postgres:Postgres1!@postgres/accounts</span></pre>
-                      </td>
-                  </tr>
-                  </table>
-              </div>
-            </li>
-            </ul>
-        </div>
-      </div>
-      </div>
+      {% endfor -%}
+      {% endfor -%}
+      {% endfor -%}
+    </div>
   </div>
   <footer>
     <p class="helper-text">

@@ -6,7 +6,7 @@
       "pattern": "AKIA[0-9A-Z]{16}",
       "severity": "HIGH"
     },
-    "path": "/lib/aws/client.py",
+    "path": "lib/aws/client.py",
     "line": "12",
     "secret": "AKIABACE43789891CE72",
     "context": {
@@ -27,7 +27,7 @@
       "message": "High Entropy",
       "severity": "MEDIUM"
     },
-    "path": "/lib/notifier/email.py",
+    "path": "lib/notifier/email.py",
     "line": "17",
     "secret": "A5f8760a16039c1aD66dc3EBbce533c3",
     "context": {
@@ -47,7 +47,7 @@
       "pattern": "xox[p|b|o|a]-[0-9]{12}-[0-9]{12}-[a-z0-9]{24}",
       "severity": "MEDIUM"
     },
-    "path": "/lib/notifier/slack.py",
+    "path": "lib/notifier/slack.py",
     "line": "18",
     "secret": "xoxb-05047172927-298483969606-9a05046c9394fd596c2cc2aa",
     "context": {
@@ -67,7 +67,7 @@
       "pattern": "[a-zA-Z]{3,10}://[^/\\s:@]{3,20}:[^/\\s:@]{3,20}@.{1,100}[\"'\\s]",
       "severity": "LOW"
     },
-    "path": "/config/prod.yaml",
+    "path": "config/prod.yaml",
     "line": "4",
     "secret": "postgresql://postgres:Postgres1!@postgres/accounts",
     "context": {
