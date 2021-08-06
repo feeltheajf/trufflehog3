@@ -141,7 +141,7 @@ def _get_cmdline_args(**defaults) -> argparse.Namespace:
     parser.add_argument(
         "-z",
         "--zero",
-        help="always exit with status code 0",
+        help="always exit with zero status code",
         dest="zero",
         action="store_true",
     )
