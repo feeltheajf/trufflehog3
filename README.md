@@ -68,6 +68,10 @@ If for some reason you would like to avoid such behavior, there is a new `--igno
 
 You can now run an incremental scan by specifying the path to the baseline JSON report as `-i/--incremental` CLI argument. In this case, only the new issues compared to the baseline will be reported.
 
+### Multiprocessing
+
+Multiprocessing support allows for much faster scans, you can alter the default workers count using `-p/--processes` CLI argument.
+
 ## Thanks
 
 Special thanks to Dylan Ayrey ([@dxa4481](https://github.com/dxa4481)), developer of the original [truffleHog](https://github.com/dxa4481/truffleHog) scanner
