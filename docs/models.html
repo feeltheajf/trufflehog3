@@ -1,0 +1,1460 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<link rel="stylesheet" href="https://feeltheajf.github.io/materialize/materialize.min.css" integrity="sha256-kpeCd0c1zTgJMsU+s8Pz4CwckI73qwpdYMTxTsRyO8A=" crossorigin>
+<script src="https://feeltheajf.github.io/materialize/materialize.min.js" integrity="sha256-U/cHDMTIHCeMcvehBv1xQ052bPSbJtbuiw4QA9cTKz0=" crossorigin></script>
+<style>
+:root {
+--pt-color: rgb(0, 40, 80);
+--st-color: rgb(80, 120, 200);
+--tt-color: rgb(150, 160, 170);
+--pb-color: rgb(255, 255, 255);
+--sb-color: rgb(255, 255, 255);
+--tb-color: rgb(245, 245, 250);
+--hw-color: rgb(255, 255, 255);
+--hg-color: rgb(56, 142, 60);
+--ho-color: rgb(245, 124, 1);
+--hr-color: rgb(211, 46, 47);
+}
+[theme="dark"] {
+--pt-color: rgb(240, 240, 240);
+--st-color: rgb(120, 160, 240);
+--tt-color: rgb(130, 140, 150);
+--pb-color: rgb(32, 37, 43);
+--sb-color: rgb(39, 44, 53);
+--tb-color: rgb(43, 49, 61);
+}
+body {
+color: var(--pt-color);
+background-color: var(--pb-color);
+}
+* {
+border-color: var(--tb-color) !important;
+font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif !important;
+}
+code, code * {
+font-family: PT Mono, monospace !important;
+}
+dd > code, .desc > p > code {
+background-color: var(--tb-color);
+border-style: solid 1px;
+border-radius: 4px;
+padding: 2px 4px;
+}
+i {
+font-family: "Material Icons" !important;
+}
+a {
+color: var(--st-color);
+}
+a:hover {
+text-decoration: underline;
+}
+h6 {
+font-weight: bold;
+}
+footer {
+text-align: center;
+font-size: x-small;
+padding-bottom: 20px;
+}
+dd {
+margin: 0 0 0 16px !important;
+}
+.def {
+background-color: var(--tb-color);
+border-radius: 4px;
+padding: 4px 16px;
+}
+.def pre {
+display: flex;
+white-space: nowrap;
+}
+.def pre .hljs {
+padding: 0 !important;
+margin: 0 !important;
+}
+.desc {
+color: var(--tt-color);
+}
+.desc h2 {
+color: var(--st-color);
+font-size: 1.5em;
+}
+.highlight {
+color: var(--st-color) !important;
+}
+.helper-text {
+color: var(--tt-color) !important;
+}
+.badge {
+min-width: 0 !important;
+}
+.clickable {
+cursor: pointer;
+}
+.material-tooltip {
+color: var(--pb-color);
+background-color: var(--st-color);
+}
+.name {
+background-color: var(--tb-color);
+margin-bottom: 16px;
+padding: 16px;
+display: block;
+width: 100%;
+border-radius: 4px;
+word-wrap: break-word;
+word-break: break-word;
+}
+.hljs {
+background-color: var(--tb-color) !important;
+border-radius: 4px;
+padding: 16px !important;
+}
+.no-border {
+border: none !important;
+}
+.no-left-padding {
+padding: 10px 0 !important;
+}
+.no-vertical-padding {
+padding-top: 0 !important;
+padding-bottom: 0 !important;
+}
+.no-wrap {
+white-space: nowrap;
+}
+.btn-menu {
+background-color: var(--st-color) !important;
+}
+.hlist {
+list-style: none;
+}
+.hlist li {
+display: inline;
+}
+.hlist li:after {
+content: ', \2002';
+}
+.hlist li:last-child:after {
+content: none;
+}
+.hlist .hlist {
+display: inline;
+padding-left: 1em;
+}
+.admonition {
+color: var(--pb-color);
+padding: 4px 16px;
+margin-bottom: 16px;
+border-radius: 4px;
+}
+.admonition-title {
+font-weight: bold;
+}
+.admonition.note,
+.admonition.info,
+.admonition.important {
+background-color: var(--st-color);
+}
+.admonition.todo,
+.admonition.versionadded,
+.admonition.tip,
+.admonition.hint {
+background-color: var(--hg-color);
+}
+.admonition.warning,
+.admonition.versionchanged,
+.admonition.deprecated {
+background-color: var(--ho-color);
+}
+.admonition.error,
+.admonition.danger,
+.admonition.caution {
+background-color: var(--hr-color);
+}
+</style>
+<title>trufflehog3.models API documentation</title>
+<meta name="description" content="Helper classes for passing data around." />
+<link id="hljs-style">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>
+const dark = 'dark';
+const light = 'light';
+function scannerHelp() {
+window.open('https://github.com/feeltheajf/trufflehog3');
+}
+function getTheme() {
+return document.documentElement.getAttribute('theme');
+}
+function setTheme(theme, noHighlighting) {
+document.documentElement.setAttribute('theme', theme);
+if (!noHighlighting) {
+initHighlighting();
+}
+}
+function switchTheme(noHighlighting) {
+const theme = getTheme() == light ? dark : light;
+localStorage.setItem('theme', theme);
+setTheme(theme, noHighlighting);
+}
+function initHighlighting() {
+document.head.removeChild(document.getElementById('hljs-style'));
+const theme = getTheme() == dark ? dark : light;
+const link = document.createElement('link');
+link.id = 'hljs-style';
+link.rel = 'stylesheet preload';
+link.as = 'style';
+link.href = 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/atom-one-' + theme + '.min.css';
+document.getElementsByTagName('HEAD')[0].appendChild(link);
+hljs.initHighlighting();
+}
+const browserTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? dark : light;
+const theme = localStorage.getItem('theme') || browserTheme;
+setTheme(theme, true);
+</script>
+</head>
+<body>
+<div class="fixed-action-btn">
+<a class="btn-floating btn-menu"><i class="material-icons">menu</i></a>
+<ul>
+<li><a class="btn-floating purple" onclick="scannerHelp()"><i class="material-icons">help</i></a></li>
+<li><a class="btn-floating yellow" onclick="switchTheme()"><i class="material-icons">brightness_medium</i></a></li>
+</ul>
+</div>
+<div class="row main">
+<div class="col s12 m12 l3">
+<div id="sidebar">
+<ul id="index" class="collection with-header no-border">
+<li class="collection-header transparent">
+<h4>Index</h4>
+</li>
+<div class="toc">
+<ul></ul>
+</div>
+<li class="collection-header transparent no-border no-vertical-padding">
+<h5><a href="#header-supermodule">Super-module</a></h5>
+<ul class="collection no-border">
+<li class="collection-item transparent no-border no-vertical-padding">
+<code><a title="trufflehog3" href="index.html">trufflehog3</a></code>
+</li>
+</ul>
+</li>
+<li class="collection-header transparent no-border no-vertical-padding">
+<h5><a href="#header-classes">Classes</a></h5>
+<ul class="collection with-header no-border">
+<li class="collection-header transparent no-border no-vertical-padding">
+<b><code><a title="trufflehog3.models.CaseInsensitiveEnumMeta" href="#trufflehog3.models.CaseInsensitiveEnumMeta">CaseInsensitiveEnumMeta</a></code></b>
+</li>
+<li class="collection-header transparent no-border no-vertical-padding">
+<b><code><a title="trufflehog3.models.Severity" href="#trufflehog3.models.Severity">Severity</a></code></b>
+</li>
+<li class="collection-header transparent no-border no-vertical-padding">
+<b><code><a title="trufflehog3.models.Format" href="#trufflehog3.models.Format">Format</a></code></b>
+</li>
+<li class="collection-header transparent no-border no-vertical-padding">
+<b><code><a title="trufflehog3.models.Model" href="#trufflehog3.models.Model">Model</a></code></b>
+<ul class="collection no-border">
+<li class="collection-item transparent no-border no-vertical-padding">
+<code><a title="trufflehog3.models.Model.asdict" href="#trufflehog3.models.Model.asdict">asdict</a></code>
+</li>
+</ul>
+</li>
+<li class="collection-header transparent no-border no-vertical-padding">
+<b><code><a title="trufflehog3.models.File" href="#trufflehog3.models.File">File</a></code></b>
+<ul class="collection no-border">
+<li class="collection-item transparent no-border no-vertical-padding">
+<code><a title="trufflehog3.models.File.read" href="#trufflehog3.models.File.read">read</a></code>
+</li>
+</ul>
+</li>
+<li class="collection-header transparent no-border no-vertical-padding">
+<b><code><a title="trufflehog3.models.Rule" href="#trufflehog3.models.Rule">Rule</a></code></b>
+<ul class="collection no-border">
+<li class="collection-item transparent no-border no-vertical-padding">
+<code><a title="trufflehog3.models.Rule.fromany" href="#trufflehog3.models.Rule.fromany">fromany</a></code>
+</li>
+<li class="collection-item transparent no-border no-vertical-padding">
+<code><a title="trufflehog3.models.Rule.fromdict" href="#trufflehog3.models.Rule.fromdict">fromdict</a></code>
+</li>
+<li class="collection-item transparent no-border no-vertical-padding">
+<code><a title="trufflehog3.models.Rule.fromargs" href="#trufflehog3.models.Rule.fromargs">fromargs</a></code>
+</li>
+<li class="collection-item transparent no-border no-vertical-padding">
+<code><a title="trufflehog3.models.Rule.findall" href="#trufflehog3.models.Rule.findall">findall</a></code>
+</li>
+</ul>
+</li>
+<li class="collection-header transparent no-border no-vertical-padding">
+<b><code><a title="trufflehog3.models.Entropy" href="#trufflehog3.models.Entropy">Entropy</a></code></b>
+<ul class="collection no-border">
+<li class="collection-item transparent no-border no-vertical-padding">
+<code><a title="trufflehog3.models.Entropy.findall" href="#trufflehog3.models.Entropy.findall">findall</a></code>
+</li>
+</ul>
+</li>
+<li class="collection-header transparent no-border no-vertical-padding">
+<b><code><a title="trufflehog3.models.Pattern" href="#trufflehog3.models.Pattern">Pattern</a></code></b>
+<ul class="collection no-border">
+<li class="collection-item transparent no-border no-vertical-padding">
+<code><a title="trufflehog3.models.Pattern.findall" href="#trufflehog3.models.Pattern.findall">findall</a></code>
+</li>
+</ul>
+</li>
+<li class="collection-header transparent no-border no-vertical-padding">
+<b><code><a title="trufflehog3.models.Exclude" href="#trufflehog3.models.Exclude">Exclude</a></code></b>
+<ul class="collection no-border">
+<li class="collection-item transparent no-border no-vertical-padding">
+<code><a title="trufflehog3.models.Exclude.fromany" href="#trufflehog3.models.Exclude.fromany">fromany</a></code>
+</li>
+<li class="collection-item transparent no-border no-vertical-padding">
+<code><a title="trufflehog3.models.Exclude.fromdict" href="#trufflehog3.models.Exclude.fromdict">fromdict</a></code>
+</li>
+<li class="collection-item transparent no-border no-vertical-padding">
+<code><a title="trufflehog3.models.Exclude.findall" href="#trufflehog3.models.Exclude.findall">findall</a></code>
+</li>
+</ul>
+</li>
+<li class="collection-header transparent no-border no-vertical-padding">
+<b><code><a title="trufflehog3.models.Context" href="#trufflehog3.models.Context">Context</a></code></b>
+</li>
+<li class="collection-header transparent no-border no-vertical-padding">
+<b><code><a title="trufflehog3.models.Issue" href="#trufflehog3.models.Issue">Issue</a></code></b>
+</li>
+<li class="collection-header transparent no-border no-vertical-padding">
+<b><code><a title="trufflehog3.models.Config" href="#trufflehog3.models.Config">Config</a></code></b>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="col s12 m12 l7 offset-l1">
+<article id="content">
+<header>
+<ul class="collection with-header no-border">
+<li class="collection-header transparent no-border no-left-padding">
+<h4>
+Module trufflehog3.models
+</h4>
+<section id="section-intro" class="helper-text">
+<p>Helper classes for passing data around.</p>
+</section>
+</li>
+</ul>
+</header>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h5 class="section-title" id="header-classes">Classes</h5>
+<dl>
+<dt id="trufflehog3.models.CaseInsensitiveEnumMeta" class="def">
+<pre>
+                    <code class="python flex name class">
+                        class CaseInsensitiveEnumMeta(*args, **kwargs)
+                    </code>
+                    
+    
+    <span class="badge">
+        <a href="https://github.com/feeltheajf/trufflehog3/blob/bd900724f7f82040689f4d7bcd918fcbabcb7e7e/trufflehog3/models.py#L24-L36" target="_blank">
+            <i class="material-icons clickable highlight tooltipped" data-position="top" data-tooltip="View on GitHub">open_in_new</i>
+        </a>
+    </span>
+
+                </pre>
+</dt>
+<dd>
+<div class="desc"><p>Meta class for case-insensitive enum.</p></div>
+<h6>Ancestors</h6>
+<ul class="hlist">
+<li>enum.EnumMeta</li>
+<li>builtins.type</li>
+</ul>
+</dd>
+<dt id="trufflehog3.models.Severity" class="def">
+<pre>
+                    <code class="python flex name class">
+                        class Severity(value, *args, **kwargs)
+                    </code>
+                    
+    
+    <span class="badge">
+        <a href="https://github.com/feeltheajf/trufflehog3/blob/bd900724f7f82040689f4d7bcd918fcbabcb7e7e/trufflehog3/models.py#L39-L60" target="_blank">
+            <i class="material-icons clickable highlight tooltipped" data-position="top" data-tooltip="View on GitHub">open_in_new</i>
+        </a>
+    </span>
+
+                </pre>
+</dt>
+<dd>
+<div class="desc"><p>Issue severity based on match confidence and other factors.</p></div>
+<h6>Ancestors</h6>
+<ul class="hlist">
+<li>enum.Enum</li>
+</ul>
+<h6>Class variables</h6>
+<dl>
+<dt id="trufflehog3.models.Severity.LOW"><code class="name">var LOW</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="trufflehog3.models.Severity.MEDIUM"><code class="name">var MEDIUM</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="trufflehog3.models.Severity.HIGH"><code class="name">var HIGH</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="trufflehog3.models.Format" class="def">
+<pre>
+                    <code class="python flex name class">
+                        class Format(value, *args, **kwargs)
+                    </code>
+                    
+    
+    <span class="badge">
+        <a href="https://github.com/feeltheajf/trufflehog3/blob/bd900724f7f82040689f4d7bcd918fcbabcb7e7e/trufflehog3/models.py#L63-L68" target="_blank">
+            <i class="material-icons clickable highlight tooltipped" data-position="top" data-tooltip="View on GitHub">open_in_new</i>
+        </a>
+    </span>
+
+                </pre>
+</dt>
+<dd>
+<div class="desc"><p>Supported output formats.</p></div>
+<h6>Ancestors</h6>
+<ul class="hlist">
+<li>enum.Enum</li>
+</ul>
+<h6>Class variables</h6>
+<dl>
+<dt id="trufflehog3.models.Format.TEXT"><code class="name">var TEXT</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="trufflehog3.models.Format.JSON"><code class="name">var JSON</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="trufflehog3.models.Format.HTML"><code class="name">var HTML</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="trufflehog3.models.Model" class="def">
+<pre>
+                    <code class="python flex name class">
+                        class Model
+                    </code>
+                    
+    
+    <span class="badge">
+        <a href="https://github.com/feeltheajf/trufflehog3/blob/bd900724f7f82040689f4d7bcd918fcbabcb7e7e/trufflehog3/models.py#L71-L79" target="_blank">
+            <i class="material-icons clickable highlight tooltipped" data-position="top" data-tooltip="View on GitHub">open_in_new</i>
+        </a>
+    </span>
+
+                </pre>
+</dt>
+<dd>
+<div class="desc"><p>Model is a base class for all models definitions.</p>
+<p>Method generated by attrs for class Model.</p></div>
+<h6>Subclasses</h6>
+<ul class="hlist">
+<li><a title="trufflehog3.models.Config" href="#trufflehog3.models.Config">Config</a></li>
+<li><a title="trufflehog3.models.File" href="#trufflehog3.models.File">File</a></li>
+<li><a title="trufflehog3.models.Issue" href="#trufflehog3.models.Issue">Issue</a></li>
+<li><a title="trufflehog3.models.Rule" href="#trufflehog3.models.Rule">Rule</a></li>
+</ul>
+<h6>Methods</h6>
+<dl>
+<dt id="trufflehog3.models.Model.asdict" class="def">
+<pre>
+            <code class="python flex name">
+                
+
+                def asdict(self)
+                
+            </code>
+            
+    
+    <span class="badge">
+        <a href="https://github.com/feeltheajf/trufflehog3/blob/bd900724f7f82040689f4d7bcd918fcbabcb7e7e/trufflehog3/models.py#L75-L79" target="_blank">
+            <i class="material-icons clickable highlight tooltipped" data-position="top" data-tooltip="View on GitHub">open_in_new</i>
+        </a>
+    </span>
+
+        </pre>
+</dt>
+<dd>
+<div class="desc"><p>Convert model to dictionary.</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="trufflehog3.models.File" class="def">
+<pre>
+                    <code class="python flex name class">
+                        class File(<br>
+                        &nbsp&nbsp&nbsp&nbsppath: str,<br>
+                        &nbsp&nbsp&nbsp&nbspbranch: Optional[str] = None,<br>
+                        &nbsp&nbsp&nbsp&nbspmessage: Optional[str] = None,<br>
+                        &nbsp&nbsp&nbsp&nbspcommit: Optional[str] = None,<br>
+                        &nbsp&nbsp&nbsp&nbspauthor: Optional[str] = None,<br>
+                        &nbsp&nbsp&nbsp&nbspdate: Optional[datetime.datetime] = None,<br>
+                        &nbsp&nbsp&nbsp&nbspcontent: Optional[str] = None,<br>
+                        &nbsp&nbsp&nbsp&nbspabsolute: Optional[str] = None,<br>
+                        )
+                    </code>
+                    
+    
+    <span class="badge">
+        <a href="https://github.com/feeltheajf/trufflehog3/blob/bd900724f7f82040689f4d7bcd918fcbabcb7e7e/trufflehog3/models.py#L82-L142" target="_blank">
+            <i class="material-icons clickable highlight tooltipped" data-position="top" data-tooltip="View on GitHub">open_in_new</i>
+        </a>
+    </span>
+
+                </pre>
+</dt>
+<dd>
+<div class="desc"><p>File is a basic wrapper with Git metadata support.</p>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt>path (str)</dt>
+<dd>File path.</dd>
+<dt>branch (str, optional)</dt>
+<dd>Git commit branch.</dd>
+<dt>message (str, optional)</dt>
+<dd>Git commit message.</dd>
+<dt>author (str, optional)</dt>
+<dd>Git commit author as <code>name &lt;email&gt;</code>.</dd>
+<dt>commit (str, optional)</dt>
+<dd>Git commit hash.</dd>
+<dt>date (datetime.datetime, optional)</dt>
+<dd>Git commit timestamp.</dd>
+</dl>
+<h2 id="args">Args</h2>
+<dl>
+<dt>content (str, optional)</dt>
+<dd>File content.</dd>
+</dl>
+<h2 id="examples">Examples</h2>
+<p>Basic usage examples</p>
+<pre><code class="language-python-repl">&gt;&gt;&gt; f = File(&quot;tests/data/test_file.txt&quot;)
+&gt;&gt;&gt; f.read()
+'Test'
+&gt;&gt;&gt; f = File(&quot;nosuchpath/test_file.txt&quot;, content=&quot;Test&quot;)
+&gt;&gt;&gt; f.read()
+'Test'
+</code></pre>
+<p>Method generated by attrs for class File.</p></div>
+<h6>Ancestors</h6>
+<ul class="hlist">
+<li><a title="trufflehog3.models.Model" href="#trufflehog3.models.Model">Model</a></li>
+</ul>
+<h6>Class variables</h6>
+<dl>
+<dt id="trufflehog3.models.File.path"><code class="name">var path : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="trufflehog3.models.File.branch"><code class="name">var branch : Optional[str]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="trufflehog3.models.File.message"><code class="name">var message : Optional[str]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="trufflehog3.models.File.commit"><code class="name">var commit : Optional[str]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="trufflehog3.models.File.author"><code class="name">var author : Optional[str]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="trufflehog3.models.File.date"><code class="name">var date : Optional[datetime.datetime]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h6>Methods</h6>
+<dl>
+<dt id="trufflehog3.models.File.read" class="def">
+<pre>
+            <code class="python flex name">
+                
+
+                def read(self)
+                 ‑> str
+            </code>
+            
+    
+    <span class="badge">
+        <a href="https://github.com/feeltheajf/trufflehog3/blob/bd900724f7f82040689f4d7bcd918fcbabcb7e7e/trufflehog3/models.py#L133-L142" target="_blank">
+            <i class="material-icons clickable highlight tooltipped" data-position="top" data-tooltip="View on GitHub">open_in_new</i>
+        </a>
+    </span>
+
+        </pre>
+</dt>
+<dd>
+<div class="desc"><p>Return the given content or read file from path.</p></div>
+</dd>
+</dl>
+<h6>Inherited members</h6>
+<ul class="hlist">
+<li><code><b><a title="trufflehog3.models.Model" href="#trufflehog3.models.Model">Model</a></b></code>:
+<ul class="hlist">
+<li><code><a title="trufflehog3.models.Model.asdict" href="#trufflehog3.models.Model.asdict">asdict</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="trufflehog3.models.Rule" class="def">
+<pre>
+                    <code class="python flex name class">
+                        class Rule
+                    </code>
+                    
+    
+    <span class="badge">
+        <a href="https://github.com/feeltheajf/trufflehog3/blob/bd900724f7f82040689f4d7bcd918fcbabcb7e7e/trufflehog3/models.py#L145-L178" target="_blank">
+            <i class="material-icons clickable highlight tooltipped" data-position="top" data-tooltip="View on GitHub">open_in_new</i>
+        </a>
+    </span>
+
+                </pre>
+</dt>
+<dd>
+<div class="desc"><p>Rule is a base class for rules definitions.</p>
+<p>Method generated by attrs for class Rule.</p></div>
+<h6>Ancestors</h6>
+<ul class="hlist">
+<li><a title="trufflehog3.models.Model" href="#trufflehog3.models.Model">Model</a></li>
+<li>abc.ABC</li>
+</ul>
+<h6>Subclasses</h6>
+<ul class="hlist">
+<li><a title="trufflehog3.models.Entropy" href="#trufflehog3.models.Entropy">Entropy</a></li>
+<li><a title="trufflehog3.models.Exclude" href="#trufflehog3.models.Exclude">Exclude</a></li>
+<li><a title="trufflehog3.models.Pattern" href="#trufflehog3.models.Pattern">Pattern</a></li>
+</ul>
+<h6>Static methods</h6>
+<dl>
+<dt id="trufflehog3.models.Rule.fromany" class="def">
+<pre>
+            <code class="python flex name">
+                
+
+                def fromany(x: Any)
+                 ‑> Any
+            </code>
+            
+    
+    <span class="badge">
+        <a href="https://github.com/feeltheajf/trufflehog3/blob/bd900724f7f82040689f4d7bcd918fcbabcb7e7e/trufflehog3/models.py#L162-L165" target="_blank">
+            <i class="material-icons clickable highlight tooltipped" data-position="top" data-tooltip="View on GitHub">open_in_new</i>
+        </a>
+    </span>
+
+        </pre>
+</dt>
+<dd>
+<div class="desc"><p>Convert any object to rule.</p></div>
+</dd>
+<dt id="trufflehog3.models.Rule.fromdict" class="def">
+<pre>
+            <code class="python flex name">
+                
+
+                def fromdict(x: Dict[str, Any])
+                 ‑> Any
+            </code>
+            
+    
+    <span class="badge">
+        <a href="https://github.com/feeltheajf/trufflehog3/blob/bd900724f7f82040689f4d7bcd918fcbabcb7e7e/trufflehog3/models.py#L167-L173" target="_blank">
+            <i class="material-icons clickable highlight tooltipped" data-position="top" data-tooltip="View on GitHub">open_in_new</i>
+        </a>
+    </span>
+
+        </pre>
+</dt>
+<dd>
+<div class="desc"><p>Convert dict to rule subclass.</p></div>
+</dd>
+<dt id="trufflehog3.models.Rule.fromargs" class="def">
+<pre>
+            <code class="python flex name">
+                
+
+                def fromargs(**x: Any)
+                 ‑> Any
+            </code>
+            
+    
+    <span class="badge">
+        <a href="https://github.com/feeltheajf/trufflehog3/blob/bd900724f7f82040689f4d7bcd918fcbabcb7e7e/trufflehog3/models.py#L175-L178" target="_blank">
+            <i class="material-icons clickable highlight tooltipped" data-position="top" data-tooltip="View on GitHub">open_in_new</i>
+        </a>
+    </span>
+
+        </pre>
+</dt>
+<dd>
+<div class="desc"><p>Convert args to rule subclass.</p></div>
+</dd>
+</dl>
+<h6>Methods</h6>
+<dl>
+<dt id="trufflehog3.models.Rule.findall" class="def">
+<pre>
+            <code class="python flex name">
+                
+
+                def findall(self, s: str)
+                 ‑> List[str]
+            </code>
+            
+    
+    <span class="badge">
+        <a href="https://github.com/feeltheajf/trufflehog3/blob/bd900724f7f82040689f4d7bcd918fcbabcb7e7e/trufflehog3/models.py#L157-L160" target="_blank">
+            <i class="material-icons clickable highlight tooltipped" data-position="top" data-tooltip="View on GitHub">open_in_new</i>
+        </a>
+    </span>
+
+        </pre>
+</dt>
+<dd>
+<div class="desc"><p>Find all substrings matching rule.</p></div>
+</dd>
+</dl>
+<h6>Inherited members</h6>
+<ul class="hlist">
+<li><code><b><a title="trufflehog3.models.Model" href="#trufflehog3.models.Model">Model</a></b></code>:
+<ul class="hlist">
+<li><code><a title="trufflehog3.models.Model.asdict" href="#trufflehog3.models.Model.asdict">asdict</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="trufflehog3.models.Entropy" class="def">
+<pre>
+                    <code class="python flex name class">
+                        class Entropy(<br>
+                        &nbsp&nbsp&nbsp&nbspid: str = 'high-entropy',<br>
+                        &nbsp&nbsp&nbsp&nbspmessage: str = 'High Entropy',<br>
+                        &nbsp&nbsp&nbsp&nbspseverity=MEDIUM,<br>
+                        &nbsp&nbsp&nbsp&nbspalphabet: Optional[str] = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+/=',<br>
+                        &nbsp&nbsp&nbsp&nbspthreshold: Optional[float] = 4.5,<br>
+                        &nbsp&nbsp&nbsp&nbspminlen: Optional[int] = 20,<br>
+                        )
+                    </code>
+                    
+    
+    <span class="badge">
+        <a href="https://github.com/feeltheajf/trufflehog3/blob/bd900724f7f82040689f4d7bcd918fcbabcb7e7e/trufflehog3/models.py#L181-L263" target="_blank">
+            <i class="material-icons clickable highlight tooltipped" data-position="top" data-tooltip="View on GitHub">open_in_new</i>
+        </a>
+    </span>
+
+                </pre>
+</dt>
+<dd>
+<div class="desc"><p>Entropy is used for detecting high entropy strings.</p>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt>id (str)</dt>
+<dd>Rule ID, should be unique.</dd>
+<dt>message (str)</dt>
+<dd>Short explanation of what is matched by the rule.</dd>
+<dt>severity (Severity)</dt>
+<dd>Severity of issues detected by the rule.</dd>
+</dl>
+<h2 id="args">Args</h2>
+<dl>
+<dt>alphabet (str, optional)</dt>
+<dd>Alphabet to search characters from.</dd>
+<dt>threshold (float, optional)</dt>
+<dd>Shannon entropy threshold.</dd>
+<dt>minlen (int, optional)</dt>
+<dd>Minimum match length.</dd>
+</dl>
+<h2 id="examples">Examples</h2>
+<p>There are two ways to customize high entropy check.
+The easiest one is to set custom minimum length for matched strings.
+The other way is to set custom alphabets and/or thresholds for them.</p>
+<pre><code class="language-python-repl">&gt;&gt;&gt; BASE32_CHARS = string.ascii_letters + &quot;234567=&quot;
+&gt;&gt;&gt; rule = Entropy(
+...     alphabet=BASE32_CHARS,
+...     threshold=3.75,
+...     minlen=10,
+... )
+&gt;&gt;&gt; rule.findall(&quot;password = 'irtksdajfhaeu356'&quot;)
+['irtksdajfhaeu356']
+</code></pre>
+<p>Method generated by attrs for class Entropy.</p></div>
+<h6>Ancestors</h6>
+<ul class="hlist">
+<li><a title="trufflehog3.models.Rule" href="#trufflehog3.models.Rule">Rule</a></li>
+<li><a title="trufflehog3.models.Model" href="#trufflehog3.models.Model">Model</a></li>
+<li>abc.ABC</li>
+</ul>
+<h6>Class variables</h6>
+<dl>
+<dt id="trufflehog3.models.Entropy.id"><code class="name">var id : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="trufflehog3.models.Entropy.message"><code class="name">var message : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="trufflehog3.models.Entropy.severity"><code class="name">var severity : Optional[<a title="trufflehog3.models.Severity" href="#trufflehog3.models.Severity">Severity</a>]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h6>Methods</h6>
+<dl>
+<dt id="trufflehog3.models.Entropy.findall" class="def">
+<pre>
+            <code class="python flex name">
+                
+
+                def findall(self, s: str)
+                 ‑> List[str]
+            </code>
+            
+    
+    <span class="badge">
+        <a href="https://github.com/feeltheajf/trufflehog3/blob/bd900724f7f82040689f4d7bcd918fcbabcb7e7e/trufflehog3/models.py#L236-L263" target="_blank">
+            <i class="material-icons clickable highlight tooltipped" data-position="top" data-tooltip="View on GitHub">open_in_new</i>
+        </a>
+    </span>
+
+        </pre>
+</dt>
+<dd>
+<div class="desc"><p>Find high entropy substring occurrences in the string.</p>
+<h2 id="examples">Examples</h2>
+<p>Basic usage examples. The first match here is from base64 alphabet
+and the second one exceeded defined hexadecimal entropy threshold.</p>
+<pre><code class="language-python-repl">&gt;&gt;&gt; rule = Entropy()
+&gt;&gt;&gt; rule.findall(&quot;token = 'abcdefghijklmnopqrstuvwxyz'&quot;)
+['abcdefghijklmnopqrstuvwxyz']
+</code></pre>
+<pre><code class="language-python-repl">&gt;&gt;&gt; rule = Entropy(
+...     alphabet=HEX_CHARS,
+...     threshold=HEX_LIMIT,
+...     minlen=10,
+... )
+&gt;&gt;&gt; rule.findall(&quot;password = '1234567890'&quot;)
+['1234567890']
+</code></pre></div>
+</dd>
+</dl>
+<h6>Inherited members</h6>
+<ul class="hlist">
+<li><code><b><a title="trufflehog3.models.Rule" href="#trufflehog3.models.Rule">Rule</a></b></code>:
+<ul class="hlist">
+<li><code><a title="trufflehog3.models.Rule.asdict" href="#trufflehog3.models.Model.asdict">asdict</a></code></li>
+<li><code><a title="trufflehog3.models.Rule.fromany" href="#trufflehog3.models.Rule.fromany">fromany</a></code></li>
+<li><code><a title="trufflehog3.models.Rule.fromargs" href="#trufflehog3.models.Rule.fromargs">fromargs</a></code></li>
+<li><code><a title="trufflehog3.models.Rule.fromdict" href="#trufflehog3.models.Rule.fromdict">fromdict</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="trufflehog3.models.Pattern" class="def">
+<pre>
+                    <code class="python flex name class">
+                        class Pattern(<br>
+                        &nbsp&nbsp&nbsp&nbspid: str,<br>
+                        &nbsp&nbsp&nbsp&nbspmessage: str,<br>
+                        &nbsp&nbsp&nbsp&nbsppattern: str,<br>
+                        &nbsp&nbsp&nbsp&nbspseverity=MEDIUM,<br>
+                        )
+                    </code>
+                    
+    
+    <span class="badge">
+        <a href="https://github.com/feeltheajf/trufflehog3/blob/bd900724f7f82040689f4d7bcd918fcbabcb7e7e/trufflehog3/models.py#L266-L338" target="_blank">
+            <i class="material-icons clickable highlight tooltipped" data-position="top" data-tooltip="View on GitHub">open_in_new</i>
+        </a>
+    </span>
+
+                </pre>
+</dt>
+<dd>
+<div class="desc"><p>Pattern holds all neccessary metadata for pattern-based rule definition.</p>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt>id (str)</dt>
+<dd>Rule ID, should be unique.</dd>
+<dt>message (str)</dt>
+<dd>Short explanation of what is matched by the rule.</dd>
+<dt>pattern (Pattern)</dt>
+<dd>Python <code>re.Pattern</code> to search for.</dd>
+<dt>severity (Severity, optional)</dt>
+<dd>Severity of issues detected by the rule.</dd>
+</dl>
+<h2 id="examples">Examples</h2>
+<p>Match <code>letmein</code> string everywhere</p>
+<pre><code class="language-python-repl">&gt;&gt;&gt; rule = Pattern(
+...     id=&quot;bad-password-letmein&quot;,
+...     message=&quot;Bad Password 'letmein'&quot;,
+...     pattern=&quot;letmein&quot;,
+...     severity=&quot;high&quot;,
+... )
+</code></pre>
+<p>Match <code>letmein</code> Python <code>re.Pattern</code>, case-insensitive</p>
+<pre><code class="language-python-repl">&gt;&gt;&gt; rule = Pattern(
+...     id=&quot;bad-password-letmein&quot;,
+...     message=&quot;Bad Password 'letmein'&quot;,
+...     pattern=&quot;(?i)letmein&quot;,
+...     severity=&quot;high&quot;,
+... )
+</code></pre>
+<p>Method generated by attrs for class Pattern.</p></div>
+<h6>Ancestors</h6>
+<ul class="hlist">
+<li><a title="trufflehog3.models.Rule" href="#trufflehog3.models.Rule">Rule</a></li>
+<li><a title="trufflehog3.models.Model" href="#trufflehog3.models.Model">Model</a></li>
+<li>abc.ABC</li>
+</ul>
+<h6>Class variables</h6>
+<dl>
+<dt id="trufflehog3.models.Pattern.id"><code class="name">var id : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="trufflehog3.models.Pattern.message"><code class="name">var message : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="trufflehog3.models.Pattern.pattern"><code class="name">var pattern : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="trufflehog3.models.Pattern.severity"><code class="name">var severity : Optional[<a title="trufflehog3.models.Severity" href="#trufflehog3.models.Severity">Severity</a>]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h6>Methods</h6>
+<dl>
+<dt id="trufflehog3.models.Pattern.findall" class="def">
+<pre>
+            <code class="python flex name">
+                
+
+                def findall(self, s: str)
+                 ‑> List[str]
+            </code>
+            
+    
+    <span class="badge">
+        <a href="https://github.com/feeltheajf/trufflehog3/blob/bd900724f7f82040689f4d7bcd918fcbabcb7e7e/trufflehog3/models.py#L321-L338" target="_blank">
+            <i class="material-icons clickable highlight tooltipped" data-position="top" data-tooltip="View on GitHub">open_in_new</i>
+        </a>
+    </span>
+
+        </pre>
+</dt>
+<dd>
+<div class="desc"><p>Find pattern occurrences in the string.</p>
+<h2 id="examples">Examples</h2>
+<p>Basic usage examples</p>
+<pre><code class="language-python-repl">&gt;&gt;&gt; rule = Pattern(
+...     id=&quot;bad-password-letmein&quot;,
+...     message=&quot;Bad Password 'letmein'&quot;,
+...     pattern=&quot;letmein&quot;,
+...     severity=&quot;high&quot;,
+... )
+&gt;&gt;&gt; rule.findall(&quot;password = 'letmein'&quot;)
+['letmein']
+</code></pre></div>
+</dd>
+</dl>
+<h6>Inherited members</h6>
+<ul class="hlist">
+<li><code><b><a title="trufflehog3.models.Rule" href="#trufflehog3.models.Rule">Rule</a></b></code>:
+<ul class="hlist">
+<li><code><a title="trufflehog3.models.Rule.asdict" href="#trufflehog3.models.Model.asdict">asdict</a></code></li>
+<li><code><a title="trufflehog3.models.Rule.fromany" href="#trufflehog3.models.Rule.fromany">fromany</a></code></li>
+<li><code><a title="trufflehog3.models.Rule.fromargs" href="#trufflehog3.models.Rule.fromargs">fromargs</a></code></li>
+<li><code><a title="trufflehog3.models.Rule.fromdict" href="#trufflehog3.models.Rule.fromdict">fromdict</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="trufflehog3.models.Exclude" class="def">
+<pre>
+                    <code class="python flex name class">
+                        class Exclude(<br>
+                        &nbsp&nbsp&nbsp&nbspmessage: str,<br>
+                        &nbsp&nbsp&nbsp&nbspid: Optional[str] = None,<br>
+                        &nbsp&nbsp&nbsp&nbsppattern=None,<br>
+                        &nbsp&nbsp&nbsp&nbsppaths: Optional[List[str]] = None,<br>
+                        )
+                    </code>
+                    
+    
+    <span class="badge">
+        <a href="https://github.com/feeltheajf/trufflehog3/blob/bd900724f7f82040689f4d7bcd918fcbabcb7e7e/trufflehog3/models.py#L341-L415" target="_blank">
+            <i class="material-icons clickable highlight tooltipped" data-position="top" data-tooltip="View on GitHub">open_in_new</i>
+        </a>
+    </span>
+
+                </pre>
+</dt>
+<dd>
+<div class="desc"><p>Exclude is used for referencing rules in configuration exclude list.</p>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt>message (str)</dt>
+<dd>Short explanation of what is matched by the rule.</dd>
+<dt>id (str, optional)</dt>
+<dd>Rule ID, should be unique.</dd>
+<dt>pattern (Pattern, optional)</dt>
+<dd>Python <code>re.Pattern</code> to search for.</dd>
+<dt>paths (List[str], optional)</dt>
+<dd>File paths for rule to be applied on, defaults to everywhere.
+Each item should be a glob pattern as recognized by <code>pathlib.Path.match</code>.</dd>
+</dl>
+<h2 id="note">Note</h2>
+<p>Only one of <code>id</code>, <code>pattern</code> must be set.</p>
+<p>If <code>paths</code> is set, exclude will only be applied on the specified paths.</p>
+<h2 id="examples">Examples</h2>
+<p>Skip rule by its ID, but only in YAML files</p>
+<pre><code class="language-python-repl">&gt;&gt;&gt; rule = Exclude(
+...     id=&quot;bad-password.letmein&quot;,
+...     message=&quot;Not Password 'letmein'&quot;,
+...     paths=[&quot;*.yaml&quot;, &quot;*.yml&quot;],
+... )
+</code></pre>
+<p>Skip lines containing <code>letmein</code> string</p>
+<pre><code class="language-python-repl">&gt;&gt;&gt; rule = Exclude(
+...     message=&quot;Not Password 'letmein'&quot;,
+...     pattern=&quot;letmein&quot;,
+... )
+</code></pre>
+<p>Skip lines containing <code>letmein</code> Python <code>re.Pattern</code>, case-insensitive</p>
+<pre><code class="language-python-repl">&gt;&gt;&gt; rule = Exclude(
+...     message=&quot;Not Password 'letmein'&quot;,
+...     pattern=&quot;(?i)letmein&quot;,
+... )
+</code></pre>
+<p>Method generated by attrs for class Exclude.</p></div>
+<h6>Ancestors</h6>
+<ul class="hlist">
+<li><a title="trufflehog3.models.Rule" href="#trufflehog3.models.Rule">Rule</a></li>
+<li><a title="trufflehog3.models.Model" href="#trufflehog3.models.Model">Model</a></li>
+<li>abc.ABC</li>
+</ul>
+<h6>Class variables</h6>
+<dl>
+<dt id="trufflehog3.models.Exclude.message"><code class="name">var message : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="trufflehog3.models.Exclude.id"><code class="name">var id : Optional[str]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="trufflehog3.models.Exclude.pattern"><code class="name">var pattern : Optional[re.Pattern]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="trufflehog3.models.Exclude.paths"><code class="name">var paths : Optional[List[str]]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h6>Static methods</h6>
+<dl>
+<dt id="trufflehog3.models.Exclude.fromany" class="def">
+<pre>
+            <code class="python flex name">
+                
+
+                def fromany(x: Any)
+                 ‑> Any
+            </code>
+            
+    
+    <span class="badge">
+        <a href="https://github.com/feeltheajf/trufflehog3/blob/bd900724f7f82040689f4d7bcd918fcbabcb7e7e/trufflehog3/models.py#L407-L410" target="_blank">
+            <i class="material-icons clickable highlight tooltipped" data-position="top" data-tooltip="View on GitHub">open_in_new</i>
+        </a>
+    </span>
+
+        </pre>
+</dt>
+<dd>
+<div class="desc"><p>Convert any object to exclude rule.</p></div>
+</dd>
+<dt id="trufflehog3.models.Exclude.fromdict" class="def">
+<pre>
+            <code class="python flex name">
+                
+
+                def fromdict(x: Dict[str, Any])
+                 ‑> Any
+            </code>
+            
+    
+    <span class="badge">
+        <a href="https://github.com/feeltheajf/trufflehog3/blob/bd900724f7f82040689f4d7bcd918fcbabcb7e7e/trufflehog3/models.py#L412-L415" target="_blank">
+            <i class="material-icons clickable highlight tooltipped" data-position="top" data-tooltip="View on GitHub">open_in_new</i>
+        </a>
+    </span>
+
+        </pre>
+</dt>
+<dd>
+<div class="desc"><p>Convert dict to exclude rule.</p></div>
+</dd>
+</dl>
+<h6>Methods</h6>
+<dl>
+<dt id="trufflehog3.models.Exclude.findall" class="def">
+<pre>
+            <code class="python flex name">
+                
+
+                def findall(self, s: str)
+                 ‑> List[str]
+            </code>
+            
+    
+    <span class="badge">
+        <a href="https://github.com/feeltheajf/trufflehog3/blob/bd900724f7f82040689f4d7bcd918fcbabcb7e7e/trufflehog3/models.py#L399-L405" target="_blank">
+            <i class="material-icons clickable highlight tooltipped" data-position="top" data-tooltip="View on GitHub">open_in_new</i>
+        </a>
+    </span>
+
+        </pre>
+</dt>
+<dd>
+<div class="desc"><p>Find pattern occurrences in the string.</p></div>
+</dd>
+</dl>
+<h6>Inherited members</h6>
+<ul class="hlist">
+<li><code><b><a title="trufflehog3.models.Rule" href="#trufflehog3.models.Rule">Rule</a></b></code>:
+<ul class="hlist">
+<li><code><a title="trufflehog3.models.Rule.asdict" href="#trufflehog3.models.Model.asdict">asdict</a></code></li>
+<li><code><a title="trufflehog3.models.Rule.fromargs" href="#trufflehog3.models.Rule.fromargs">fromargs</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="trufflehog3.models.Context" class="def">
+<pre>
+                    <code class="python flex name class">
+                        class Context(*args, **kwargs)
+                    </code>
+                    
+    
+    <span class="badge">
+        <a href="https://github.com/feeltheajf/trufflehog3/blob/bd900724f7f82040689f4d7bcd918fcbabcb7e7e/trufflehog3/models.py#L418-L436" target="_blank">
+            <i class="material-icons clickable highlight tooltipped" data-position="top" data-tooltip="View on GitHub">open_in_new</i>
+        </a>
+    </span>
+
+                </pre>
+</dt>
+<dd>
+<div class="desc"><p>Dumb workaround for dict being unhashable by default.</p>
+<h2 id="note">Note</h2>
+<p>It is only intended to be used as <code>context</code> property for <code>models.Issue</code>,
+which uses its own hashing algorithm.</p></div>
+<h6>Ancestors</h6>
+<ul class="hlist">
+<li>builtins.dict</li>
+</ul>
+</dd>
+<dt id="trufflehog3.models.Issue" class="def">
+<pre>
+                    <code class="python flex name class">
+                        class Issue(<br>
+                        &nbsp&nbsp&nbsp&nbsprule,<br>
+                        &nbsp&nbsp&nbsp&nbsppath: str,<br>
+                        &nbsp&nbsp&nbsp&nbspline: str,<br>
+                        &nbsp&nbsp&nbsp&nbspsecret: str,<br>
+                        &nbsp&nbsp&nbsp&nbspcontext,<br>
+                        &nbsp&nbsp&nbsp&nbspid: Optional[uuid.UUID] = NOTHING,<br>
+                        &nbsp&nbsp&nbsp&nbspbranch: Optional[str] = None,<br>
+                        &nbsp&nbsp&nbsp&nbspmessage: Optional[str] = None,<br>
+                        &nbsp&nbsp&nbsp&nbspauthor: Optional[str] = None,<br>
+                        &nbsp&nbsp&nbsp&nbspcommit: Optional[str] = None,<br>
+                        &nbsp&nbsp&nbsp&nbspdate: Optional[datetime.datetime] = None,<br>
+                        )
+                    </code>
+                    
+    
+    <span class="badge">
+        <a href="https://github.com/feeltheajf/trufflehog3/blob/bd900724f7f82040689f4d7bcd918fcbabcb7e7e/trufflehog3/models.py#L439-L548" target="_blank">
+            <i class="material-icons clickable highlight tooltipped" data-position="top" data-tooltip="View on GitHub">open_in_new</i>
+        </a>
+    </span>
+
+                </pre>
+</dt>
+<dd>
+<div class="desc"><p>Issue holds finding metadata.</p>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt>rule (Rule):</dt>
+<dd>Rule the issue was detected by.</dd>
+<dt>path (str):</dt>
+<dd>File path.</dd>
+<dt>line (int):</dt>
+<dd>Line number of the matched line.
+For Git history this is the line number in diff blob, not the real one.</dd>
+<dt>secret (str):</dt>
+<dd>String matched by the rule.</dd>
+<dt>context (str):</dt>
+<dd>Code lines containing secret matched by the rule.</dd>
+<dt>id (str, optional):</dt>
+<dd>Issue ID. Generated automatically from <code>path</code>, <code>secret</code> and rule UUID.</dd>
+<dt>branch (str, optional)</dt>
+<dd>Git commit branch.</dd>
+<dt>message (str, optional)</dt>
+<dd>Git commit message.</dd>
+<dt>author (str, optional)</dt>
+<dd>Git commit author as <code>name &lt;email&gt;</code>.</dd>
+<dt>commit (str, optional)</dt>
+<dd>Git commit hash.</dd>
+<dt>date (datetime.datetime, optional)</dt>
+<dd>Git commit timestamp.</dd>
+</dl>
+<h2 id="examples">Examples</h2>
+<p>Basic usage examples</p>
+<pre><code class="language-python-repl">&gt;&gt;&gt; rule = Pattern(
+...     id=&quot;bad-password-letmein&quot;,
+...     message=&quot;Bad Password 'letmein'&quot;,
+...     pattern=&quot;letmein&quot;,
+...     severity=&quot;high&quot;,
+... )
+&gt;&gt;&gt; issue = Issue(
+...     rule=rule,
+...     path=&quot;/path/to/code.py&quot;,
+...     line=&quot;10&quot;,
+...     secret=&quot;letmein&quot;,
+...     context={
+...         &quot;9&quot;:  &quot;username = 'admin'&quot;,
+...         &quot;10&quot;: &quot;password = 'letmein'&quot;,
+...         &quot;11&quot;: &quot;response = authorize(username, password)&quot;,
+...     },
+... )
+&gt;&gt;&gt; issue.id
+UUID('bfd860e4-2002-30dd-a1b1-24e29083c7d5')
+</code></pre>
+<p>Method generated by attrs for class Issue.</p></div>
+<h6>Ancestors</h6>
+<ul class="hlist">
+<li><a title="trufflehog3.models.Model" href="#trufflehog3.models.Model">Model</a></li>
+</ul>
+<h6>Class variables</h6>
+<dl>
+<dt id="trufflehog3.models.Issue.rule"><code class="name">var rule : <a title="trufflehog3.models.Rule" href="#trufflehog3.models.Rule">Rule</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="trufflehog3.models.Issue.path"><code class="name">var path : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="trufflehog3.models.Issue.line"><code class="name">var line : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="trufflehog3.models.Issue.secret"><code class="name">var secret : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="trufflehog3.models.Issue.context"><code class="name">var context : <a title="trufflehog3.models.Context" href="#trufflehog3.models.Context">Context</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="trufflehog3.models.Issue.id"><code class="name">var id : Optional[uuid.UUID]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="trufflehog3.models.Issue.branch"><code class="name">var branch : Optional[str]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="trufflehog3.models.Issue.message"><code class="name">var message : Optional[str]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="trufflehog3.models.Issue.author"><code class="name">var author : Optional[str]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="trufflehog3.models.Issue.commit"><code class="name">var commit : Optional[str]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="trufflehog3.models.Issue.date"><code class="name">var date : Optional[datetime.datetime]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h6>Instance variables</h6>
+<dl>
+<dt id="trufflehog3.models.Issue.multiline"><code class="name">var multiline : bool</code></dt>
+<dd>
+<div class="desc"><p>Return true if context contains multiple lines.</p></div>
+</dd>
+<dt id="trufflehog3.models.Issue.lines"><code class="name">var lines : List[int]</code></dt>
+<dd>
+<div class="desc"><p>Return context keys containing line numbers.</p></div>
+</dd>
+<dt id="trufflehog3.models.Issue.line_start"><code class="name">var line_start : int</code></dt>
+<dd>
+<div class="desc"><p>Return first context line number.</p></div>
+</dd>
+<dt id="trufflehog3.models.Issue.line_end"><code class="name">var line_end : int</code></dt>
+<dd>
+<div class="desc"><p>Return last context line number.</p></div>
+</dd>
+</dl>
+<h6>Inherited members</h6>
+<ul class="hlist">
+<li><code><b><a title="trufflehog3.models.Model" href="#trufflehog3.models.Model">Model</a></b></code>:
+<ul class="hlist">
+<li><code><a title="trufflehog3.models.Model.asdict" href="#trufflehog3.models.Model.asdict">asdict</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="trufflehog3.models.Config" class="def">
+<pre>
+                    <code class="python flex name class">
+                        class Config(<br>
+                        &nbsp&nbsp&nbsp&nbspexclude=None,<br>
+                        &nbsp&nbsp&nbsp&nbspseverity=LOW,<br>
+                        &nbsp&nbsp&nbsp&nbspignore_nosecret: Optional[bool] = False,<br>
+                        &nbsp&nbsp&nbsp&nbspno_entropy: Optional[bool] = False,<br>
+                        &nbsp&nbsp&nbsp&nbspno_pattern: Optional[bool] = False,<br>
+                        &nbsp&nbsp&nbsp&nbspbranch: Optional[str] = None,<br>
+                        &nbsp&nbsp&nbsp&nbspdepth: Optional[int] = 10000,<br>
+                        &nbsp&nbsp&nbsp&nbspsince: Optional[str] = None,<br>
+                        &nbsp&nbsp&nbsp&nbspno_current: Optional[bool] = False,<br>
+                        &nbsp&nbsp&nbsp&nbspno_history: Optional[bool] = False,<br>
+                        &nbsp&nbsp&nbsp&nbspcontext: Optional[int] = 0,<br>
+                        )
+                    </code>
+                    
+    
+    <span class="badge">
+        <a href="https://github.com/feeltheajf/trufflehog3/blob/bd900724f7f82040689f4d7bcd918fcbabcb7e7e/trufflehog3/models.py#L551-L573" target="_blank">
+            <i class="material-icons clickable highlight tooltipped" data-position="top" data-tooltip="View on GitHub">open_in_new</i>
+        </a>
+    </span>
+
+                </pre>
+</dt>
+<dd>
+<div class="desc"><p>Config holds all configuration.</p>
+<p>Method generated by attrs for class Config.</p></div>
+<h6>Ancestors</h6>
+<ul class="hlist">
+<li><a title="trufflehog3.models.Model" href="#trufflehog3.models.Model">Model</a></li>
+</ul>
+<h6>Class variables</h6>
+<dl>
+<dt id="trufflehog3.models.Config.exclude"><code class="name">var exclude : Optional[List[<a title="trufflehog3.models.Exclude" href="#trufflehog3.models.Exclude">Exclude</a>]]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="trufflehog3.models.Config.severity"><code class="name">var severity : Optional[<a title="trufflehog3.models.Severity" href="#trufflehog3.models.Severity">Severity</a>]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="trufflehog3.models.Config.ignore_nosecret"><code class="name">var ignore_nosecret : Optional[bool]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="trufflehog3.models.Config.no_entropy"><code class="name">var no_entropy : Optional[bool]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="trufflehog3.models.Config.no_pattern"><code class="name">var no_pattern : Optional[bool]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="trufflehog3.models.Config.branch"><code class="name">var branch : Optional[str]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="trufflehog3.models.Config.depth"><code class="name">var depth : Optional[int]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="trufflehog3.models.Config.since"><code class="name">var since : Optional[str]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="trufflehog3.models.Config.no_current"><code class="name">var no_current : Optional[bool]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="trufflehog3.models.Config.no_history"><code class="name">var no_history : Optional[bool]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="trufflehog3.models.Config.context"><code class="name">var context : Optional[int]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h6>Inherited members</h6>
+<ul class="hlist">
+<li><code><b><a title="trufflehog3.models.Model" href="#trufflehog3.models.Model">Model</a></b></code>:
+<ul class="hlist">
+<li><code><a title="trufflehog3.models.Model.asdict" href="#trufflehog3.models.Model.asdict">asdict</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+</dl>
+</section>
+</article>
+</div>
+</div>
+<footer>
+<p class="helper-text">
+Generated by <a href="https://pdoc3.github.io/pdoc">pdoc</a>
+</p>
+</footer>
+<script>
+M.AutoInit();
+document.addEventListener('DOMContentLoaded', function () {
+M.FloatingActionButton.init(
+document.querySelector('.fixed-action-btn'), {
+hoverEnabled: false
+}
+);
+initHighlighting();
+});
+</script>
+</body>
+</html>

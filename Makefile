@@ -1,29 +1,51 @@
-.PHONY: test unittest build-docker test-docker build push clean
 .ONESHELL:
 
-test: unittest clean build-docker test-docker
+APP = trufflehog3
+IMG = $(APP)-dev
+TMP = /tmp/$(APP)
 
+.PHONY: test
+test: unittest codecov clean build-docker test-docker docs
+
+.PHONY: unittest
 unittest:
-	PYTHONPATH="." pytest -vv --cov=./truffleHog3 --cov-report=term-missing && codecov
+	PYTHONPATH="." pytest -vvv
 
+.PHONY: codecov
+codecov:
+	codecov
+
+.PHONY: docs
+docs:
+	pdoc --html --template-dir docs/templates -o $(TMP) -f trufflehog3 \
+		&& rm docs/*.html \
+		&& mv $(TMP)/$(APP)/*.html ./docs
+
+.PHONY: build-docker
 build-docker:
-	docker build -t trufflehog3 .
+	docker build -f Dockerfile.dev -t $(IMG) .
 
-test-docker:
+.PHONY: test-docker
+test-docker: build-docker
 	docker run \
-		-it \
 		--rm \
-		--volume ${CURDIR}:/source \
-		--volume ${CURDIR}/scripts/maketest:/maketest \
+		--volume ${CURDIR}:/source:ro \
+		--volume ${CURDIR}/scripts/maketest:/maketest:ro \
 		--entrypoint /maketest \
-		trufflehog3
+		$(IMG)
 
+.PHONY: build
 build: clean
 	python3 setup.py sdist bdist_wheel
 	twine check dist/*
 
-push: build
+.PHONY: push
+push: push-pypi
+
+.PHONY: push-pypi
+push-pypi: build
 	twine upload dist/* -u feeltheajf
 
+.PHONY: clean
 clean:
 	rm -rf build dist *.egg-info .coverage* *coverage* .*cache

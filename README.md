@@ -1,81 +1,70 @@
-[![Package Version](https://img.shields.io/pypi/v/truffleHog3.svg)](https://pypi.org/project/truffleHog3)
-![Python Version](https://img.shields.io/badge/python-3.6%2B-informational.svg)
-[![Build Status](https://travis-ci.com/feeltheajf/truffleHog3.svg?branch=master)](https://travis-ci.com/feeltheajf/truffleHog3)
-[![Code Coverage](https://codecov.io/gh/feeltheajf/truffleHog3/branch/master/graph/badge.svg)](https://codecov.io/gh/feeltheajf/truffleHog3)
+[![Package Version](https://img.shields.io/pypi/v/trufflehog3.svg)](https://pypi.org/project/trufflehog3)
+![Python Version](https://img.shields.io/badge/python-3.7-informational.svg)
 [![Downloads](https://pepy.tech/badge/trufflehog3)](https://pepy.tech/project/trufflehog3)
-[![Known Vulnerabilities](https://snyk.io/test/github/feeltheajf/truffleHog3/badge.svg?targetFile=requirements.txt)](https://snyk.io/test/github/feeltheajf/truffleHog3?targetFile=requirements.txt)
+[![Build Status](https://travis-ci.com/feeltheajf/trufflehog3.svg?branch=master)](https://travis-ci.com/feeltheajf/trufflehog3)
+[![Code Coverage](https://codecov.io/gh/feeltheajf/trufflehog3/branch/master/graph/badge.svg)](https://codecov.io/gh/feeltheajf/trufflehog3)
 
+# trufflehog3
 
-# truffleHog3
-This is an enhanced version of [truffleHog](https://github.com/dxa4481/truffleHog) scanner
+This is an enhanced version of the [truffleHog](https://github.com/dxa4481/truffleHog) scanner
 
-[![Report Preview](https://github.com/feeltheajf/truffleHog3/blob/master/examples/report.png)](https://feeltheajf.github.io/other/trufflehog)
+<p align="middle">
+  <a href="https://feeltheajf.github.io/trufflehog3/examples/report">
+    <img src="docs/examples/preview_desktop.png" alt="report preview dekstop" width="80%" />
+    <img src="docs/examples/preview_mobile.png" alt="report preview mobile" width="19%" />
+  </a>
+</p>
 
+## Usage
 
-## Important
+You can always check available options by running
 
-TruffleHog 2.x is not backwards compatible with 1.x branch, see new [trufflehog.yaml](https://github.com/feeltheajf/truffleHog3/blob/master/examples/trufflehog.yaml) and [Help](#Help)
+```
+trufflehog3 --help
+```
 
+Here are some basic examples to get you started
+
+```bash
+# clone remote Git repository, scan 10 latest commits and output to stdout
+$ trufflehog3 --max-depth 10 https://github.com/feeltheajf/trufflehog3
+
+# disable Git history search, scan current directory and save report as JSON
+$ trufflehog3 --no-history --format json --output report.json
+
+# render HTML report from JSON
+$ trufflehog3 -R report.json --output report.html
+```
 
 ## New
 
-- Python 3.6
-- flake8 compliant code
-- output to file in different formats: text, JSON, YAML, [HTML](https://feeltheajf.github.io/other/trufflehog)
-- option to disable Git history checks - scan simple files/directories
-- option to exclude files/directories, see [trufflehog.yaml](https://github.com/feeltheajf/truffleHog3/blob/master/examples/trufflehog.yaml)
-- config file support with automatic detection in source code directory
+v3 was heavily updated both under the hood and from API perspective. See below for more details on new features.
 
+### Automatic Config Detection
 
-## Installation
+`.trufflehog3.yml` is automatically detected in the root of the scanned directory. However, you can still specify custom path using `-c/--config` CLI argument. Do not forget to check out the updated [.trufflehog3.yml](.trufflehog3.yml) config file format.
 
-Package is available on [PyPI](https://pypi.org/project/truffleHog3)
+### HTML Reports
 
-```
-pip install truffleHog3
-```
+HTML reports are now much prettier and more useful than ever. You can filter out specific rules or paths on the fly without fiddling with raw data. Have a look at a sample [HTML report](https://feeltheajf.github.io/trufflehog3/examples/report) and try it on your own.
 
+### Inline Exclude
 
-## Customizing
+Inline `nosecret` comments are now supported for excluding false positives
 
-List of default regexes was moved into repository, see [rules.yaml](https://github.com/feeltheajf/truffleHog3/blob/master/truffleHog3/rules.yaml)
+```python
+# skip all rules
+password = ""  # nosecret
 
-
-## Help
-
-```
-usage: trufflehog3 [options] source
-
-Find secrets in your codebase.
-
-positional arguments:
-  source             URLs or paths to local folders for secret searching
-
-optional arguments:
-  -h, --help         show this help message and exit
-  -v, --verbose      enable verbose logging {-v, -vv, -vvv}
-  -c, --config       path to config file
-  -o, --output       write report to file
-  -f, --format       output format {text, json, yaml, html}
-  -r, --rules        ignore default regexes and source from file
-  -R, --render-html  render HTML report from JSON or YAML
-  --branch           name of the repository branch to be scanned
-  --since-commit     scan starting from a given commit hash
-  --skip-strings     skip matching strings
-  --skip-paths       skip paths matching regex
-  --line-numbers     include line numbers in match
-  --max-depth        max commit depth for searching
-  --no-regex         disable high signal regex checks
-  --no-entropy       disable entropy checks
-  --no-history       disable commit history check
-  --no-current       disable current status check
+# only skip rule with specific id
+password = ""  # nosecret: generic.password
 ```
 
+If for some reason you would like to avoid such behavior, there is a new `--ignore-nosecret` CLI flag which will tell trufflehog3 to ignore all inline comments.
 
-## License
+### Incremental Scan
 
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Ffeeltheajf%2FtruffleHog3.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Ffeeltheajf%2FtruffleHog3?ref=badge_large)
-
+You can now run an incremental scan by specifying the path to the baseline JSON report as `-i/--incremental` CLI argument. In this case, only the new issues compared to the baseline will be reported.
 
 ## Thanks
 

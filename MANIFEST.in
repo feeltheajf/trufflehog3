@@ -1,2 +1,1 @@
-include truffleHog3/*.yaml
-include truffleHog3/*.j2
+include trufflehog3/static/*

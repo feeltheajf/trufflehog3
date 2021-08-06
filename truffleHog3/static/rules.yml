@@ -1,3 +1,21 @@
+#
+# entropy-based rules
+#
+- id: high-entropy
+  message: High Entropy
+  minlen: 20
+  alphabet: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+/="
+  threshold: 4.5
+  severity: MEDIUM
+- id: high-entropy
+  message: High Entropy
+  minlen: 20
+  alphabet: "0123456789abcdefABCDEF"
+  threshold: 3.0
+  severity: MEDIUM
+#
+# regexes-based rules
+#
 - id: private.pgp-key
   message: PGP Private Key Block
   pattern: "-----BEGIN PGP PRIVATE KEY BLOCK-----"

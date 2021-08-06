@@ -1,0 +1,39 @@
+exclude: # exclude matching issues
+  - message: Build directory
+    paths:
+      - build/*
+  - message: Examples and data necessary for running auto-tests
+    paths:
+      - docs/examples/*
+      - tests/data/*
+  - message: Trufflehog rules file contains regexes which might trigger the scanner
+    paths:
+      - trufflehog3/static/rules.yml
+# you can also specify IDs or patterns together or without paths, e.g.
+#
+#   - message: Skip ID everywhere
+#     id: high-entropy
+#   - message: Skip ID on specific paths
+#     id: high-entropy
+#     paths:
+#       - tests/data/*
+#
+#   - message: Skip pattern everywhere, case-insensitive
+#     pattern: (?i)not-a-secret
+#   - message: Skip pattern on specific paths, case-insensitive
+#     pattern: (?i)not-a-secret
+#     paths:
+#       - tests/data/*
+
+severity: low # minimum severity filter
+ignore_nosecret: false # ignore inline 'nosecret' annotations
+no_entropy: false # disable entropy checks
+no_pattern: false # disable pattern checks
+
+branch: master # name of the repo branch to scan
+depth: 10000 # max commits depth for searching, only used if `no_history` is false
+since: null # scan from the given commit hash, only used if `no_history` is false
+no_current: false # disable current status check
+no_history: true # disable commit history check
+
+context: 0 # number of context lines to include

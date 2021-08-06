@@ -1,4 +1,4 @@
-GitPython==3.1.7
-jinja2==2.11.2
-PyYAML==5.3.1
-tqdm==4.51.0
+attrs==20.3.0
+GitPython==3.1.18
+Jinja2==3.0.1
+PyYAML==5.4.1

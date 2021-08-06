@@ -1,13 +1,8 @@
-#!/bin/bash
-
-function run {
-    sh -c "$*"
-    status=$?
-    [[ $status -eq 2 ]] && exit 2 || true
-}
+#!/bin/sh
+set -e
 
 SRC=${1:-/source}
 RPR=${2:-/report}
 
-run trufflehog3 -vv $SRC -f yaml -o $RPR.yaml
-run trufflehog3 -vv $RPR.yaml -R -o $RPR.html
+trufflehog3 -z -vv $SRC -f json -o $RPR.json
+trufflehog3 -z -vv $RPR.json -R -o $RPR.html
