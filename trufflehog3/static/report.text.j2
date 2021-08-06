@@ -1,0 +1,25 @@
+{% for issue in issues -%}
+{{ color.GREEN }}{{ issue.path }}
+{% set severity_color = color.RED if issue.rule.severity.name == "HIGH" else color.YELLOW if issue.rule.severity.name == "MEDIUM" else color.CYAN -%}
+{{ severity_color }}{{ "%-6s" % issue.rule.severity }}{{ color.BLUE }}  {{ issue.rule.message }}
+{% if issue.commit -%}
+Branch  {{ issue.branch }}
+Message {{ issue.message.splitlines()[0] }}
+Author  {{ issue.author }}
+Commit  {{ issue.commit }}
+{% endif -%}
+{{ color.RESET -}}
+{% set fmt = "%%%ds" % issue.line_end | string | length -%}
+{% for number, line in issue.context.items() -%}
+{% if number == issue.line -%}
+    {{ severity_color -}}
+    {% set line = line | replace(issue.secret, severity_color + issue.secret + color.RESET) -%}
+{% else -%}
+    {{ color.GRAY -}}
+{% endif -%}
+{{ fmt % (number) }}{{ color.RESET }}  {{ line }}
+{% endfor -%}
+{% if not loop.last -%}
+{{ color.GRAY }}{{ "~" * 80 }}{{ color.RESET }}
+{% endif -%}
+{% endfor -%}

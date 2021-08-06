@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://feeltheajf.github.io/materialize/materialize.min.css" integrity="sha256-kpeCd0c1zTgJMsU+s8Pz4CwckI73qwpdYMTxTsRyO8A=" crossorigin>
+  <script src="https://feeltheajf.github.io/materialize/materialize.min.js" integrity="sha256-U/cHDMTIHCeMcvehBv1xQ052bPSbJtbuiw4QA9cTKz0=" crossorigin></script>
+  <title>trufflehog3 report</title>
+  <style>
+    :root {
+      --pt-color: rgb(0, 40, 80);
+      --st-color: rgb(80, 120, 200);
+      --tt-color: rgb(150, 160, 170);
+      --pb-color: rgb(255, 255, 255);
+      --sb-color: rgb(255, 255, 255);
+      --tb-color: rgb(245, 245, 250);
+    }
+
+    [theme="dark"] {
+      --pt-color: rgb(240, 240, 240);
+      --st-color: rgb(120, 160, 240);
+      --tt-color: rgb(130, 140, 150);
+      --pb-color: rgb(32, 37, 43);
+      --sb-color: rgb(39, 44, 53);
+      --tb-color: rgb(43, 49, 61);
+    }
+
+    body {
+      color: var(--pt-color);
+      background-color: var(--pb-color);
+    }
+
+    pre {
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      word-break: break-word;
+      font-family: inherit;
+      margin: inherit;
+    }
+
+    footer {
+      text-align: center;
+      font-size: x-small;
+    }
+
+    a {
+      color: var(--st-color);
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    * {
+      border-color: var(--tb-color) !important;
+    }
+
+    .no-select {
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -khtml-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+
+    .select {
+      -webkit-touch-callout: text;
+      -webkit-user-select: text;
+      -khtml-user-select: text;
+      -moz-user-select: text;
+      -ms-user-select: text;
+      user-select: text;
+    }
+
+    .copyable {
+      cursor: copy;
+    }
+
+    .monospace {
+      font-family: PT Mono, monospace;
+    }
+
+    .highlight {
+      color: var(--st-color) !important;
+    }
+
+    .helper-text {
+      color: var(--tt-color) !important;
+    }
+
+    .break-all {
+      word-wrap: break-all;
+      word-break: break-all;
+    }
+
+    .toast {
+      color: var(--pb-color);
+      background-color: var(--st-color);
+    }
+
+    .material-tooltip {
+      color: var(--pb-color);
+      background-color: var(--st-color);
+    }
+
+    @keyframes bounceIn {
+      from {
+        opacity: 0;
+        -webkit-transform: scale3d(0.75, 0.75, 0.75);
+        transform: scale3d(0.75, 0.75, 0.75);
+      }
+
+      50% {
+        opacity: 1;
+        -webkit-transform: scale3d(1.025, 1.025, 1.025);
+        transform: scale3d(1.025, 1.025, 1.025);
+      }
+
+      to {
+        opacity: 1;
+        -webkit-transform: scale3d(1, 1, 1);
+        transform: scale3d(1, 1, 1);
+      }
+    }
+
+    .bounce-in {
+      animation: .5s bounceIn;
+    }
+
+    @keyframes bounceOut {
+      from {
+        opacity: 1;
+        -webkit-transform: scale3d(1, 1, 1);
+        transform: scale3d(1, 1, 1);
+      }
+
+      50% {
+        opacity: 1;
+        -webkit-transform: scale3d(1.025, 1.025, 1.025);
+        transform: scale3d(1.025, 1.025, 1.025);
+      }
+
+      to {
+        opacity: 0;
+        -webkit-transform: scale3d(0.75, 0.75, 0.75);
+        transform: scale3d(0.75, 0.75, 0.75);
+      }
+    }
+
+    .bounce-out {
+      animation: .5s bounceOut;
+    }
+
+    .card {
+      background-color: var(--sb-color);
+      border-radius: 4px;
+      visibility: visible;
+    }
+
+    .card .card-action {
+      padding: 0;
+    }
+
+    .card .card-action:last-child {
+      border-radius: 0 0 4px 4px;
+    }
+
+    li:last-child div {
+      border-radius: 0 0 4px 4px;
+    }
+
+    li:last-child.active .collapsible-header {
+      border-radius: 0px;
+    }
+
+    span.history-badge {
+      padding: 0;
+      min-width: 0;
+    }
+
+    .issue-metadata {
+      padding: 16px 0 0 0;
+      margin: 0;
+    }
+
+    .issue-metadata span {
+      padding: 0 16px 0 0;
+    }
+
+    .collapsible-details .collapsible-body {
+      padding: 0;
+      background-color: unset !important;
+      border: unset;
+    }
+
+    .collapsible {
+      margin: 0;
+      border: none;
+    }
+
+    .non-collapsible-header {
+      background-color: var(--sb-color) !important;
+      padding: 24px;
+    }
+
+    .collapsible-header {
+      background-color: var(--sb-color) !important;
+      padding: 24px;
+    }
+
+    .collapsible-body {
+      background-color: var(--tb-color) !important;
+      padding: 24px;
+    }
+
+    .code-line-number {
+      width: 24px;
+      white-space: nowrap;
+      vertical-align: top;
+      padding: 0 4px;
+      color: var(--tt-color);
+    }
+
+    .code-line {
+      vertical-align: top;
+      padding: 0 0 0 16px;
+    }
+
+    .no-border {
+      border: none !important;
+    }
+
+    .hidden {
+      display: none;
+      visibility: hidden;
+    }
+
+    .material-icons {
+      color: var(--tt-color);
+    }
+
+    .input-field {
+      padding: 0 !important;
+    }
+
+    .input-field.col label {
+      left: 16px;
+    }
+
+    .input-field .helper-text {
+      left: 16px;
+    }
+
+    textarea.materialize-textarea {
+      padding: 16px 16px 4px 16px;
+      line-height: 1.5em;
+    }
+
+    [type="checkbox"]:checked+span:not(.lever):before {
+      border-right-color: var(--st-color);
+      border-bottom-color: var(--st-color);
+    }
+
+    .materialize-textarea:not([readonly]) {
+      color: var(--st-color);
+    }
+
+    .materialize-textarea:focus:not([readonly]) {
+      border-bottom-color: var(--st-color) !important;
+      -webkit-box-shadow: 0 0 0 0 !important;
+      box-shadow: 0 0 0 0 !important;
+    }
+
+    .materialize-textarea:not([focus]):not([readonly])+label {
+      color: var(--tt-color) !important;
+    }
+
+    .materialize-textarea:focus:not([readonly])+label {
+      color: var(--st-color) !important;
+    }
+
+    .materialize-textarea:focus:not([readonly]) {
+      color: var(--pt-color) !important;
+    }
+
+    .btn-menu {
+      background-color: var(--st-color) !important;
+    }
+  </style>
+  <script>
+    const settingTheme = 'theme';
+    const dark = 'dark';
+    const light = 'light';
+
+    function scannerHelp() {
+      window.open('https://github.com/feeltheajf/trufflehog3');
+    }
+
+    function getCompactMode() {
+      return localStorage.getItem(settingCompactMode) == 'true' ? '' : 'active';
+    }
+
+    function setTheme(theme) {
+      document.documentElement.setAttribute(settingTheme, theme);
+    }
+
+    function switchTheme() {
+      const theme = document.documentElement.getAttribute(settingTheme) == light ? dark : light;
+      localStorage.setItem(settingTheme, theme);
+      setTheme(theme);
+    }
+
+    const browserTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? dark : light;
+    const theme = localStorage.getItem(settingTheme) || browserTheme;
+    setTheme(theme);
+  </script>
+</head>
+
+<body class="no-select">
+  <div class="fixed-action-btn">
+    <a class="btn-floating btn-menu"><i class="material-icons">menu</i></a>
+    <ul>
+      <li><a class="btn-floating purple" onclick="scannerHelp()"><i class="material-icons">help</i></a></li>
+      <li><a class="btn-floating yellow" onclick="switchTheme()"><i class="material-icons">brightness_medium</i></a></li>
+      <li><a class="btn-floating green" onclick="switchCompactMode()"><i class="material-icons">view_compact</i></a></li>
+    </ul>
+  </div>
+  <div class="row">
+    <div class="col s12 m12 l3">
+      <ul class="collection with-header no-border">
+        <li class="collection-header transparent">
+          <h4>Search</h4>
+        </li>
+        <li class="collection-header transparent no-border">
+          <form action="#">
+            <p>
+              <label>
+                <input id="search-filter-all" type="checkbox" checked="checked"/>
+                <span class="helper-text" onclick="checkAll();">All</span>
+                <span class="badge helper-text" onclick="return false;">{{ totals.values() | sum }}</span>
+              </label>
+            </p>
+            {% for rule, counter in totals.items() -%}
+            {% set severity_color = "red" if rule.severity.name == "HIGH" else "orange" if rule.severity.name == "MEDIUM" else "green" -%}
+            <p>
+              <label>
+                <input id="rule-{{ rule._uuid }}" type="checkbox" checked="checked" class="search-filter" />
+                <span class="helper-text" onclick="checkOne('rule-{{ rule._uuid }}');">{{ rule.message }}</span>
+                <span class="badge {{ severity_color }}-text" onclick="return false;">{{ counter }}</span>
+              </label>
+            </p>
+            {% endfor -%}
+          </form>
+        </li>
+        <li>
+          <form>
+            <div class="input-field col s12">
+              <textarea id="exclude" class="materialize-textarea monospace" oninput="doExclude()"></textarea>
+              <label for="exclude">Exclude</label>
+              <span class="helper-text">
+                Each line is a separate rule, e.g. /docs/**/*.yaml
+              </span>
+            </div>
+          </form>
+        </li>
+      </ul>
+    </div>
+    <div class="col s12 m12 l7 offset-l1">
+      <ul class="collection with-header no-border">
+        <li class="collection-header transparent no-border">
+          <h4>Issues</h4>
+        </li>
+      </ul>
+      {% for rule, paths in report.items() -%}
+      {% set severity_color = "red" if rule.severity.name == "HIGH" else "orange" if rule.severity.name == "MEDIUM" else "green" -%}
+      {% for path, revs in paths.items() | sort(attribute=0) -%}
+      {% for rev, issues in revs.items() -%}
+      {% set issue = issues[0] -%}
+      <div class="card issue rule-{{ rule._uuid }}">
+        <div class="card-content">
+          <span class="card-title">
+            <span class="{{ 'tooltipped' if rule.pattern else '' }}" data-position="top" data-tooltip="{{ rule.pattern }}">{{ rule.message }}</span>
+            <span class="new badge {{ severity_color }} darken-2" data-badge-caption="{{ rule.severity }}"></span>
+          </span>
+          <span>
+            <span class="search-path copyable monospace highlight break-all" onclick="copyToClipboard(event)">{{ path }}</span>
+            {% if issue.commit -%}
+            <span class="history-badge badge">
+              <i class="material-icons">history</i>
+            </span>
+            {% endif -%}
+          </span>
+          {% if issue.commit -%}
+          <ul class="collapsible expandable z-depth-0 collapsible-details">
+            <li>
+              <div class="collapsible-body transparent">
+                <div class="issue-metadata">
+                  <span class="left">
+                    <i class="material-icons">call_split</i>
+                  </span>
+                  <pre class="select">{{ issue.branch }}</pre>
+                </div>
+                <div class="issue-metadata">
+                  <span class="left">
+                    <i class="material-icons">message</i>
+                  </span>
+                  <pre class="select">{{ issue.message.splitlines()[0] }}</pre>
+                </div>
+                <div class="issue-metadata">
+                  <span class="left">
+                    <i class="material-icons">person</i>
+                  </span>
+                  <pre class="select">{{ issue.author }}</pre>
+                </div>
+                <div class="issue-metadata">
+                  <span class="left">
+                    <i class="material-icons">fingerprint</i>
+                  </span>
+                  <pre class="select">{{ issue.commit }}</pre>
+                </div>
+              </div>
+            </li>
+          </ul>
+          {% endif -%}
+        </div>
+        <div class="card-action">
+          <ul class="collapsible expandable z-depth-0 monospace">
+            {% for issue in issues -%}
+            {% set prefix, secret, suffix = issue.context[issue.line].partition(issue.secret) %}
+            <li>
+              <div class="{{ 'collapsible-header' if issue.multiline else 'non-collapsible-header' }}">
+                <table>
+                  <tr class="no-border">
+                    <td class="code-line-number">
+                      {{ issue.line }}
+                    </td>
+                    <td class="select code-line">
+                      <pre>{{ prefix.lstrip() }}<span class="copyable {{ severity_color }}-text" onclick="copyToClipboard(event); event.stopPropagation();">{{ secret }}</span>{{ suffix.rstrip() }}</pre>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+              <div class="collapsible-body">
+                <table>
+                  {% for number, line in issue.context.items() -%}
+                  <tr class="no-border">
+                    <td class="code-line-number">
+                      {{ number }}
+                    </td>
+                    <td class="select code-line">
+                      {% if number == issue.line -%}
+                      <pre>{{ prefix }}<span class="{{ severity_color }}-text">{{ secret }}</span>{{ suffix }}</pre>
+                      {% else -%}
+                      <pre>{{ line }}</pre>
+                      {% endif -%}
+                    </td>
+                  </tr>
+                  {% endfor -%}
+                </table>
+              </div>
+            </li>
+            {% endfor -%}
+          </ul>
+        </div>
+      </div>
+      {% endfor -%}
+      {% endfor -%}
+      {% endfor -%}
+    </div>
+  </div>
+  <footer>
+    <p class="helper-text">
+      Generated by <a href="https://github.com/feeltheajf/trufflehog3" target="_blank">trufflehog3</a>
+    </p>
+  </footer>
+  <script>
+    const debounceTimeout = 500;
+    const excludedClassName = 'excluded';
+    const filteredClassName = 'filtered';
+    const settingCompactMode = 'compactMode';
+
+    function debounce(func, wait = debounceTimeout) {
+      let timeout;
+      return function executedFunction(...args) {
+        const later = () => {
+          clearTimeout(timeout);
+          func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+      };
+    };
+
+    function hide(el, cls) {
+      el.classList.add(cls);
+      if (window.getComputedStyle(el).visibility == 'hidden') {
+        return;
+      }
+      el.classList.remove('bounce-in', 'bounce-out');
+      el.addEventListener('animationend', _ => {
+        el.classList.add('hidden');
+      }, {
+        once: true
+      });
+      el.classList.add('bounce-out');
+    }
+
+    function show(el, cls) {
+      el.classList.remove(cls);
+      if (window.getComputedStyle(el).visibility == 'visible') {
+        return;
+      }
+      if (el.classList.contains(excludedClassName) || el.classList.contains(filteredClassName)) {
+        return;
+      }
+      el.classList.remove('bounce-in', 'bounce-out', 'hidden');
+      el.classList.add('bounce-in');
+    }
+
+    function checkAll() {
+      const filterAll = document.getElementById('search-filter-all');
+      const filters = document.querySelectorAll('.search-filter');
+      const issues = document.querySelectorAll('.issue');
+      const state = !filterAll.checked;
+      filters.forEach(f => {
+        f.checked = state;
+      });
+      for (const i of issues) {
+        if (state) {
+          show(i, filteredClassName);
+        } else {
+          hide(i, filteredClassName);
+        }
+      }
+    }
+
+    function checkOne(checked) {
+      const filterAll = document.getElementById('search-filter-all');
+      const filters = document.querySelectorAll('.search-filter');
+      const issues = document.querySelectorAll('.' + checked);
+      const filter = document.getElementById(checked);
+      const state = !filter.checked;
+      let all = true;
+      for (const f of filters) {
+        if (f.id == filter.id) {
+          continue;
+        }
+        if (!f.checked) {
+          all = false;
+          break;
+        }
+      }
+      if (all && (filter.checked == filterAll.checked)) {
+        filterAll.checked = state;
+      }
+      for (const i of issues) {
+        if (state) {
+          show(i, filteredClassName);
+        } else {
+          hide(i, filteredClassName);
+        }
+      }
+    }
+
+    const doExclude = debounce(_ => {
+      const exclude = document.getElementById('exclude').value
+        .split('\n')
+        .map(e => e.trim())
+        .filter(e => e != '')
+        .map(e => globToRegex(e));
+      const issues = document.querySelectorAll('.issue');
+      for (const i of issues) {
+        let matched = false;
+        const path = i.querySelector('.search-path').textContent;
+        for (const e of exclude) {
+          if (path.search(e) >= 0) {
+            matched = true;
+            break;
+          }
+        }
+        if (!matched) {
+          show(i, excludedClassName);
+        } else {
+          hide(i, excludedClassName);
+        }
+      }
+    });
+
+    function globToRegex(e) {
+      return e
+        .replaceAll('*', '([^./]*)')
+        .replaceAll('**', '([^/]+/*)+');
+    }
+
+    function copyToClipboard(event) {
+      const str = (event.target || event.srcElement).textContent;
+      const el = document.createElement('textarea');
+      el.value = str;
+      el.setAttribute('readonly', '');
+      el.style.position = 'absolute';
+      el.style.left = '-9999px';
+      document.body.appendChild(el);
+      el.select();
+      document.execCommand('copy');
+      document.body.removeChild(el);
+      M.toast({
+        html: 'Copied',
+        classes: 'toast',
+      });
+    }
+
+    function setCompactMode(on) {
+      document.querySelectorAll('.collapsible-details').forEach((el) => {
+        const cl = M.Collapsible.getInstance(el);
+        if (on) {
+          cl.close();
+        } else {
+          cl.open();
+        }
+      });
+    }
+
+    function switchCompactMode() {
+      const mode = localStorage.getItem(settingCompactMode) == 'true';
+      localStorage.setItem(settingCompactMode, !mode);
+      setCompactMode(!mode);
+    }
+
+    M.AutoInit();
+    document.addEventListener('DOMContentLoaded', function () {
+      const mode = localStorage.getItem(settingCompactMode) == 'true';
+
+      M.FloatingActionButton.init(
+        document.querySelector('.fixed-action-btn'), {
+          hoverEnabled: false
+        }
+      );
+
+      document.querySelectorAll('.collapsible-details li').forEach((el) => {
+        if (!mode) {
+          el.classList.add('active');
+        }
+      });
+
+      M.Collapsible.init(
+        document.querySelectorAll('.collapsible.expandable'), {
+          accordion: false,
+        }
+      );
+    });
+  </script>
+</body>
+
+</html>
