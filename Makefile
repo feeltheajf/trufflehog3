@@ -5,7 +5,7 @@ IMG = $(APP)-dev
 TMP = /tmp/$(APP)
 
 .PHONY: test
-test: unittest codecov clean build-docker test-docker docs
+test: unittest codecov clean build-docker test-docker
 
 .PHONY: unittest
 unittest:

@@ -17,6 +17,8 @@ This is an enhanced version of the [truffleHog](https://github.com/dxa4481/truff
 
 ## Usage
 
+Full API documentation is available at [feeltheajf.github.io/trufflehog3](https://feeltheajf.github.io/trufflehog3/).
+
 You can always check available options by running
 
 ```
