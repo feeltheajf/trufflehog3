@@ -9,7 +9,7 @@
 This is an enhanced version of the [truffleHog](https://github.com/dxa4481/truffleHog) scanner
 
 <p align="middle">
-  <a href="https://feeltheajf.github.io/trufflehog3/examples/report">
+  <a href="https://feeltheajf.github.io/trufflehog3/examples/report" target="_blank">
     <img src="docs/examples/preview_desktop.png" alt="report preview dekstop" width="80%" />
     <img src="docs/examples/preview_mobile.png" alt="report preview mobile" width="19%" />
   </a>
@@ -17,7 +17,7 @@ This is an enhanced version of the [truffleHog](https://github.com/dxa4481/truff
 
 ## Usage
 
-Full API documentation is available at [feeltheajf.github.io/trufflehog3](https://feeltheajf.github.io/trufflehog3/).
+Full API documentation is available at <a href="https://feeltheajf.github.io/trufflehog3/" target="_blank">feeltheajf.github.io/trufflehog3</a>.
 
 You can always check available options by running
 
@@ -48,7 +48,7 @@ v3 was heavily updated both under the hood and from API perspective. See below f
 
 ### HTML Reports
 
-HTML reports are now much prettier and more useful than ever. You can filter out specific rules or paths on the fly without fiddling with raw data. Have a look at a sample [HTML report](https://feeltheajf.github.io/trufflehog3/examples/report) and try it on your own.
+HTML reports are now much prettier and more useful than ever. You can filter out specific rules or paths on the fly without fiddling with raw data. Have a look at a sample <a href="https://feeltheajf.github.io/trufflehog3/examples/report" target="_blank">HTML report</a> and try it on your own.
 
 ### Inline Exclude
 
