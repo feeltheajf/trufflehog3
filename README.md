@@ -10,8 +10,8 @@ This is an enhanced version of the [truffleHog](https://github.com/dxa4481/truff
 
 <p align="middle">
   <a href="https://feeltheajf.github.io/trufflehog3/examples/report" target="_blank">
-    <img src="docs/examples/preview_desktop.png" alt="report preview dekstop" width="80%" />
-    <img src="docs/examples/preview_mobile.png" alt="report preview mobile" width="19%" />
+    <img src="https://feeltheajf.github.io/trufflehog3/examples/preview_desktop.png" alt="report preview dekstop" width="80%" />
+    <img src="https://feeltheajf.github.io/trufflehog3/examples/preview_mobile.png" alt="report preview mobile" width="19%" />
   </a>
 </p>
 
