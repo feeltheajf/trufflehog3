@@ -1,7 +1,7 @@
 [![Package Version](https://img.shields.io/pypi/v/trufflehog3.svg)](https://pypi.org/project/trufflehog3)
 ![Python Version](https://img.shields.io/badge/python-3.7-informational.svg)
 [![Downloads](https://pepy.tech/badge/trufflehog3)](https://pepy.tech/project/trufflehog3)
-[![Build Status](https://travis-ci.com/feeltheajf/trufflehog3.svg?branch=master)](https://travis-ci.com/feeltheajf/trufflehog3)
+[![Tests](https://github.com/feeltheajf/trufflehog3/actions/workflows/tests.yml/badge.svg)](https://github.com/feeltheajf/trufflehog3/actions/workflows/tests.yml)
 [![Code Coverage](https://codecov.io/gh/feeltheajf/trufflehog3/branch/master/graph/badge.svg)](https://codecov.io/gh/feeltheajf/trufflehog3)
 
 # trufflehog3
