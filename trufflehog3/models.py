@@ -435,7 +435,7 @@ class Context(dict):
         """Return false."""
         return False
 
-    def __hash__(self):
+    def __hash__(self):  # pragma: no cover
         """Return zero."""
         return 0
 
