@@ -15,6 +15,14 @@ This is an enhanced version of the [truffleHog](https://github.com/dxa4481/truff
   </a>
 </p>
 
+## Installation
+
+Package is available on [PyPI](https://pypi.org/project/truffleHog3)
+
+```
+pip install truffleHog3
+```
+
 ## Usage
 
 Full API documentation is available at <a href="https://feeltheajf.github.io/trufflehog3/" target="_blank">feeltheajf.github.io/trufflehog3</a>.
