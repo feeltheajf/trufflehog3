@@ -67,7 +67,7 @@ class Format(Enum, metaclass=CaseInsensitiveEnumMeta):
     JSON = auto()
     HTML = auto()
 
-    def __str__(self):
+    def __str__(self):  # pragma: no cover
         """Override string method to return enum name."""
         return self.name
 

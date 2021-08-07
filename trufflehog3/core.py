@@ -34,13 +34,13 @@ def scan(
     processes: int,
 ) -> Iterable[Issue]:
     """Return issues found during target path scan."""
-    if config.no_entropy:
+    if config.no_entropy:  # pragma: no cover
         rules = [r for r in rules if not isinstance(r, Entropy)]
 
-    if config.no_pattern:
+    if config.no_pattern:  # pragma: no cover
         rules = [r for r in rules if not isinstance(r, Pattern)]
 
-    if not rules:
+    if not rules:  # pragma: no cover
         log.error("empty ruleset")
         return []
 
