@@ -70,7 +70,7 @@ You can now run an incremental scan by specifying the path to the baseline JSON 
 
 ### Multiprocessing
 
-Multiprocessing support allows for much faster scans, you can alter the default workers count using `-p/--processes` CLI argument.
+Multiprocessing support allows for much faster scans. You can alter the number of processes using `-p/--processes` CLI argument.
 
 ## Thanks
 
