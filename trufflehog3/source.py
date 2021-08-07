@@ -53,7 +53,7 @@ def diriter(path: str, exclude: Iterable[str] = None) -> Iterator[File]:
 
             yield File(
                 path=filename.as_posix(),
-                absolute=filename.absolute().as_posix(),
+                real=(path / filename).as_posix(),
             )
 
 
@@ -175,7 +175,7 @@ def _diffiter(
         yield File(
             path=fpath,
             content=pdiff,
-            branch=branch.name,
+            branch=branch.name.split("/")[-1],
             message=commit.message.strip(),
             author=f"{commit.author.name} <{commit.author.email}>",
             commit=commit.hexsha,

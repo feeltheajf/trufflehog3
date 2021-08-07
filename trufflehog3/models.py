@@ -132,7 +132,7 @@ class File(Model):
     author: Optional[str] = attr.ib(None)
     date: Optional[datetime] = attr.ib(None)
     _content: Optional[str] = attr.ib(None)
-    _absolute: Optional[str] = attr.ib(None)
+    _real: Optional[str] = attr.ib(None)
 
     def read(self) -> str:
         """Return the given content or read file from path."""
@@ -140,7 +140,7 @@ class File(Model):
             return self._content
 
         try:
-            return Path(self._absolute or self.path).read_text()
+            return Path(self._real or self.path).read_text()
         except Exception as e:  # pragma: no cover
             log.warning(f"skipping file '{self.path}': {e}")
             return ""
