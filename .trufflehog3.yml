@@ -11,10 +11,12 @@ exclude: # exclude matching issues
     paths:
       - trufflehog3/static/rules.yml
   - message: Integrity hash for highlight.min.js
+    # NOTE pattern is re.Pattern, thus escaping of special characters might be required
     pattern: sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx\+mdg3epi8=
     paths:
       - docs/templates/*.mako
   - message: Integrity hash for materialize.min.css
+    # NOTE pattern is re.Pattern, thus escaping of special characters might be required
     pattern: sha256-kpeCd0c1zTgJMsU\+s8Pz4CwckI73qwpdYMTxTsRyO8A=
     paths:
       - docs/templates/*.mako
@@ -34,7 +36,7 @@ exclude: # exclude matching issues
     pattern: 9e404e6c59d286645b2465aacaf61108ebc12a3a
     paths:
       - trufflehog3/source.py
-# you can also specify IDs or patterns together or without paths, e.g.
+# NOTE you can also specify IDs or patterns together or without paths, e.g.
 #
 #   - message: Skip ID everywhere
 #     id: high-entropy
