@@ -18,10 +18,8 @@ def dirlist(path: str, exclude: Iterable[str] = None) -> Iterable[File]:
     --------
     Basic usage examples
 
-    >>> for d in dirlist("trufflehog3/static", exclude=["*.yml"]):
-    ...     print(d.path)
-    report.text.j2
-    report.html.j2
+    >>> len(dirlist("trufflehog3/static", exclude=["*.yml"]))
+    2
 
     """
     return list(diriter(path, exclude))
@@ -154,8 +152,8 @@ def _diffiter(
     >>> c2 = git.Commit(repo, b2)
     >>> diff = c1.diff(c2, create_patch=True)
     >>> branch = _get_branches(repo, "master")[0]
-    >>> len(list(_diffiter(diff, c1, branch, ["tests/*"]))) == 6
-    True
+    >>> len(list(_diffiter(diff, c1, branch, ["tests/*"])))
+    6
 
     """
     exclude_set = DEFAULT_EXCLUDE_SET | set(exclude or [])
