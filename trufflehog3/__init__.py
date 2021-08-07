@@ -8,7 +8,7 @@ from pathlib import Path
 from trufflehog3 import helper
 
 __NAME__ = "trufflehog3"
-__VERSION__ = "3.0.0rc5"
+__VERSION__ = "3.0.0rc6"
 
 HERE = Path(__file__).parent
 STATIC_DIR = HERE / "static"
