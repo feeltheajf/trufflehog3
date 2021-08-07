@@ -34,6 +34,16 @@ def scan(
     processes: int,
 ) -> Iterable[Issue]:
     """Return issues found during target path scan."""
+    if config.no_entropy:
+        rules = [r for r in rules if not isinstance(r, Entropy)]
+
+    if config.no_pattern:
+        rules = [r for r in rules if not isinstance(r, Pattern)]
+
+    if not rules:
+        log.error("empty ruleset")
+        return []
+
     exclude = []
     for e in config.exclude or []:
         if e.id is None and e.pattern is None:
