@@ -20,7 +20,7 @@ This is an enhanced version of the [truffleHog](https://github.com/dxa4481/truff
 Package is available on [PyPI](https://pypi.org/project/truffleHog3)
 
 ```
-pip install truffleHog3
+pip install trufflehog3
 ```
 
 ## Usage
