@@ -98,7 +98,7 @@ def gititer(
         repo = git.Repo(path)
     except Exception:  # pragma: no cover
         log.warning("not a Git repository: %s", path)
-        raise StopIteration
+        return
 
     already_searched = set()
     for branch in _get_branches(repo, branch):
