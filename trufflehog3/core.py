@@ -41,8 +41,7 @@ def scan(
         rules = [r for r in rules if not isinstance(r, Pattern)]
 
     if not rules:  # pragma: no cover
-        log.error("empty ruleset")
-        return []
+        raise ValueError("empty ruleset")
 
     exclude = []
     for e in config.exclude or []:
