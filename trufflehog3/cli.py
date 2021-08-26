@@ -75,7 +75,7 @@ def run(**kwargs):
         issues = diff(load(Issue, args.incremental), issues, only_new=True)
 
     render(issues, format=args.format, file=args.output)
-    return 0 if args.zero else bool(issues)
+    return 0 if args.zero else 2 if issues else 0
 
 
 class _HelpFormatter(argparse.RawTextHelpFormatter):  # pragma: no cover
