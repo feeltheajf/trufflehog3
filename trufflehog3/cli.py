@@ -46,6 +46,10 @@ def run(**kwargs):
     args = _get_cmdline_args(**kwargs)
     log.setLevel(logging.ERROR - args.verbose * 10)
 
+    if args.version:  # pragma: no cover
+        print(__VERSION__)
+        return 0
+
     if args.render_html:  # pragma: no cover
         issues = []
         for f in args.targets:
@@ -131,6 +135,11 @@ def _get_cmdline_args(**defaults) -> argparse.Namespace:
         epilog=MORE,
         usage=f"{__NAME__} [arguments] targets",
         formatter_class=_HelpFormatter,
+    )
+    parser.add_argument(
+        "--version",
+        help="show version message and exit",
+        action="store_true"
     )
     parser.add_argument(
         "targets",
