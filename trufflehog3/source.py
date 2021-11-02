@@ -25,6 +25,29 @@ def dirlist(path: str, exclude: Iterable[str] = None) -> Iterable[File]:
     return list(diriter(path, exclude))
 
 
+def dirfilter(rel: Path, dirnames: Iterable[str], exclude_set: set):
+    """mutate dirnames to remove members from given exclude set
+
+    Examples
+    --------
+    Basic usage examples
+
+    >>> dirfilter(Path("."), ["keep_left", "delete_me", "keep_right"], ["delete_me"])
+    ['keep_left', 'keep_right']
+    >>> dirfilter(Path("."), ["delete_me"], ["delete_me"])
+    []
+    >>> dirfilter(Path("."), ["first_match", "second_match"], ["first_match", "second_match"])
+    []
+    """
+    for directory in dirnames[:]:
+        dirname = rel / directory
+        pattern = _match(dirname, exclude_set)
+        if pattern:
+            log.debug(f"skipping directory '{dirname}': '{pattern}'")
+            dirnames.remove(directory)
+    return dirnames
+
+
 def diriter(path: str, exclude: Iterable[str] = None) -> Iterator[File]:
     """Recursively iterate over directory and yield existing files."""
     exclude_set = DEFAULT_EXCLUDE_SET | set(exclude or [])
@@ -34,12 +57,7 @@ def diriter(path: str, exclude: Iterable[str] = None) -> Iterator[File]:
     for dirpath, dirnames, filenames in os.walk(path):
         rel = Path(dirpath).relative_to(path)
 
-        for directory in dirnames:
-            dirname = rel / directory
-            pattern = _match(dirname, exclude_set)
-            if pattern:
-                log.debug(f"skipping directory '{dirname}': '{pattern}'")
-                dirnames.remove(directory)
+        dirfilter(rel, dirnames, exclude_set)
 
         for file in filenames:
             filename = rel / file
