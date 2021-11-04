@@ -137,11 +137,6 @@ def _get_cmdline_args(**defaults) -> argparse.Namespace:
         formatter_class=_HelpFormatter,
     )
     parser.add_argument(
-        "--version",
-        help="show version message and exit",
-        action="store_true"
-    )
-    parser.add_argument(
         "targets",
         help="Search targets, defaults to current directory",
         nargs=argparse.ZERO_OR_MORE,
@@ -303,6 +298,12 @@ def _get_cmdline_args(**defaults) -> argparse.Namespace:
         "--render-html",
         help="render HTML report from JSON",
         dest="render_html",
+        action="store_true",
+    )
+    others.add_argument(
+        "-V",
+        "--version",
+        help="show version message and exit",
         action="store_true",
     )
     parser.set_defaults(**defaults)
