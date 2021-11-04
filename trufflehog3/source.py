@@ -207,8 +207,9 @@ def _get_branches(
         try:
             if branch:
                 return repo.remotes.origin.fetch(branch)
-            else:
+            if repo.bare:
                 return repo.remotes.origin.fetch("+refs/heads/*:refs/heads/*")
+            return repo.remotes.origin.fetch()
         except git.GitCommandError as e:
             log.warning(f"fetching remote branches: {e}")
     else:
