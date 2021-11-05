@@ -83,3 +83,5 @@ Multiprocessing support allows for much faster scans. You can alter the number o
 ## Thanks
 
 Special thanks to Dylan Ayrey ([@dxa4481](https://github.com/dxa4481)), developer of the original [truffleHog](https://github.com/dxa4481/truffleHog) scanner
+
+![Contributors](https://contrib.rocks/image?repo=feeltheajf/trufflehog3)
