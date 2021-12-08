@@ -65,15 +65,19 @@ def run(**kwargs):
     issues = []
 
     for target in args.targets:
-        if urlparse(target).scheme in ("http", "https"):  # pragma: no cover
-            with TemporaryDirectory(prefix=f"{__NAME__}-") as tmp:
-                git.Repo.clone_from(target, tmp)
-                target = tmp
+        remote = urlparse(target).scheme in ("http", "https")
+        if remote:  # pragma: no cover
+            tmp = TemporaryDirectory(prefix=f"{__NAME__}-")
+            git.Repo.clone_from(target, tmp.name)
+            target = tmp.name
 
         if not args.config:
             config = load_config(target, **kw)
 
         issues.extend(scan(target, config, rules, args.processes))
+
+        if remote:  # pragma: no cover
+            tmp.cleanup()
 
     if args.incremental:  # pragma: no cover
         issues = diff(load(Issue, args.incremental), issues, only_new=True)
