@@ -140,7 +140,7 @@ class File(Model):
             return self._content
 
         try:
-            return Path(self._real or self.path).read_text()
+            return Path(self._real or self.path).read_bytes()
         except Exception as e:  # pragma: no cover
             log.warning(f"skipping file '{self.path}': {e}")
             return ""
