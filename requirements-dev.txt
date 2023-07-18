@@ -1,4 +1,4 @@
-codecov==2.1.8
+codecov==2.1.13
 exrex==0.10.5
 keyring==21.2.1
 mypy==0.812
