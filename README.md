@@ -6,7 +6,7 @@
 
 # trufflehog3
 
-This is an enhanced version of the [truffleHog](https://github.com/dxa4481/truffleHog) scanner
+This is an enhanced version of the Python-based [truffleHog](https://github.com/trufflesecurity/trufflehog/tree/v2) scanner
 
 <p align="middle">
   <a href="https://feeltheajf.github.io/trufflehog3/examples/report" target="_blank">
