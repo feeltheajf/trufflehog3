@@ -44,7 +44,7 @@ push: push-pypi
 
 .PHONY: push-pypi
 push-pypi: build
-	twine upload dist/* -u feeltheajf
+	twine upload dist/* -u __token__
 
 .PHONY: clean
 clean:
