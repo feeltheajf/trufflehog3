@@ -37,7 +37,7 @@ Here are some basic examples to get you started
 
 ```bash
 # clone remote Git repository, scan 10 latest commits and output to stdout
-$ trufflehog3 --max-depth 10 https://github.com/feeltheajf/trufflehog3
+$ trufflehog3 --depth 10 https://github.com/feeltheajf/trufflehog3
 
 # disable Git history search, scan current directory and save report as JSON
 $ trufflehog3 --no-history --format json --output report.json
