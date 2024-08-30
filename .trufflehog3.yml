@@ -36,6 +36,17 @@ exclude: # exclude matching issues
     pattern: 9e404e6c59d286645b2465aacaf61108ebc12a3a
     paths:
       - trufflehog3/source.py
+      
+#my code starts from here
+  - message: AWS Access Key ID
+    pattern: AKIA[0-9A-Z]{16}|ASIA[0-9A-Z]{16}
+    paths:
+      - '**/*'
+  - message: AWS Secret Access Key
+    pattern: (?i)aws_secret_access_key|(?i)aws_secret|(?i)aws_secret_key
+    paths:
+      - '**/*'
+
 # NOTE you can also specify IDs or patterns together or without paths, e.g.
 #
 #   - message: Skip ID everywhere
