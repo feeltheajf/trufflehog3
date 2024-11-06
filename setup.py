@@ -21,7 +21,7 @@ setup(
     author="Ilya Radostev",
     author_email="feeltheajf@gmail.com",
     include_package_data=True,
-    python_requires=">=3.7",
+    python_requires=">=3.13",
     install_requires=REQUIREMENTS,
     entry_points={"console_scripts": [f"{__NAME__} = {__NAME__}.cli:run"]},
 )

@@ -204,7 +204,7 @@ def _match(
 
     for exc in exclude:
         if exc.paths:
-            path_matched = source._match(issue.path, exc.paths, recursive=True)
+            path_matched = source._match(issue.path, exc.paths)
         else:
             path_matched = True
 

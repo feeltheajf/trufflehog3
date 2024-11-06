@@ -167,7 +167,7 @@ def _diffiter(
         if pdiff.startswith("Binary files"):  # pragma: no cover
             continue
 
-        pattern = _match(fpath, exclude_set, recursive=True)
+        pattern = _match(fpath, exclude_set)
         if pattern:
             log.debug(f"skipping diff '{fpath}': '{pattern}'")
             continue
@@ -218,12 +218,8 @@ def _get_branches(
     return [repo.branches[branch] if branch else repo.active_branch]
 
 
-def _match(
-    path: str, patterns: Iterable[str] = None, recursive: bool = False
-) -> Optional[str]:
+def _match(path: str, patterns: Iterable[str] = None) -> Optional[str]:
     """Match path against given glob patterns and return matched pattern if any.
-
-    If `recursive` is set to True, check all parent directories as well.
 
     Note
     ----
@@ -241,18 +237,16 @@ def _match(
     '*.yml'
     >>> _match(".git/hooks/update.sample", [".git/*"]) is None
     True
-    >>> _match(".git/hooks/update.sample", [".git/*"], recursive=True)
-    '.git/*'
+    >>> _match(".git/hooks/update.sample", [".git/**/*"])
+    '.git/**/*'
 
     """
     if not patterns:
         return None
 
     fpath = Path(path)
-    paths = [fpath, *fpath.parents] if recursive else [fpath]
-    for p in paths:
-        for glob in patterns:
-            if p.match(glob):
-                return glob
+    for glob in patterns:
+        if fpath.full_match(glob):
+            return glob
 
     return None
